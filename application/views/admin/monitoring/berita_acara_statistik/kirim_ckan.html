@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/dashboard/admin')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item "><a href="#">Verifikasi</a>
+                    </li>
+                    <li class="breadcrumb-item "><a href="javascript:history.back()">Verifikasi BA Statistik</a>
+                    </li>
+                    <li class="breadcrumb-item active">Kirim CKAN</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Kirim CKAN</h4>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Kirim data ke CKAN</h4>
+                <p class="sub-header">
+                    Silahkan unggah data yang sudah diisi sesuai dengan kebutuhan
+                </p>
+                Parameter :
+                <br>
+                Dataset :
+                <br>
+                Resource (nama file lampiran/xlsx) :
+
+                <form action="{$config->site_url('admin/berita_acara_statistik/view/upload_process')}" method="post"
+                    enctype="multipart/form-data">
+                    <input type="hidden" id="instansi_cd" name="instansi_cd" value="{$instansi_cd|default:''}">
+                    <input type="hidden" id="ba_id" name="ba_id" value="{$ba_id|default:''}">
+                    <div class="mb-0">
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="inputGroupFile04" class="form-label">Lampirkan file (.xlsx)</label>
+                                    <input class="form-control" type="file" id="template" name="template"
+                                        accept=".xlsx">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-0">
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <button type="submit"
+                                        class="btn btn-primary waves-effect waves-light">Kirim</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

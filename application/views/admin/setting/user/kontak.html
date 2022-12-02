@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item "><a href="javascript: void(0);">Beranda</a></li>
+                    <li class="breadcrumb-item active">Profil</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Profil</h4>
+        </div>
+    </div>
+</div>
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+<div class="row">
+	<div class="col-xl-3 col-lg-4">
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex align-items-start mb-3">
+					<img src="{$foto|default:$default_foto}" class="me-2 rounded-circle" alt="{$result.nama_lengkap|default:''}" height="50" width="50">
+					<div class="w-100">
+						<h5 class="mt-0 mb-0 font-15">
+							<a href="contacts-profile.html" class="text-reset">{$result.user_alias|default:'-'}</a>
+						</h5>
+						<p class="mt-1 mb-0 text-muted font-14">
+							{$result.nama_lengkap|default:'-'}
+						</p>
+					</div>
+				</div>
+				<h6 class="font-13 text-muted text-uppercase">Keterangan</h6>
+				<div class="p-2" style="margin-left: -10px; margin-top: -10px;">
+					<span class="mb-0 mt-1">Email :</span>
+					<a href="#" class="text-reset mb-2 d-block">{$result.user_mail|default:'-'}</a>
+					<span class="mb-0 mt-1">Telepon :</span>
+					<a href="#" class="text-reset mb-2 d-block">{$result.nomor_telepon|default:'-'}</a>
+					<span class="mb-0 mt-1">Alamat :</span>
+					<a href="#" class="text-reset mb-2 d-block">{$result.alamat_tinggal|default:'-'}</a>
+				</div>        
+				<h6 class="font-13 text-muted text-uppercase">Menu</h6>
+				<div class="p-2">
+					<a href="{$config->site_url('admin/setting/user/index')}" class="text-reset mb-2 d-block">
+						<i class="mdi mdi-checkbox-blank-circle-outline me-1 text-success"></i>
+						<span class="mb-0 mt-1">Informasi Data Diri</span>
+					</a>
+					<a href="{$config->site_url('admin/setting/user/kontak')}" class="text-reset mb-2 d-block">
+						<i class="mdi mdi-checkbox-blank-circle-outline me-1 text-success"></i>
+						<span class="mb-0 mt-1">Informasi Kontak</span>
+					</a>
+					<a href="{$config->site_url('admin/setting/user/password')}" class="text-reset mb-2 d-block">
+						<i class="mdi mdi-checkbox-blank-circle-outline me-1 text-success"></i>
+						<span class="mb-0 mt-1">Ubah Password</span>
+					</a>
+				</div>                     
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xl-9 col-lg-8">
+		<div class="card">
+			<div class="card-body py-2 px-3 border-bottom border-light">
+				<div class="row justify-content-between py-1">
+					<div class="col-sm-7">
+						<div class="d-flex align-items-start">
+							<div>
+								<h5 class="mt-0 mb-0 font-15">
+									Informasi Kontak
+								</h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<form action="{$config->site_url('admin/setting/user/kontak_process')}" method="post">
+					<input name="user_id" type="hidden" value="{$result.user_id|default:''}">
+					<div class="mb-3">
+						<label for="nomor_telepon" class="form-label">Telepon / HP</label>
+						<input type="text" class="form-control" id="nomor_telepon" name="nomor_telepon" placeholder="Telepon / HP" value="{$result.nomor_telepon|default:''}">
+					</div>
+					<div class="mb-3">
+						<label for="user_mail" class="form-label">Email</label>
+						<input type="text" class="form-control" id="user_mail" name="tempat_lahir" placeholder="Email" value="{$result.user_mail|default:''}" readonly>
+					</div>
+					<div class="mb-3">
+						<label for="alamat_tinggal" class="form-label">Alamat</label>
+						<input type="text" class="form-control" id="alamat_tinggal" name="alamat_tinggal" placeholder="Alamat" value="{$result.alamat_tinggal|default:''}">
+					</div>
+					<button type="submit" class="btn btn-primary waves-effect waves-light">Simpan</button>
+				</form>
+			</div>                               
+		</div>
+	</div>
+</div>

@@ -1,0 +1,77 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        // HTML5 WYSIWYG Editor
+        $('textarea.editor').ckeditor();
+    });
+</script>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <!-- <h1>Email Settings</h1> -->    
+	<ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Pengaturan</a></li>
+        <li class="breadcrumb-item"><a href="{$config->site_url('settings/sistem/email/')}">Email</a></li>
+        <li class="breadcrumb-item active">Test Email</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- Basic Forms -->
+    <div class="box">		
+		<div class="box-header with-border">
+            <h4 class="box-title">Test Email</h4>
+			<div class="box-tool">
+				<ul class="nav nav-xs">
+					<li class="nav-item">
+						<a href="{$config->site_url('settings/sistem/email/')}" class="btn btn-outline b-primary text-primary"><i class="fa fa-arrow-left"></i> Kembali</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="box-divider m-0"></div>
+        <!-- /.box-header -->
+        <form action="{$config->site_url('settings/sistem/email/test_email_process')}" method="post" class="form-horizontal">
+            <div class="box-body">
+                <!-- notification template -->
+                {include file="base/templates/notification.html"}
+                <!-- end of notification template-->
+                <input type="hidden" name="email_id" value="{$result.email_id|default:''}" />
+                <div class="form-group row">
+                    <label class="col-md-3 control-label">From</label>
+                    <div class="col-md-9">
+                        <label class="control-label">{$result.email_name|default:''}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 control-label">To</label>
+                    <div class="col-md-9">
+                        <input type="text" name="email_tujuan" maxlength="30" value="{$result.email_tujuan|default:''}" class="form-control" />
+                        <small class="help-block text-danger">*wajib diisi</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 control-label">Subject</label>
+                    <div class="col-md-9">
+                        <input type="text" name="email_subject" maxlength="50" value="{$result.email_subject|default:''}" class="form-control" />
+                        <small class="help-block text-danger">*wajib diisi</small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 control-label">Content</label>
+                    <div class="col-md-9">
+                        <textarea name="isi_email" class="form-control editor">{$result.isi_email|default:''}</textarea>
+                        <small class="help-block text-danger">*wajib diisi</small>
+                    </div>
+                </div>
+            </div>
+			<div class="box-footer">
+					<div class="form-group row">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-7">
+								<button type="submit" class="btn btn-success"><i class="fa fa-check "></i> Kirim</button>
+								<button type="reset" class="btn btn-default"><i class="fa fa-times "></i> Reset</button>
+                            </div>                            
+					</div>
+			</div>
+        </form>
+    </div>
+</section>

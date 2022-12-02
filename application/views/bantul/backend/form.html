@@ -1,0 +1,113 @@
+<script type="text/javascript">
+    // jquery
+    $(document).ready(function () {
+        // ajax upload images
+        $("#reload_captcha").click(function () {
+            // ajax process
+            console.log('ob');
+
+            $.ajax({
+                url: '{$config->site_url("bantul/backend/ajax_reload_captcha")}',
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $("#captcha_image").html();
+                    console.log('o2');
+
+                },
+                success: function (data) {
+                    $("#captcha_image").html(data.image);
+                    console.log('ok');
+                    console.log(data.image);
+                }
+            });
+        });
+    });
+</script>
+<div class="py-5 text-center w-100">
+    <div class="mx-auto w-xxl w-auto-xs">
+        <div class="px-3">
+            <!-- notification template -->
+            {include file="base/templates/notification.html"}
+            <!-- end of notification template-->
+            <form action="{$config->site_url('bantul/backend/login_process')}" method="post" autocomplete="off">
+                <div class="form-group">
+                    <div class="input-group mb-2">
+                        <div class="input-group-addon" style="width: 36px;">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Masukkan Username" name="username"
+                            maxlength="50" tabindex="1" required="required" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group mb-2">
+                        <div class="input-group-addon" style="width: 36px;">
+                            <i class="fa fa-key"></i>
+                        </div>
+                        <input type="password" class="form-control" placeholder="Masukkan Password" name="password"
+                            maxlength="50" tabindex="2" required="required" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-7">
+                        <div class="form-group">
+                            <div class="input-group mb-2">
+                                <div class="input-group-addon" style="width: 36px;">
+                                    <i class="fa fa-key"></i>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Kode Captcha" name="captcha"
+                                    maxlength="50" tabindex="2" required="required" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="text-right" id="captcha_image">
+                            {$captcha.image|default:''}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-7"></div>
+                    <div class="col-5">
+                        <div class="text-right">
+                            <a href="#" id="reload_captcha">
+                                <i class="fa fa-refresh"></i> Reload Captcha
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                {if $login_attempt.msg_error|default:'' neq 'attempt'}
+                <button type="submit" class="btn btn-lg btn-block primary">
+                    <span class="fa fa-arrow-right" style="margin-right: 5px;"></span> Masuk
+                </button>
+                {/if}
+                {if $login_attempt.msg_error|default:'' eq 'attempt'}
+                <div class="alert alert-light alert-elevate" role="alert"
+                    style="background: rgba(253, 57, 122, 0.1); margin-top: 5px;">
+                    <div class="alert-icon"><i class="flaticon2-information kt-font-danger"></i></div>
+                    <div class="alert-text">
+                        <strong>Mohon maaf, </strong> anda tidak bisa login karena sudah melakukan
+                        {$login_attempt.attempt|default:''} kali percobaan dari maksimal {$attempt_max|default:''}
+                        percobaan,
+                        silahkan mencoba kembali setelah {$attempt_time|default:''} menit.
+                    </div>
+                </div>
+                {elseif $login_attempt.msg_error|default:'' eq 'password'}
+                <!-- <div class="alert alert-light alert-elevate" role="alert" style="background: rgba(253, 57, 122, 0.1); margin-top: 5px;">
+                    <div class="alert-icon"><i class="flaticon2-information kt-font-danger"></i></div>
+                    <div class="alert-text">
+                        <strong>Peringatan, </strong>anda sudah melakukan percobaan login {$login_attempt.attempt|default:''} kali dari
+                        {$attempt_max|default:''} kali percobaan.
+                    </div>
+                </div> -->
+                {/if}
+            </form>
+            <div class="my-4">
+                <a href="{$config->site_url('bantul/backend/lupa_password')}" class="text-danger"><i
+                        class="fa fa-lock m-r-5"></i> Lupa Password?</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,108 @@
+<script type="text/javascript">
+	$(document).ready(function () {
+		// select2
+		$(".select-2").select2();
+		// file
+		$(".file-styled").uniform({
+            fileButtonClass: 'action btn btn-primary'
+        });
+	})
+</script>
+
+<!-- begin:: Content Head -->
+<div class="kt-subheader  kt-grid__item" id="kt_subheader">
+	<div class="kt-container  kt-container--fluid ">
+		<div class="kt-subheader__main">
+			<small class="kt-subheader__separator kt-hidden"></small>
+			<div class="kt-subheader__breadcrumbs">
+				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="fa fa-bars"></i></a>
+				<a href="#" class="kt-subheader__breadcrumbs-link">Master</a>
+				&nbsp;&nbsp;&nbsp;
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="{$config->site_url('admin/master/komisi')}" class="kt-subheader__breadcrumbs-link">Komisi</a>
+				&nbsp;&nbsp;&nbsp;
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="#" class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Ubah</a>
+			</div>
+		</div>
+		<div class="kt-subheader__toolbar">
+			<div class="kt-subheader__wrapper">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end:: Content Head -->
+
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+	<!-- notification template -->
+	{include file="base/templates/notification.html"}
+	<!-- end of notification template-->
+	
+	<div class="kt-portlet kt-portlet--mobile">
+		<div class="kt-portlet__head kt-portlet__head--lg">
+			<div class="kt-portlet__head-label">
+				<h3 class="kt-portlet__head-title">
+					Ubah komisi
+					<!-- <small>Berikut adalah daftar kategori berita</small> -->
+				</h3>
+			</div>
+			<div class="kt-portlet__head-toolbar">
+				<div class="kt-portlet__head-wrapper">
+					<div class="kt-portlet__head-actions">
+						<a href="{$config->site_url('admin/master/komisi')}" class="btn btn-clean kt-margin-r-10">
+							<i class="la la-arrow-left"></i>
+							<span class="kt-hidden-mobile">Kembali</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="kt-portlet__body kt-portlet__body">
+		
+
+			<form class="kt-form" action="{$config->site_url('admin/master/komisi/edit_process')}" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="komisi_id" value="{$detail.komisi_id|default:''}">
+				<div class="kt-portlet__body">
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Judul</label>
+						<div class="col-lg-8 col-md-9 col-sm-12">
+							<input type="text" class="form-control" name="komisi_nm" value="{$result.komisi_nm|default:''}" required>
+							<small class="help-block text-danger">* Wajib Diisi</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Deskripsi</label>
+						<div class="col-lg-8 col-md-9 col-sm-12">
+							<input type="text" class="form-control" name="komisi_desc" value="{$result.komisi_desc|default:''}">
+							<small class="form-text text-muted">Deskripsi (Opsional)</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Status Ditampilkan</label>
+						<div class="col-lg-4 col-md-9 col-sm-12">
+							<div class="kt-radio-inline">
+								<label class="kt-radio kt-radio--solid kt-radio--success">
+									<input type="radio" name="publish_st" {if $result.publish_st|default:'' eq 'yes'} checked="checked"{/if} value="yes" required="required"> IYA
+									<span></span>
+								</label>
+								<label class="kt-radio kt-radio--solid kt-radio--danger">
+									<input type="radio" name="publish_st" {if $result.publish_st|default:'' eq 'no'} checked="checked"{/if} value="no"> TIDAK
+									<span></span>
+								</label>
+							</div>
+							<small class="help-block text-danger">* Wajib Diisi</small>
+						</div>
+					</div>
+				</div>
+				<div class="kt-portlet__foot">
+					<div class="kt-form__actions">
+						<button type="submit" class="btn btn-primary">Simpan</button>
+						<button type="reset" class="btn btn-secondary">Reset</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- end:: Content -->

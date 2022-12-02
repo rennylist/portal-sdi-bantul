@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <meta name='description' content="{$site.meta_desc|default:''}" />
+    <meta name='keywords' content="{$site.meta_key|default:''}" />
+    <meta name='robots' content='index,follow' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{$page.nav_title|default:'Home'} - {$site.site_title|default:''}</title>
+    <link href="{$BASEURL}resource/doc/images/icon/favicon.png" rel="SHORTCUT ICON" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D985BMGFBF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-D985BMGFBF');
+    </script>
+    <!-- themes style -->
+    <link rel="stylesheet" type="text/css" href="{$THEMESPATH}" media="screen" />
+    <!-- other style -->
+    {$LOAD_STYLE}
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    
+</head>
+
+<body>
+    <!-- Loader -->
+    <!-- <div id="preloader">
+        <div id="status">
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+    </div> -->
+    <!-- Loader -->
+
+    <!-- Navbar STart -->
+    <header id="topnav" class="defaultscroll sticky">
+        <div class="container">
+            <!-- Logo container-->
+            <div>
+                <a class="logo" href="{$config->site_url('beranda')}">
+                    <img src="{$BASEURL}/resource/doc/images/logo/bantulpedia.png" class="l-dark" alt="" height="24">
+                    <!-- <img src="{$BASEURL}/resource/doc/images/logo/bantulpedia.png" class="l-light" alt="" height="24"> -->
+                    <img src="{$BASEURL}/resource/doc/images/logo/bantulpedia_white.png" class="l-light" alt="" height="24">
+                </a>
+            </div>
+            <div class="menu-extras">
+                <div class="menu-item">
+                    <!-- Mobile menu toggle-->
+                    <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
+                        <div class="lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </a>
+                    <!-- End mobile menu toggle-->
+                </div>
+            </div>
+            
+            <ul class="buy-button list-inline mb-0">
+                <li class="list-inline-item mb-0"> 
+                    <div class="dropdown dropdown-primary" >
+                        {if $com_display|default:'' == 'light'}
+                        <a href="{$config->site_url('display/index/dark')}">
+                            <button type="button" class="btn btn-icon btn-pills btn-dark dropdown-toggle"  
+                            aria-haspopup="true" aria-expanded="false" style="margin-top: -1px;">
+                                <i data-feather="heart" class="fea icon-sm h5" style="margin-top: 10px; margin-left: 0px;"> </i>
+                            </button>
+                        </a>
+                        {else}
+                        <a href="{$config->site_url('display/index/light')}">
+                            <button type="button" class="btn btn-icon btn-pills btn-light dropdown-toggle"  aria-haspopup="true" aria-expanded="false">
+                                <i data-feather="heart" class="fea icon-sm h5" style="margin-top: 10px; margin-left: 0px;"> </i>
+                            </button>
+                        </a>
+                        {/if}
+                    </div>
+                </li>
+                <li class="list-inline-item mb-0">
+                    <div class="dropdown dropdown-primary">
+                        
+                        {if $com_user->uuid|default:'' == ''}
+                            <!-- <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#login-popup"  class="btn btn-icon btn-pills btn-primary mt-2">
+                                <i data-feather="user" class="fea icon-sm h5" style="margin-top: 5px; margin-left: 0px;"></i>
+                            </a>
+                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#login-popup"  class="btn btn-icon btn-pills btn-primary mt-2">
+                            -->
+                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#login-popup" >
+                            <button type="button" class="btn btn-icon btn-pills btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i data-feather="user" class="fea icon-sm h5" style="margin-top: 5px; margin-left: 0px;"></i>
+                            </button>
+                        </a>
+                        {else}
+                        <button type="button" class="btn btn-icon btn-pills btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user icons"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> -->
+                            <i data-feather="user-check" class="fea icon-sm h5" style="margin-top: 5px; margin-left: 4px;"> </i>
+                        </button>
+                        <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow rounded border-0 mt-3 py-3" style="width: 200px;">
+                            <a class="dropdown-item text-dark" href="{$url_change_pass|default:''}">
+                                <i data-feather="key" class="fea icon-sm text-muted h5" style="margin-top: 3px; margin-right: 10px;"> </i> 
+                                Ganti Password
+                            </a>
+                            <a class="dropdown-item text-dark" href="{$config->site_url('akun')}">
+                                <i data-feather="user" class="fea icon-sm text-muted h5" style="margin-top: 3px; margin-right: 10px;"> </i> 
+                                Akun
+                            </a>
+                            <div class="dropdown-divider my-3 border-top"></div>
+                            <a class="dropdown-item text-dark" href="{$config->site_url('signout')}">
+                                <i data-feather="log-out" class="fea icon-sm text-muted h5" style="margin-top: 3px; margin-right: 10px;"> </i> 
+                                Logout
+                            </a>
+                        </div>
+                        {/if}
+                    </div>
+                </li>
+            </ul>
+            <div id="navigation">
+                {include file="$template_topbar"}
+            </div>
+            <!--end navigation-->
+        </div>
+        <!--end container-->
+    </header>
+    <!--end header-->
+    <!-- Navbar End -->
+
+    {include file="$template_content"}
+
+
+    <div class="position-relative" style="margin: 30px 0 0 0;">
+        <div class="shape overflow-hidden text-light">
+            <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="#202942"></path>
+            </svg>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="py-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-7">
+                        <div class="section-title">
+                            <div class="d-flex">
+                                <i class="uil uil-mobile-android display-4 text-white title-dark"></i>
+                                <div class="flex-1 ms-md-4 ms-3">
+                                    <h4 class="fw-bold text-light title-dark mb-1">Unduh Bantulpedia sekarang!</h4>
+                                    <p class="text-white-50 mb-0">Aplikasi Bantulpedia sudah tersedia Android(Play Store) dan iOS(App Store)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                    <div class="col-md-5 mt-4 mt-sm-0">
+                        <div class="text-md-end ms-5 ms-sm-0">
+                            <a href="https://play.google.com/store/apps/details?id=id.go.bantulkab.bantulpedia" 
+                                target="_blank"
+                                class="btn btn-secondary me-2 me-lg-2 me-md-0 my-2">
+                                <i class="uil uil-google-play"></i> Play Store
+                            </a>
+                            <a href="https://apps.apple.com/id/app/bantulpedia/id1579902635"
+                                target="_blank"
+                                 class="btn btn-soft-secondary my-2">
+                                <i class="uil uil-apple"></i> App Store
+                            </a>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </div>
+        <div class="container">
+            <div class="row  footer-bar">
+                <div class="col-12">
+                    <div class="footer-py-60">
+                        <div class="row">
+                            <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
+                                <a href="#" class="logo-footer">
+                                    <img src="{$BASEURL}resource/doc/images/logo/bantulpedia_white.png" alt="" height="30">
+                                </a>
+                                <p class="mt-4">Bantulpedia adalah aplikasi terpadu untuk mengakses layanan Pemerintah Kabupaten Bantul. </p>
+                                <!-- <ul class="list-unstyled social-icon foot-social-icon mb-0 mt-4"> -->
+                                    <ul class="list-unstyled social-icon social mb-0 mt-4">
+                                    <li class="list-inline-item">
+                                        <a href="https://www.bantulkab.go.id" class="rounded" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+                                            stroke-linejoin="round" class="feather feather-monitor fea icon-ex-md">
+                                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="https://www.facebook.com/pemkabbantul/" class="rounded" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" class="feather feather-facebook fea icon-sm fea-social">
+                                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="https://www.instagram.com/pemkabbantul" class="rounded" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" class="feather feather-instagram fea icon-sm fea-social">
+                                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="https://twitter.com/pemkabbantul" class="rounded" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" class="feather feather-twitter fea icon-sm fea-social">
+                                                <path
+                                                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
+                                                </path>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="https://www.youtube.com/c/BantulTV" class="rounded" target="_blank">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title"
+                                                aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                <rect data-name="layer2" x="2" y="2" width="60" height="60" rx="10" ry="10"
+                                                    fill="none" stroke="#202020" stroke-miterlimit="10" stroke-width="2"
+                                                    stroke-linejoin="round" stroke-linecap="round"></rect>
+                                                <path data-name="layer1" fill="none" stroke="#CCCCCC" stroke-miterlimit="10"
+                                                    stroke-width="2" d="M24 22v20l20-10-20-10z" stroke-linejoin="round"
+                                                    stroke-linecap="round"></path>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                </ul><!--end icon-->
+                            </div><!--end col-->
+                            
+                            <div class="col-lg-2 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="footer-head">Link</h5>
+                                <ul class="list-unstyled footer-list mt-4">
+                                    <li>
+                                        <a href="{$config->site_url('informasi/pengumuman')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            Pengumuman
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{$config->site_url('informasi/berita')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            Berita
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{$config->site_url('informasi/cctv')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            CCTV
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{$config->site_url('informasi/wifi')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            Titik Wifi
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{$config->site_url('informasi/galerifoto')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            Galeri Foto
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{$config->site_url('informasi/galerivideo')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            Galeri Video
+                                        </a>
+                                    </li>
+                                    <!-- <li>
+                                        <a href="{$config->site_url('informasi/ilm')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            ILM
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{$config->site_url('informasi/event')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            Event
+                                        </a>
+                                    </li> -->
+                                </ul>
+                            </div><!--end col-->
+                            
+                            <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="footer-head">&nbsp;</h5>
+                                <ul class="list-unstyled footer-list mt-4">
+                                    <li>
+                                        <a href="{$config->site_url('informasi/ilm')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            ILM
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{$config->site_url('informasi/event')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            Event
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{$config->site_url('dokumentasi')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            Dokumentasi
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{$config->site_url('faq')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            FAQ
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{$config->site_url('ketentuanpengguna')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            Kebijakan Pengguna
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{$config->site_url('informasi/kebijakanprivasi')}" class="text-foot" target="_blank">
+                                            <i data-feather="chevron-right" class="fea icon-sm text-muted h5" style="margin-top: 5px;"> </i></i> 
+                                            Kebijakan Privasi
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div><!--end col-->
+        
+                            <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="footer-head">Pengunjung</h5>
+                                <p class="mt-4">Hari ini :</p>
+                                <h6 style="margin-top: -15px;">{$stats.stat_today|default:''|number_format:0:' ':'.'}</h6>
+                                <p class="mt-4">Bulan ini :</p>
+                                <h6 style="margin-top: -15px;">{$stats.stat_month|default:''|number_format:0:' ':'.'}</h6>
+                                <p class="mt-4">Total keseluruhan :</p>
+                                <h6 style="margin-top: -15px;">{$stats.stat_total|default:''|number_format:0:' ':'.'}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-py-30 footer-bar">
+            <div class="container text-center">
+                <div class="row align-items-center">
+                    <div class="col-sm-6">
+                        <div class="text-sm-start">
+                            <p class="mb-0">© <script>document.write(new Date().getFullYear())</script> Pemerintah Kabupaten Bantul <i class="mdi mdi-heart text-danger"></i> oleh <a href="https://bantulkab.go.id/" target="_blank" class="text-reset">bantulkab</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="login-popup" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded shadow border-0">
+                <div class="modal-body py-5">
+                    <div class="text-center"  style="padding: 0 15px 0 15px;">
+                        <!-- <img src="{$BASEURL}resource/doc/images/logo/bantulpedia.png" alt="" height="30px"> -->
+                        <img src="{$BASEURL}resource/doc/images/icon/favicon.png" class="avatar avatar-medium" alt="">
+                        <div class="mt-4">
+                            <h4  style="margin-top: -15px;">Bantulpedia</h4>
+                            <p class="text-muted" style="text-align: justify;">
+                                Akun Anda hanya dapat digunakan oleh Anda dan tidak bisa dialihkan kepada orang lain 
+                                dengan alasan apapun.
+                                Keamanan dan kerahasiaan Akun Anda tunduk pada peraturan perundang-undangan yang berlaku.
+                                Kami memberlakukan upaya terbaik untuk melindungi dan mengamankan data dan 
+                                informasi Pribadi anda dari akses, pengumpulan, penggunaan atau pengungkapan oleh 
+                                orang-orang yang tidak berwenang dan dari pengolahan yang bertentangan dengan hukum, 
+                                kehilangan yang tidak disengaja, pemusnahan, dan kerusakan atau resiko serupa.
+                            </p>
+                            <p style="margin-top: -15px;">
+                                <a target="_blank" href="{$config->site_url('ketentuanpengguna')}" class="">Ketentuan Pengguna</a>
+                                &
+                                <a target="_blank" href="{$config->site_url('kebijakanprivasi')}" class="">Kebijakan Privasi</a>
+                            </p>
+                            <div class="mt-4">
+                                <div class="d-grid">
+                                    <a href="{$config->site_url('signin')}" class="btn btn-primary">
+                                        Login
+                                    </a>
+                                </div>
+                                <p style="margin-top: -20px;">
+                                    <br />
+                                    <small class="text-dark me-2">Tidak mempunyai akun ?</small> 
+                                    <a href="https://api.bantulkab.go.id/register?redirect-url={$config->site_url()}" class="text-dark fw-bold">Daftar</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to top -->
+    <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-primary back-to-top"
+        style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="feather feather-arrow-up icons">
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+    </a>
+    <!-- Back to top -->
+
+    <!-- load javascript -->
+    {$LOAD_JAVASCRIPT}
+    <!-- end of javascript  -->
+</body>
+
+</html>
+
+
+<script>
+    $('.numberonly').bind('keyup blur', function () {
+        var node = $(this);
+        node.val(node.val().replace(/[^0-9]/g, ''));
+    });
+
+    $('.dtplocal').datetimepicker({
+        format: 'dd-mm-yy',
+        showClose: true
+    });
+
+    $(function () {
+        $('.datetimepicker1').datetimepicker({
+            format: 'HH',
+            showClose: true
+        });
+    });
+</script>

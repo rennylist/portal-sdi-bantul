@@ -1,0 +1,127 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/dashboard/admin')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item active">BA Statistik</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Berita Acara Statistik</h4>
+        </div>
+    </div>
+</div>
+
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Pencarian</h4>
+                <form action="{$config->site_url('admin/verifikasi/berita_acara_statistik/search_instansi_process')}"
+                    method="post">
+
+                    <input type="hidden" name="process" value="process" />
+
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Tahun</label>
+                                <select name="tahun" id="tahun" class="form-control" data-toggle="select2"
+                                    data-width="100%">
+                                    {foreach $option_years as $thn}
+                                    <option value="{$thn|default:''}" {if $thn|default:'' eq
+                                        $search.tahun|default:''}selected='selected' {/if}> {$thn|default:''}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="mb-3" style="padding-top: 27px;">
+                                <button id="ajukan" name="ajukan" type="submit"
+                                    class="btn btn-primary waves-effect waves-light">
+                                    Cari<span class="btn-label-right"><i class="mdi mdi-magnify"></i></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- <h4 class="header-title">Instansi</h4>
+                <p class="sub-header">
+                    Daftar instansi
+                </p> -->
+                <div class="row">
+                    <div class="col-md-8 mb-2">
+                        <h4 class="header-title">Instansi</h4>
+                        <p class="sub-header">
+                            Daftar instansi
+                        </p>
+                    </div>
+
+                </div>
+                <table id="basic-datatable" class="table dt-responsive table-striped nowrap w-100">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nama Instansi</th>
+                            <th>Total BA</th>
+                            <th>Belum Upload</th>
+                            <th>Sudah Upload</th>
+                            <th>Diterima</th>
+                            <th>Menunggu</th>
+                            <th>Ditolak</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $rs_id as $result}
+                        <tr>
+                            <td>
+                                <a href="{$config->site_url('admin/verifikasi/berita_acara_statistik/instansi/'|cat:$result.instansi_cd|default:'')}"
+                                    title="Ubah Data">
+                                    {$result.instansi_name|default:''}
+                                </a>
+                            </td>
+                            <td align="right">
+                                {$result.tot|default:0|string_format:"%02d"|number_format:0:".":","}
+                            </td>
+                            <td align="right">
+                                {$result.ba_belum_upload|default:0|string_format:"%02d"|number_format:0:".":","}
+                            </td>
+                            <td align="right">
+                                {$result.ba_upload|default:0|string_format:"%02d"|number_format:0:".":","}
+                            </td>
+                            <td align="right">
+                                {$result.tot_approve|default:0|string_format:"%02d"|number_format:0:".":","}
+                            </td>
+                            <td align="right">
+                                {$result.tot_pending|default:0|string_format:"%02d"|number_format:0:".":","}
+                            </td>
+                            <td align="right">
+                                {$result.tot_reject|default:0|string_format:"%02d"|number_format:0:".":","}
+                            </td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

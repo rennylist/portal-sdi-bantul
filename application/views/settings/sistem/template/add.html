@@ -1,0 +1,94 @@
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        // Default file input style
+        $(".file-styled").uniform({
+            fileButtonClass: 'action btn btn-default'
+        });
+    });
+
+</script>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Settings</a></li>
+        <li class="breadcrumb-item"><a href="{$config->site_url('settings/sistem/template')}">CRUD Templates</a></li>
+        <li class="breadcrumb-item active">Tambah Data</li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">			
+            <div class="box-header">
+                <h2>Tambah Data</h2>
+                <small>Keterangan tambahan jika diperlukan disini.</small>
+                <div class="box-tool">
+                    <ul class="nav nav-xs">
+                        <li class="nav-item">
+                            <a href="{$config->site_url('settings/sistem/template')}" class="btn btn-sm btn-outline b-primary text-primary">
+                                <i class="fa fa-arrow-left mr-1"></i> Kembali
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="box-divider m-0"></div>
+            <form action="" method="post" class="p-x-xs">
+                <div class="box-body">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Text Required</label>
+                        <div class="col-md-6">
+                            <input type="text" name="text" class="form-control" placeholder="Input Text Normal..." required="required" />
+                        </div>
+                        <small class="col-md-3 form-text text-warning">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Text Optional</label>
+                        <div class="col-md-5">
+                            <input type="text" name="text" class="form-control" placeholder="Input Text Normal..." />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Select 2</label>
+                        <div class="col-md-3">
+                            <select name="pilihan" class="form-control" data-plugin="select2" data-option="{}" data-placeholder="Select an option">
+                                <option value=""></option>
+                                <option value="AK">Alaska</option>
+                                <option value="NV">Nevada</option>
+                                <option value="OR">Oregon</option>
+                                <option value="WA">Washington</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Tanggal</label>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <input type="text" name="text" class="form-control" data-plugin="datepicker" data-option="{literal}{format: 'yyyy-mm-dd', clearBtn: true}{/literal}" placeholder="Tanggal" />
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">File Browse</label>
+                        <div class="col-md-4">
+                            <div class="form-file">
+                                <input type="file" name="file" class="form-control file-styled" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="box-divider m-0"></div> -->
+                <div class="box-footer">
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Simpan</button>
+                            <button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Reset</button>
+                        </div>                            
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

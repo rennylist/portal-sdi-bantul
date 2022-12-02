@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head -->
+
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <meta name='description' content="{$site.meta_desc|default:''}" />
+    <meta name='keywords' content="{$site.meta_key|default:''}" />
+    <meta name='robots' content='index,follow' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Construction</title>
+    <!-- <link href="{$BASEURL}/resource/doc/images/icon/favicon.png" rel="SHORTCUT ICON" /> -->
+    <!-- themes style -->
+    <link rel="stylesheet" type="text/css" href="{$THEMESPATH}" media="screen" />
+    <!-- other style -->
+    {$LOAD_STYLE}
+</head>
+
+
+<body>
+    <div class="back-to-home rounded d-none d-sm-block">
+        <a href="{$config->site_url()}" class="btn btn-icon btn-soft-primary"><i data-feather="home"
+                class="icons"></i></a>
+    </div>
+
+    {include file="$template_content"}
+
+    <!-- load javascript -->
+    {$LOAD_JAVASCRIPT}
+    <!-- end of javascript  -->
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/dashboard/dashboard')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item">Tampilan</li>
+                    <li class="breadcrumb-item"><a href="{$config->site_url('admin/tampilan/statistik')}">Statistik</a></li>
+                    <li class="breadcrumb-item active">Rincian</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Rincian</h4>
+        </div>
+    </div>
+</div>
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Pencarian</h4>
+                <form action="{$config->site_url('admin/tampilan/statistik/search_process')}" method="post">
+                    <input type="hidden" name="search_url" value="admin/tampilan/statistik/indicator/xxx" />
+                    <input type="hidden" name="urusan_id" value="{$urusan_id|default:''}" />
+                    <input type="hidden" name="instansi_cd" value="{$instansi_cd|default:''}" />
+                    <input type="hidden" name="process" value="process" />
+                    
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Tahun</label>
+                                <select name="tahun" id="tahun"  class="form-control" data-toggle="select2" data-width="100%">
+                                    {foreach $option_years as $thn}
+                                        <option value="{$thn|default:''}" {if $thn|default:'' eq $search.tahun|default:''}selected='selected'{/if}> {$thn|default:''}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <!-- <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Klasifikasi Indikator</label>
+                                <select name="indicator_class" id="indicator_class" class="form-select">
+                                    <option value="1">Semua</option>
+                                    <option value="1">Indikator SDG’s</option>
+                                    <option value="2">Indikator RPJMD</option>
+                                    <option value="3">IKK LPPD</option>
+                                    <option value="4">Indikator SPM</option>
+                                    <option value="5">Data Daerah Dalam Angka</option>
+                                    <option value="6">Data Aplikasi Dataku DIY</option>
+                                    <option value="7">Data Pilah Gender</option>
+                                </select>
+                            </div>
+                        </div> -->
+                        <div class="col-lg-5">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Indikator</label>
+                                <select name="indicator_id" id="indicator_id"  class="form-control" data-toggle="select2" data-width="100%">
+                                    <option value="" >Semua</option>
+                                    {foreach $indicators as $indicator}
+                                        <option value="{$indicator.data_id|default:''}" {if $indicator.data_id|default:'' eq $search.indicator_id|default:''}selected='selected'{/if}> {$indicator.data_name|default:''}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="mb-3" style="padding-top: 27px;">
+                                <button id="ajukan" name="ajukan" type="submit" class="btn btn-primary waves-effect waves-light">
+                                    Cari<span class="btn-label-right"><i class="mdi mdi-magnify"></i></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="centermodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="standard-modalLabel">Rincian Data</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- <h6>Urusan</h6>
+                <span>1 Urusan Pemerintahan Wajib yang Berkaitan dengan Pelayanan Dasar</span>
+                <br />
+                <h6>Bidang Urusan</h6>  
+                <span>1.01 Bidang Urusan Pemerintahan Bidang Pendidikan</span>
+                <br /> -->
+                <h6>Indikator / Variabel / Sub Variabel</h6>  
+                <span>1.01.0001 Jumlah lembaga pendidikan negeri</span>
+
+                <hr>
+                <h6>Overflowing text to show scroll behavior</h6>
+                <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="row" >
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- <h4 class="header-title"></h4>
+                <p class="sub-header"></p> -->
+                <div class="row">
+                    <div class="col-md-9 mb-2">
+                        <h4 class="header-title">{$urusan.urusan_id|default:''} Bidang {$urusan.urusan_name|default:''}</h4>
+                        <strong>{$urusan_parent.urusan_id|default:''} {$urusan_parent.urusan_name|default:''}</strong>
+                    </div>
+        
+                    <div class="col-md-3 mb-2" align="right">
+                        <a target="_blank" 
+                        href="{$config->site_url('admin/tampilan/statistik/download_data_params/'|cat:$urusan.urusan_id|default:'')}" 
+                        class="btn btn-danger">
+                        Unduh<span class="btn-label-right"><i class="mdi mdi-download"></i></span>
+                        </a>
+
+                        <a
+                        href="{$config->site_url('admin/tampilan/statistik')}" 
+                        class="btn btn-secondary">
+                        Kembali<span class="btn-label-right"><i class="mdi mdi-keyboard-backspace"></i></span>
+                        </a>
+                    </div>
+                </div>
+
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Kode</th>
+                            <th>Indikator / Variabel / Sub Variabel</th>
+                            <th>Satuan</th>
+                            {foreach $table_years as $year}                    
+                                <th>{$year|default:''}</th>
+                            {/foreach}
+                            <th>Sifat</th>
+                            <!-- <th>Status</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {assign var="no" value =0}
+                        {foreach $rs_id as $result}
+                        <tr  {if $result.data_type|default:'' eq 'indicator'} class="table-active" {/if}>
+                            <td>
+                                
+                                <input type="hidden" name="datas[]" value="{$result.data_id|default:''}">
+                                {if $result.data_type|default:'' eq 'indicator'}
+                                <strong>{$result.data_id|default:''}</strong>
+                                {else}
+                                {$result.data_id|default:''}
+                                {/if}
+                            </td>
+                            <td>
+                                {if $result.data_type|default:'' eq 'indicator'}
+                                <strong>{$result.data_name|default:''}</strong>
+                                {else}
+                                {$result.data_name|default:''}
+                                {/if}
+                                
+                            </td>
+                            <td>
+                                {$result.data_unit|default:''}
+                            </td>
+                            {foreach $table_years as $year}
+                                <td align="right">
+                                    {if $result.$year.value|default:'' eq ''}
+                                    <span class="badge badge-soft-secondary">null</span>
+                                    {elseif $result.$year.value|default:'' eq 'n/a'}
+                                    <span class="badge bg-secondary"> n/a </span>
+                                    {else}
+                                        {if $datetimemanipulation->is_decimal($result.$year.value|default:'')}
+                                            {$result.$year.value|replace:".":","}
+                                        {elseif (int) $result.$year.value|default:''}
+                                            {$result.$year.value|default:''|string_format:"%02d"|number_format:0:",":"."}
+                                        {else}
+                                            {$result.$year.value|default:''}
+                                        {/if}
+                                    {/if}
+                                </td>
+                            {/foreach}
+                            <td align="center">
+                                {if $result.$year_selected.data_st|default:'' eq 'tetap'}
+                                <span class="badge badge-soft-success">TTP</span>
+                                {else if $result.$year_selected.data_st|default:'' eq 'Tidak ada data'}
+                                <span class="badge badge-soft-secondary">TDA</span>
+                                {else if $result.$year_selected.data_st|default:'' eq 'sementara'}
+                                <span class="badge badge-soft-warning">SMTR</span>
+                                {else}
+                                <span class="badge badge-soft-warning">{$result.$year_selected.data_st|default:''}</span>
+                                {/if}
+                            </td>
+                            <!-- <td align="center">
+                                {if $result.$year_selected.submission_st|default:'' eq 'pending'}
+                                <span class="badge bg-warning rounded-pill"><i class="mdi mdi-rotate-3d"></i></span>
+                                {elseif $result.$year_selected.submission_st|default:'' eq 'approved'}
+                                <span class="badge bg-success rounded-pill"><i class="mdi mdi-check"></i></span>
+                                {elseif $result.$year_selected.submission_st|default:'' eq 'rejected'}
+                                <span class="badge bg-danger rounded-pill"><i class="mdi mdi-window-close"></i></span>
+                                {else}
+                                <span class="badge bg-secondary rounded-pill"><i class="mdi mdi-minus"></i></span>
+                                {/if}
+                            </td>                        -->
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

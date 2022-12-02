@@ -1,0 +1,30 @@
+{if $notification_header|default:'' == "error"}
+<div class="alert alert-danger">
+    <strong>Error</strong>, {$notification_message|default:''}.
+    {if $notification_error|default:'' neq ''}
+        <p>{$notification_error|default:''}</p>
+    {/if}
+</div>
+{elseif $notification_header|default:'' == "warning"}
+<div class="alert alert-warning">
+    <strong>Peringatan</strong>, {$notification_message|default:''}.
+    {if $notification_error|default:'' neq ''}
+        <p>{$notification_error|default:''}</p>
+    {/if}
+</div>
+{elseif $notification_header|default:'' == "success"}
+<div class="alert alert-success">
+    <strong>Berhasil</strong>, {$notification_message|default:''}.
+    {if $notification_error|default:'' neq ''}
+        <p>{$notification_error|default:''}</p>
+    {/if}
+</div>
+{elseif $notification_header|default:'' == "info"}
+<div class="alert alert-info">
+    <strong>Info</strong>, {$notification_message|default:''}.
+    {if $notification_error|default:'' neq ''}
+        <p>{$notification_error|default:''}</p>
+    {/if}
+</div>
+{else}
+{/if}

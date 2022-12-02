@@ -1,0 +1,124 @@
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        // select2
+        $(".select-2").select2();
+    });
+</script>
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item "><a href="javascript: void(0);">Master</a></li>
+                    <li class="breadcrumb-item active">User</li>
+                </ol>
+            </div>
+            <h4 class="page-title">User</h4>
+        </div>
+    </div>
+</div>
+
+<!-- notification template -->
+{include file="base/templates/notification-ubold.html"}
+<!-- end of notification template-->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body py-2 px-3 border-bottom border-light">
+                <div class="row justify-content-between py-1">
+                    <div class="col-sm-7" style="padding-top: 11px;">
+                        <h3 class="header-title">Daftar User</h3>
+                    </div>
+                    <div class="col-auto">
+                        <div id="tooltips-container">
+                            <a href="{$config->site_url('admin/master/user/add')}" class="text-reset font-19 py-1 px-2 d-inline-block">
+                                <i class="fe-user-plus" data-bs-container="#tooltips-container" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Tambah User" aria-label="Tambah User"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form action="{$config->site_url('admin/master/user/search_process')}" method="post">
+                    <div class="kt-form kt-form--label-right kt-margin-t-0">
+                        <div class="row">
+                            <div class="col-xl-3">
+                                <select name="user_st" class="form-control select-2" data-placeholder="-- Status User --">
+                                    <option value=""></option>
+                                    <option value="1" {if "1" eq $search.user_st|default:''}selected="selected"{/if}>AKTIF</option>
+                                    <option value="2" {if "2" eq $search.user_st|default:''}selected="selected"{/if}>NON AKTIF</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-4">
+                                <input type="text" class="form-control" name="user_alias" value="{$search.user_alias|default:''}" placeholder="Nama / Email Pengirim" autocomplete="off">
+                            </div>
+                            <div class="col-xl-3">
+                                <button class="btn btn-success btn-icon-sm" type="submit" name="save" value="Cari"><i class="fa fa-search"></i>&nbsp; Cari</button>
+                                <button class="btn btn-secondary kt-margin-l-10" type="submit" name="save" value="Reset"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th width="5%" class="text-center">No</th>
+                                <th width="30%" class="text-center">Nama</th>
+                                <th width="25%" class="text-center">Email</th>
+                                <th width="30%" class="text-center">Roles</th>
+                                <th width="5%" class="text-center">Status</th>
+                                <th width="5%" class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {$no = 1}
+                            {foreach $rs_id as $result}
+                            <tr>
+                                <td class="text-center">{$no++}</td>
+                                <td>{$result.user_alias}</td>
+                                <td>{$result.user_mail}</td>
+                                <td>{$result.role_nm}
+                                    {if $result.instansi_name|default:'' neq ''}
+                                    <small>({$result.instansi_name})</small>
+                                    {/if}
+                                </td>
+                                <td class="text-center">
+                                    {($result.user_st eq '1') ? '<span class="badge badge-soft-success">aktif</span>' : '<span class="badge badge-soft-dark">non aktif</span>'}
+                                </td>
+                                <td align="center">        
+                                    <a href="{$config->site_url('admin/master/user/edit_info/'|cat:$result.user_id|default:'')}" title="Ubah Data">
+                                        <!-- <button type="button" class="tabledit-edit-button btn btn-success" style="float: none;"> -->
+                                            <span class="mdi mdi-pencil"></span>
+                                        <!-- </button> -->
+                                    </a>                                
+                                </td>
+                            </tr>
+                            {foreachelse}
+                            <tr>
+                                <td colspan="8">
+                                    Data tidak ditemukan!
+                                </td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        Menampilkan {$pagination.start|default:'0'} - {$pagination.end|default:'0'} dari {$pagination.total|default:'0'} data
+    </div>
+    <div class="col-6">
+        {$pagination.data|default:''}
+    </div>
+</div>

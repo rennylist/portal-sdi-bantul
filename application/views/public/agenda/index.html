@@ -1,0 +1,77 @@
+<section class="page-header page-header-modern bg-color-light-scale-1 page-header-md">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 align-self-center p-static order-2 text-center">
+                <h1 class="text-dark font-weight-bold text-8">Agenda</h1>
+                <span class="sub-title text-dark">Layanan untuk publikasi agenda DPRD</span>
+            </div>
+            <div class="col-md-12 align-self-center order-1">
+                <ul class="breadcrumb d-block text-center">
+                    <li><a href="{$config->site_url('')}">Beranda</a></li>
+                    <li class="active">Agenda</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-4">
+    <div class="row pb-4">
+        <h4>Pencarian Agenda</h4>
+        <div class="col">
+            <form method="POST" action="{$config->site_url('agenda/search_process')}">
+                <div class="input-group input-group-lg">
+                    <input type="hidden" name="save" value="search"/>
+                    <input class="form-control h-auto readonly datepicker" 
+                            placeholder="Silahkan masukkan tanggal yang diinginkan..." 
+                            name="agenda_date" 
+                            id="agenda_date" 
+                            type="text" 
+                            autocomplete="off" >
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                </div>
+            </form>								
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="blog-posts"  style="min-height: 500px;">
+                <!-- <hr class="solid my-4"> -->
+                <br />
+                <!-- <h6>Berikut adalah Agenda pada {$tdtm->get_full_date($search.agenda_date|default:'')} :</h6>    -->
+                <p class="lead">
+                    Berikut adalah Agenda pada <b>{$tdtm->get_full_date($search.agenda_date|default:'')}</b> :
+                </p>
+                <div class="table-responsive">
+					<table id="datatable1" class="table table-striped table-bordered" cellspacing="0" width="100%">
+						<thead>
+							<tr>
+                                <th>Surat</th>
+                                <th>Jam</th>
+                                <th>Kategori</th>
+                                <th>Kegiatan</th>
+                                <th>Lokasi</th>
+							</tr>
+						</thead>
+						<tbody>
+						{foreach $rs_id as $result}
+							<tr>
+                                <td>{$result.agenda_letter|default:'-'}</td>
+                                <td>
+                                    {$result.agenda_time_start|default:'-'|date_format:'%H:%M'}
+                                    {if $result.agenda_time_end|default:'' neq ''}
+                                    -{$result.agenda_time_end|default:'-'|date_format:'%H:%M'}
+                                    {/if}
+                                </td>
+                                <td>{$result.category_nm|default:'-'|capitalize}</td>
+                                <td>{$result.agenda_title|default:'-'}</td>
+                                <td>{$result.agenda_place|default:'-'|capitalize}</td>
+							</tr>
+						{/foreach}
+						</tbody>
+					</table>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

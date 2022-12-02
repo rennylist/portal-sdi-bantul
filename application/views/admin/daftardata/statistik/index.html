@@ -1,0 +1,191 @@
+<style>
+#dtHorizontalExample th, td {
+  white-space: nowrap;
+}
+
+</style>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/dashboard/admin')}">Beranda</a>
+                    </li>
+                    <!-- <li class="breadcrumb-item "><a href="#">Verifikasi</a></li> -->
+                    <li class="breadcrumb-item active">Daftar Data</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Daftar Data</h4>
+        </div>
+    </div>
+</div>
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+<script src="{$config->base_url('resource/js/jquery/jquery.js')}"></script>
+<script src="{$config->base_url('resource/js/jquery/plugins.js')}"></script>
+<script src="{$config->base_url('resource/js/jquery/bs-datatable.js')}"></script>
+<script src="{$config->base_url('resource/js/jquery/functions.js')}"></script>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- <h4 class="header-title">Instansi</h4>
+                <p class="sub-header">
+                    Daftar instansi
+                </p> -->
+                <div class="row">
+                    <div class="col-md-8 mb-2">
+                        <h4 class="header-title">Daftar Data Statistik</h4>
+                        <p class="sub-header">
+                            Data Statistik
+                        </p>
+                    </div>
+                    <div class="col-md-4 mb-2" align="right">
+                        <a target="_blank" href="{$config->site_url('admin/daftardata/statistik/download_data_all')}"
+                            class="btn btn-danger">
+                            Unduh Data<span class="btn-label-right"><i class="mdi mdi-download"></i></span>
+                        </a>
+                    </div>
+                </div>
+                <!-- <form action="">
+                    <div class="row">
+                        <div style="display: flex; justify-content: space-around">
+                            <div class="col-sm-12 col-md-6">
+                                Show 
+                                <label  class="form-label">
+                                    <select class="form-select form-select-sm">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </label>
+                                entries
+                            </div>
+                            <div  class=" col-sm-12 col-md-6">
+                                <div style="text-align: right;">
+                                    Search:
+                                    <label  class="form-label">
+                                    <input  type="search" class="form-control form-control-sm" placeholder="" aria-controls="basic-datatable">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form> -->
+
+                {if empty($pagination)}
+                <div class="table-responsive" >
+                    <table id="datatable2" class="table table-striped nowrap w-100">
+                        <thead class="table-dark">
+                        <tr>
+                            <th class="text-center">No</th>
+                            <th>Kode</th>
+                            <th>Indikator / Variabel / Sub Variabel</th>
+                            <th>Satuan</th>
+                            <th>Indikator / Variabel</th>
+                            <th>Produsen Data</th>
+                            <th>Jadwal Rilis</th>
+                            <th>Priode Data</th>
+                            <th class="text-center">Lintas Instansi</th>
+                            <th>Standar Data</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {assign var="no" value=1}
+                            {foreach $rs_id as $result}
+                            <tr>
+                                <td class="text-center">{$no++}</td>
+                                <td>{$result.data_id|default:''}</td>
+                                <td>{$result.data_name|default:''}</td>
+                                <td>{$result.data_unit|default:''}</td>
+                                <td>{$result.instansi_name|default:''}</td>
+                                <td>{$result.data_category|default:''}</td>
+                                <td>{$result.date_release|default:''}</td>
+                                <td>{$result.data_periode|default:''}</td>
+                                <td>{$result.cross_instansi_st|default:''}</td>
+                                <td>{$result.data_standard|default:''}</td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                {else}
+                <div class="table-responsive">
+                    <table id="dtHorizontalExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th>Kode</th>
+                                <th>Indikator / Variabel / Sub Variabel</th>
+                                <th>Satuan</th>
+                                <th>Indikator / Variabel</th>
+                                <th>Produsen Data</th>
+                                <th>Jadwal Rilis</th>
+                                <th>Priode Data</th>
+                                <th class="text-center">Lintas Instansi</th>
+                                <th>Standar Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {assign var="no" value=1}
+                            {foreach $rs_id as $result}
+                            <tr>
+                                <td class="text-center">{$no++}</td>
+                                <td>{$result.data_id|default:''}</td>
+                                <td>{$result.data_name|default:''}</td>
+                                <td>{$result.data_unit|default:''}</td>
+                                <td>{$result.instansi_name|default:''}</td>
+                                <td>{$result.data_category|default:''}</td>
+                                <td>{$result.date_release|default:''}</td>
+                                <td>{$result.data_periode|default:''}</td>
+                                <td>{$result.cross_instansi_st|default:''}</td>
+                                <td>{$result.data_standard|default:''}</td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6">
+                        Menampilkan {$pagination.start|default:'0'} - {$pagination.end|default:'0'} dari {$pagination.total|default:'0'} data
+                    </div>
+                    <div class="col-6">
+                        {$pagination.data|default:''}
+                    </div>
+                </div>
+                {/if}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+        $('#datatable1').dataTable();
+    });
+
+    $(document).ready(function() {
+        $('#datatable2').dataTable();
+    });
+
+    $(document).ready(function() {
+        $('#datatable3').dataTable();
+    });
+
+    $(document).ready(function() {
+        $('#datatable4').dataTable();
+    });
+</script>

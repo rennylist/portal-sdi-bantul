@@ -1,0 +1,453 @@
+
+<script type="text/javascript">
+    $(function () {
+        $(".checked-all-menu").click(function () {
+            // alert("sss");
+            var status = $(this).is(":checked");
+            if (status === true) {
+                $(".submission_st").prop('checked', true);
+            } else {
+                $(".submission_st").prop('checked', false);
+            }
+        });
+        $(".select-2").select2();
+    });
+</script>
+
+<style type="text/css">
+    .btn-circle{
+        margin-left: 5px;
+        margin-top: 5px;
+        width: 25px;
+        height: 25px;
+        padding: 2px;
+        border-radius: 60px;
+        font-size: 15px;
+        text-align: center;
+    }
+</style>
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/dashboard/dashboard/')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/verifikasi/statistik')}">Verifikasi Statistik</a>
+                    </li>
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/verifikasi/statistik/urusan/'|cat:$instansi_cd|default:'')}">Urusan
+                            / Bidang Urusan</a>
+                    </li>
+                    <li class="breadcrumb-item active">Indikator</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Indikator</h4>
+        </div>
+    </div>
+</div>
+
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Pencarian</h4>
+                <form action="{$config->site_url('admin/verifikasi/statistik/search_process')}" method="post">
+                    <input type="hidden" name="urusan_id" value="{$urusan_id|default:''}" />
+                    <input type="hidden" name="instansi_cd" value="{$instansi_cd|default:''}" />
+                    <input type="hidden" name="process" value="process" />
+
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Tahun</label>
+                                <select name="tahun" id="tahun" class="form-control" data-toggle="select2"
+                                    data-width="100%">
+                                    {foreach $option_years as $thn}
+                                    <option value="{$thn|default:''}" {if $thn|default:'' eq
+                                        $search.tahun|default:''}selected='selected' {/if}> {$thn|default:''}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Indikator</label>
+                                <select name="indicator_id" id="indicator_id" class="form-control" data-toggle="select2"
+                                    data-width="100%">
+                                    <option value="">Semua</option>
+                                    {foreach $indicators as $indicator}
+                                    <option value="{$indicator.data_id|default:''}" {if $indicator.data_id|default:'' eq
+                                        $search.indicator_id|default:''}selected='selected' {/if}>
+                                        {$indicator.data_name|default:''}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+
+                                <label for="simpleinput" class="form-label">Klasifikasi Indikator</label>
+                                <select name="indicator_class" id="indicator_class" class="form-select">
+                                    <option value="">Semua</option>
+
+                                    <option value="class_sdgs" {if "class_sdgs" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Indikator SDG’s
+                                    </option>
+                                    <option value="class_rpjmd" {if "class_rpjmd" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Indikator RPJMD
+                                    </option>
+                                    <option value="class_ikklppd" {if "class_ikklppd" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>IKK LPPD
+                                    </option>
+                                    <option value="class_spm" {if "class_spm" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Indikator SPM
+                                    </option>
+                                    <option value="class_dda" {if "class_dda" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Data Daerah
+                                        Dalam Angka</option>
+                                    <option value="class_datakudiy" {if "class_datakudiy" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Data
+                                        Aplikasi Dataku DIY</option>
+                                    <option value="class_pilahgender" {if "class_pilahgender" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Data Pilah
+                                        Gender</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="mb-3" style="padding-top: 27px;">
+                                <button id="ajukan" name="ajukan" type="submit"
+                                    class="btn btn-primary waves-effect waves-light">
+                                    Cari<span class="btn-label-right"><i class="mdi mdi-magnify"></i></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <form action="{$config->site_url('admin/verifikasi/statistik/search_code')}" method="post">
+    <div class="input-group">
+        <input  hidden id="data_id" name="data_id" type="text" class="form-control border border-primary" placeholder="Search Kode..." >
+    </div>
+</form> -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title"></h4>
+                <p class="sub-header">
+                </p>
+
+                <form action="{$config->site_url('admin/verifikasi/statistik/ajukan_process')}" method="post">
+                    <input type="hidden" name="year" value="{$year_selected|default:''}" />
+                    <input type="hidden" name="urusan_id" value="{$urusan_id|default:''}" />
+                    <input type="hidden" name="instansi_cd" value="{$instansi_cd|default:''}" />
+                    <input type="hidden" name="process" value="process" />
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <h4 class="header-title">{$instansi.instansi_name|default:'-'}</h4>
+                            <strong>{$urusan.urusan_id|default:''} Bidang {$urusan.urusan_name|default:''}</strong>
+                            ({$urusan_parent.urusan_id|default:''} {$urusan_parent.urusan_name|default:''})
+                        </div>
+                    </div>
+                   
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <div class="input-group">
+                                <input type="text" id="mySearchText" class="form-control border border-primary" placeholder="Cari apapun..." >
+                                <a id="mySearchButton" name="mySearchButton" type="button" class="btn btn-outline-primary"><i class="mdi mdi-magnify"></i></a>
+                                <a type="button" onClick="window.location.reload();" class="btn btn-outline-primary"><i class="mdi mdi-sync"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-9 mb-2" align="right">
+                            <button id="ajukan" name="ajukan" type="submit"
+                                class="btn btn-primary waves-effect waves-light">
+                                Verifikasi Data<span class="btn-label-right"><i class="mdi mdi-send"></i></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <table id="basic-datatable" class="table table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Kode</th>
+                                <th>Indikator / Variabel / Sub Variabel</th>
+                                <th>Satuan</th>
+                                {foreach $table_years as $year}
+                                {if $year_selected|default:'' eq $year|default:''}
+                                <!-- <th>Pra-{$year|default:''}</th> -->
+                                <th>{$year|default:''}</th>
+                                {else}
+                                <th>{$year|default:''}</th>
+                                {/if}
+                                {/foreach}
+                                <th>Sifat</th>
+                                <th>Status</th>
+                                <th>
+                                    <span class="mb-2 form-check-success">
+                                        <input class="form-check-input rounded-circle checked-all-menu" type="checkbox">
+                                    </span>
+                                </th>
+                                <th>Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {assign var="no" value =0}
+                            {foreach $rs_id as $result}
+                            <tr {if $result.data_type|default:'' eq 'indicator' } class="table-active" {/if}>
+                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
+                                {/if}>
+
+                                    <input type="hidden" name="datas[]" value="{$result.data_id|default:''}">
+                                    {if $result.data_type|default:'' eq 'indicator'}
+                                    <strong>{$result.data_id|default:''}</strong>
+                                    {else}
+                                    {$result.data_id|default:''}
+                                    {/if}
+                                </td>
+                                <td>
+                                    {if $result.data_type|default:'' eq 'indicator'}
+                                    <strong>{$result.data_name|default:''}</strong>
+                                    {else}
+                                    {$result.data_name|default:''}
+                                    {/if}
+
+                                </td>
+                                <td>
+                                    {$result.data_unit|default:''}
+                                </td>
+                                
+                                <!-- {foreach $table_years as $year}
+                                {if $year_selected|default:'' eq $year|default:''}
+                                <input type="hidden" name="detail_ids[]" value="{$result.$year.detail_id|default:''}">
+                                <td>
+                                    <table>
+                                        <tr>
+                                            {foreach $result.$year.history as $history}
+                                        
+                                            <td align="right" style="padding: 0 10px 0 10px;">
+                                                {$history.value|default:''}
+
+                                                {if $history.data_st|default:'' eq 'tetap'}
+                                                <span class="badge badge-soft-success">TTP</span>
+                                                {else if $history.data_st|default:'' eq 'tidak ada data'}
+                                                <span class="badge badge-soft-secondary">TDA</span>
+                                                {else if $history.data_st|default:'' eq 'sementara'}
+                                                <span class="badge badge-soft-warning">SMTR</span>
+                                                {else}
+                                                <span class="badge badge-soft-warning">{$history.data_st|default:''}</span>
+                                                {/if}
+
+                                            </td>
+                                            {/foreach}
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td align="right">
+                                    {if $result.$year.value|default:'' eq ''}
+                                    <span class="badge badge-soft-secondary">null</span>
+                                    {elseif $result.$year.value|default:'' eq 'n/a'}
+                                    <span class="badge bg-secondary"> n/a </span>
+                                    {else}
+                                    {$result.$year.value|default:''}
+                                    {/if}
+
+                                </td>
+                                {else}
+                                <td align="right">
+                                    {if $result.$year.value|default:'' eq ''}
+                                    <span class="badge badge-soft-secondary">null</span>
+                                    {elseif $result.$year.value|default:'' eq 'n/a'}
+                                    <span class="badge bg-secondary"> n/a </span>
+                                    {else}
+                                    {$result.$year.value|default:''}
+                                    {/if}
+                                </td>
+                                {/if}
+                                {/foreach} -->
+
+                                {foreach $table_years as $year}
+                                {if $year_selected|default:'' eq $year|default:''}
+                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
+                                {/if} width="200px"
+                                {if $result.rumus_type|default:'' eq '' }
+                                style="background-color:#d1f4d7;color:white;"
+                                {else}
+                                {/if}>
+                                    <input type="hidden" name="old_values[]"
+                                        value="{$result.$year.value|default:''|default:''}">
+                                    <input class="form-control" type="text" name="values[]"
+                                        value="{$result.$year.value|default:''|default:''}">
+                                </td>
+                                {else}
+                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
+                                {/if} 
+                                align="right" title="gunakan titik(.) untuk pemisah bilangan desimal">
+                                    {if $result.$year.value|default:'' eq ''}
+                                    <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge badge-soft-secondary">null</span>
+                                    {elseif $result.$year.value|default:'' eq 'n/a'}
+                                    <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge bg-secondary"> n/a </span>
+                                    {else}
+                                    {if $datetimemanipulation->is_decimal($result.$year.value|default:'')}
+                                    {$result.$year.value|replace:".":","}
+                                    {elseif (int) $result.$year.value|default:''}
+                                    {$result.$year.value|default:''|string_format:"%02d"|number_format:0:".":","}
+                                    {else}
+                                    {$result.$year.value|default:''}
+                                    {/if}
+                                    {/if}
+                                </td>
+                                {/if}
+                                {/foreach}
+                                
+                                <!-- CEK ON -->
+                                <td align="center">
+                                    <!-- {if $result.$year_selected.data_st|default:'' eq 'tetap'}
+                                    <span class="badge badge-soft-success">TTP</span>
+                                    {else if $result.$year_selected.data_st|default:'' eq 'Tidak ada data'}
+                                    <span class="badge badge-soft-secondary">TDA</span>
+                                    {else if $result.$year_selected.data_st|default:'' eq 'sementara'}
+                                    <span class="badge badge-soft-warning">SMTR</span>
+                                    {else}
+                                    <span
+                                        class="badge badge-soft-warning">{$result.$year_selected.data_st|default:''|capitalize}</span>
+                                    {/if} -->
+                                    <input type="hidden" name="old_statuses[]"
+                                        value="{$result.$year_selected.data_st|default:''}">
+                                    <select class="form-select" data-toggle="select2" data-width="100%"
+                                        name="statuses[]">
+                                        <option value="" {if $result.$year_selected.data_st|default:'' eq ''
+                                            }selected="selected" {/if}>Pilih &nbsp;</option>
+                                        <option value="tidakada" {if $result.$year_selected.data_st|default:''
+                                            eq 'tidakada' }selected="selected" {/if}>Tidak ada &nbsp;&nbsp;</option>
+                                        <option value="tetap" {if $result.$year_selected.data_st|default:'' eq 'tetap'
+                                            }selected="selected" {/if}>Tetap</option>
+                                        <option value="TW-1" {if $result.$year_selected.data_st|default:'' eq 'TW-1'
+                                            }selected="selected" {/if}>TW-1</option>
+                                        <option value="TW-2" {if $result.$year_selected.data_st|default:'' eq 'TW-2'
+                                            }selected="selected" {/if}>TW-2</option>
+                                        <option value="TW-3" {if $result.$year_selected.data_st|default:'' eq 'TW-3'
+                                            }selected="selected" {/if}>TW-3</option>
+                                        <option value="TW-4" {if $result.$year_selected.data_st|default:'' eq 'TW-4'
+                                            }selected="selected" {/if}>TW-4</option>
+                                        <!-- <option value="sementara" {if $result.$year_selected.data_st|default:'' eq 'sementara'}selected="selected"{/if}>Smtr &nbsp;</option> -->
+                                    </select>
+                                </td>
+                                <td align="center">
+                                    {if $result.$year_selected.submission_st|default:'' eq 'pending'}
+                                    <span class="badge bg-warning rounded-pill"><i class="mdi mdi-rotate-3d"></i></span>
+                                    {elseif $result.$year_selected.submission_st|default:'' eq 'approved'}
+                                    <span class="badge bg-success rounded-pill"><i class="mdi mdi-check"></i></span>
+                                    {elseif $result.$year_selected.submission_st|default:'' eq 'rejected'}
+                                    <span class="badge bg-danger rounded-pill"><i class="mdi mdi-window-close"></i></span>
+                                    {else}
+                                    <!-- <span class="badge bg-secondary rounded-pill"><i class="mdi mdi-minus"></i></span> -->
+                                    {/if}
+
+                                    <!-- <span class="badge bg-success">Success</span> -->
+                                    <!-- <span class="btn btn-sm btn-primary waves-effect waves-light" tabindex="0" data-plugin="tippy" data-tippy-placement="bottom" data-tippy="" data-original-title="I'm a Tippy tooltip!">Bottom</span> -->
+                                </td>
+                                <td align="center">
+                                    <div class="form-check mb-2 form-check-success" {if
+                                        $result.$year_selected.submission_st|default:'' eq '' }
+                                        {/if}>
+                                        <input class="form-check-input rounded-circle submission_st" type="checkbox"
+                                            value="approved" name="submission_st_{$no++}" 
+                                            {if $result.$year_selected.submission_st|default:'' eq 'approved' }
+                                            checked='checked' {/if}>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div {if $result.$year_selected.submission_st|default:'' eq '' }
+                                        {/if}>
+
+                                        {$dataID = str_replace(".", "", $result.data_id)}
+                                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="{$result.$year_selected.verify_comment|default:'-'}">
+                                            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{$dataID}">
+                                                <i class="mdi mdi-comment-check-outline"></i>
+                                            </a>
+                                        </span>
+
+                                        <input type="text"  id="value{$dataID}" value="{$result.$year_selected.verify_comment|default:''}"
+                                        name="verify_comment[]" hidden>                              
+
+                                       <div class="modal fade" id="modal{$dataID}" role="dialog">
+                                            <div class="modal-dialog modal-sm">
+                                            
+                                                <form method="post" action="change-goal">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h4 class="modal-title">{$result.data_id}</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                        <label for="simpleinput" class="form-label">Riwayat Catatan :</label>
+                                                        <textarea class="form-control" value="{$result.$year_selected.verify_comment|default:''}"
+                                                        id="" disabled>{$result.$year_selected.verify_comment|default:''}</textarea>
+                                                        <hr>
+                                                        <label for="simpleinput" class="form-label">Tulis Catatan Baru :</label>
+                                                        <textarea class="form-control" value=""
+                                                        id="new{$dataID}"></textarea>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        
+                                                        <button id="save{$dataID}" type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <script type="text/javascript">
+                                            $('#save{$dataID}').on('click', function() {
+                                            $('#value{$dataID}').val( $('#new{$dataID}').val() );
+                                            });
+                                        </script>
+                                    </div>
+                                </td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- search datatable -->
+<script>
+    $(document).ready( function () {
+        var table = $('#basic-datatable').DataTable({
+            "dom": '<"top"i>rt<"bottom"><"clear">',
+            paging: false,
+            ordering: false,
+            info: false,
+        });
+
+        $.fn.dataTable.ext.errMode = 'none';
+    
+        $('#mySearchButton').on( 'keyup click', function () {
+            table.search($('#mySearchText').val()).draw();
+        } );
+    } );
+</script>
+

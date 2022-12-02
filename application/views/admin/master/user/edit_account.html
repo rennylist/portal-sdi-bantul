@@ -1,0 +1,268 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        // select2
+        $(".select2").select2();
+        // generate password
+        $(".generate_password").click(function () {
+            $.ajax({
+                url: "{$config->site_url('admin/master/user/generate_password')}",
+                cache: false,
+                beforeSend: function (xhr) {
+                    // ajax-control
+                    $('.ajax-control').css({
+                        'background-color': 'yellow'
+                    });
+                },
+                success: function (html) {
+                    $(".user_pass").val(html);
+                    // ajax-control
+                    $('.ajax-control').css({
+                        'background-color': '#FFF'
+                    });
+                },
+                error: function (request, status, error) {
+
+                }
+            });
+        });
+    });
+</script>
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item "><a href="javascript: void(0);">Master</a></li>
+					<li class="breadcrumb-item "><a href="{$config->site_url('admin/master/user')}">User</a></li>
+					<li class="breadcrumb-item "><a href="{$config->site_url('admin/master/user/add')}">Tambah</a></li>
+					<li class="breadcrumb-item active">User Account</li>
+                </ol>
+            </div>
+            <h4 class="page-title">User</h4>
+        </div>
+    </div>
+</div>
+
+<!-- notification template -->
+{include file="base/templates/notification-ubold.html"}
+<!-- end of notification template-->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body py-2 px-3 border-bottom border-light">
+                <div class="row justify-content-between py-1">
+                    <div class="col-sm-7" style="padding-top: 15px;">
+                        <h3 class="header-title">Edit Info</h3>
+                    </div>
+                    <div class="col-auto">
+                        <div id="tooltips-container">
+							<a href="{$config->site_url('admin/master/user/add')}" class="text-reset font-19 py-1 px-2 d-inline-block">
+								<button type="button" class="btn btn-soft-secondary rounded-pill waves-effect waves-light"><i class="mdi mdi-chevron-double-left me-1"></i> Kembali</button>
+							</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+				<ul class="nav nav-tabs nav-bordered">
+					<li class="nav-item">
+						<a href="{$config->site_url('admin/master/user/edit_info/'|cat:$detail.user_id|default:'')}"  class="nav-link">
+							<i class="fa fa-user mr-1"></i>	
+							<span class="kt-hidden-mobile">User Info</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="{$config->site_url('admin/master/user/edit_roles/'|cat:$detail.user_id|default:'')}" class="nav-link ">
+							<i class="fa fa-unlock mr-1"></i>
+                            <span class="kt-hidden-mobile">User Roles</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="{$config->site_url('admin/master/user/edit_account/'|cat:$detail.user_id|default:'')}" class="nav-link active">
+							<i class="fa fa-key mr-1"></i>
+                            <span class="kt-hidden-mobile">User Account</span>
+						</a>
+					</li>
+				</ul>
+            </div>
+
+			<div class="card-body">
+                <form action="{$config->site_url('admin/master/user/edit_account_process')}" method="post">
+                    <input type="hidden" name="user_id" value="{$result.user_id|default:''}"/>
+                    <input type="hidden" name="user_mail_old" value="{$result.user_mail|default:''}" />
+                    <input type="hidden" name="user_name_old" value="{$result.user_name|default:''}" />
+    
+                    <div class="mb-3">
+						<label class="form-label">Nama</label>
+                        <input type="text" name="user_alias" value="{$result.user_alias|default:''}" class="form-control" id="user_alias" placeholder="Nama"  required="required">
+                        <small class="help-block text-danger">* Wajib diisi</small>
+					</div>
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input type="user_mail" name="user_mail" value="{$result.user_mail|default:''}" class="form-control" id="user_mail" placeholder="E-mail"  required="required">
+						<span class="form-text text-danger">* Wajib diisi</span>
+					</div>
+
+                    <div class="mb-3">
+                        <label>Username</label>
+                        <input type="text" name="user_name" value="{$result.user_name|default:''}" class="form-control" placeholder="" required="required" />
+                        <small class="form-text text-danger">Wajib diisi</small>
+					</div>
+
+                    <div class="mb-3">
+                        <label>Password</label>
+                        <input type="text"  id="password"  name="user_pass" maxlength="30" size="50" value="" class="form-control user_pass ajax-control" />
+                        <small class="form-text text-danger">Wajib diisi</small>
+                        <br />
+                        Kekuatan : <span id="result"> </span>
+                        <br />
+                        <div class="progress" style="margin-top: 5px;">
+                            <div id="password-strength" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                            </div>
+                        </div>
+                        <ul class="list-unstyled">
+                            <li class=""><span class="low-upper-case"><i class="fa fa-file-text" aria-hidden="true"></i></span>&nbsp; Harus memuat paling sedikit 1 huruf kecil dan 1 huruf besar</li>
+                            <li class=""><span class="one-number"><i class="fa fa-file-text" aria-hidden="true"></i></span> &nbsp;Harus memuat paling sedikit 1 angka (0-9)</li>
+                            <li class=""><span class="one-special-char"><i class="fa fa-file-text" aria-hidden="true"></i></span> &nbsp;Harus memuat paling sedikit 1 karakter spesial (!@#$%^&*)</li>
+                            <li class=""><span class="eight-character"><i class="fa fa-file-text" aria-hidden="true"></i></span>&nbsp; Minimal password 8 karakter</li>
+                        </ul>             
+					</div>
+
+                    <div class="mb-3">
+                        <label>Status</label>
+                        <select name="user_st" class="form-control select2" data-placeholder="Status">
+                            <option value="1" {if $result.user_st|default:'' eq "1"}selected="selected"{/if}>AKTIF</option>
+                            <option value="0" {if $result.user_st|default:'' eq "0"}selected="selected"{/if}>NON AKTIF</option>
+                        </select>
+                        <small class="form-text text-danger">Wajib diisi</small>
+					</div>
+					<button type="submit" class="btn btn-primary waves-effect waves-light">Simpan</button>
+				</form>
+			</div>
+        </div>
+    </div>
+</div>
+
+<script>
+	$(document).ready(function() {
+		$('#sign-up').attr('disabled', true);
+        $('#password').keyup(function() {
+            var password = $('#password').val();
+			// alert(checkStrength(password));
+            if (checkStrength(password) == false) {
+                $('#sign-up').attr('disabled', true);
+            }
+        });
+        $('#confirm-password').blur(function() {
+            if ($('#password').val() !== $('#confirm-password').val()) {
+                $('#popover-cpassword').show();
+                $('#sign-up').attr('disabled', true);
+            } else {
+                $('#popover-cpassword').hide();
+				
+				//cek
+				var password = $('#password').val();
+				// alert((password));
+
+				if (checkStrength(password) == false) {
+					$('#sign-up').attr('disabled', true);
+				}else{
+					$('#sign-up').attr('disabled', false);
+				}
+            }
+        });
+
+        function IsEmail(email) {
+			{literal}
+            var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			{/literal}
+            if (!regex.test(email)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function checkStrength(password) {
+            var strength = 0;
+
+            //If password contains both lower and uppercase characters, increase strength value.
+            if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) {
+                strength += 1;
+                $('.low-upper-case').addClass('text-success');
+                $('.low-upper-case i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+            } else {
+				strength -= 1;
+                $('.low-upper-case').removeClass('text-success');
+                $('.low-upper-case i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+
+            //If it has numbers and characters, increase strength value.
+            if (password.match(/([a-zA-Z])/) && password.match(/([0-9])/)) {
+                strength += 1;
+                $('.one-number').addClass('text-success');
+                $('.one-number i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+            } else {
+				strength -= 1;
+                $('.one-number').removeClass('text-success');
+                $('.one-number i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+
+            //If it has one special character, increase strength value.
+			//(!@#$%^&*).
+            if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/)) {
+                strength += 1;
+                $('.one-special-char').addClass('text-success');
+                $('.one-special-char i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+            } else {
+				strength -= 1;
+                $('.one-special-char').removeClass('text-success');
+                $('.one-special-char i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+
+            if (password.length > 7) {
+                strength += 1;
+                $('.eight-character').addClass('text-success');
+                $('.eight-character i').removeClass('fa-file-text').addClass('fa-check');
+                $('#popover-password-top').addClass('hide');
+            } else {
+				strength -= 1;
+                $('.eight-character').removeClass('text-success');
+                $('.eight-character i').addClass('fa-file-text').removeClass('fa-check');
+                $('#popover-password-top').removeClass('hide');
+            }
+
+            // If value is less than 2
+            if (strength < 2) {
+                $('#result').removeClass()
+                $('#password-strength').addClass('progress-bar-danger');
+                $('#result').addClass('text-danger').text('Sangat jelek');
+                $('#password-strength').css('width', '10%');
+				return false;
+            } else if (strength == 2) {
+                $('#result').addClass('good');
+                $('#password-strength').removeClass('progress-bar-danger');
+                $('#password-strength').addClass('progress-bar-warning');
+                $('#result').addClass('text-warning').text('Jelek')
+                $('#password-strength').css('width', '60%');
+                return false;
+            } else if (strength == 4) {
+                $('#result').removeClass()
+                $('#result').addClass('strong');
+                $('#password-strength').removeClass('progress-bar-warning');
+                $('#password-strength').addClass('progress-bar-success');
+                $('#result').addClass('text-success').text('Bagus');
+                $('#password-strength').css('width', '100%');
+                return true;
+            }
+        }
+    });
+</script>

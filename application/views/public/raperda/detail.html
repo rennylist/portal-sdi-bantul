@@ -1,0 +1,127 @@
+<section class="page-header page-header-modern bg-color-light-scale-1 page-header-md">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 align-self-center p-static order-2 text-center">
+                <h1 class="text-dark font-weight-bold text-8">Rincian Raperda</h1>
+                <span class="sub-title text-dark">Rincian Rancangan Peraturan Daerah</span>
+            </div>
+            <div class="col-md-12 align-self-center order-1">
+                <ul class="breadcrumb d-block text-center">
+                    <li><a href="{$config->site_url('')}">Beranda</a></li>
+                    <li><a href="{$config->site_url('raperda')}">Raperda</a></li>
+                    <li class="active">Rincian Raperda</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-3 order-lg-2">
+            <aside class="sidebar">
+                <!-- <form action="page-search-results.html" method="get">
+                    <div class="input-group mb-3 pb-1">
+                        <input class="form-control text-1" placeholder="Search..." name="s" id="s" type="text">
+                        <button type="submit" class="btn btn-dark text-1 p-2"><i class="fas fa-search m-2"></i></button>
+                    </div>
+                </form> -->
+                <h5 class="font-weight-semi-bold pt-4" style="margin-top: -15px;">
+                    Raperda terkini
+                </h5>
+                <ul class="nav nav-list flex-column mb-5">
+                    {foreach $rs_id as $result}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{$config->site_url('raperda/detail/'|cat:''|cat:$result.post_id|default:''|cat:'/'|cat:$result.url|default:'')}">
+                                {$result.post_title|default:''}
+                            </a>
+                        </li>
+                    {foreachelse}
+                        Maaf, data tidak ditemukan !
+                    {/foreach}
+                </ul>
+                   
+                <h5 class="font-weight-semi-bold pt-4">Tentang Kita</h5>
+                <p>Merupakan layanan yang bertujuan menampung aspirasi masyarakat kepada DPRD Kabupaten Bantul.</p>
+
+            </aside>
+        </div>
+
+        <div class="col-lg-9 order-lg-1">
+            <div class="blog-posts single-post">
+                <article class="post post-large blog-single-post border-0 m-0 p-0">
+                    <div class="post-date ms-0">
+                        <span class="day">{$result.post_day|default:''}</span>
+                        <span class="month">{$tdtm->get_bulan_singkatan($result.post_month|default:'')}</span>
+                    </div>
+
+                    <div class="post-content ms-0" style="min-height: 700px;">
+                        <h2 class="font-weight-semi-bold">
+                            <a href="#">{$result.post_title|default:'-'}</a>
+                        </h2>
+                        <div class="post-meta">
+                            <span>
+                                <i class="far fa-comment"></i>
+                                 Masukan Raperda
+                                 {if $result.aspirasi_st|default:'' eq 'yes'}
+                                 <span class="inverted inverted"><b>dibuka</b></span>
+                                 {else}
+                                 <span class="inverted inverted-secondary"><b>ditutup</b></span>
+                                 {/if}
+                            </span>
+                            <!-- <span><i class="far fa-comments"></i> <a href="#">12 Masukan</a></span> -->
+                        </div>
+                        <div style="text-align: justify;">
+                            {$result.post_desc|default:'-'}
+                        </div>
+                        <div id="comments" class="post-block mt-5 post-comments">
+                        </div>
+
+                        <div class="post-block mt-5 post-leave-comment">
+                            <h4 class="mb-3">Unduhan</h4>
+                            <div style="margin-top: -10px;">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <ul class="list list-icons">
+                                            {foreach $rs_download as $result}
+                                            <li>
+                                                <a target="_blank" href="{$config->site_url('raperda/download/'|cat:$result.post_id|default:''|cat:'/'|cat:$result.file_id|default:''|cat:'/'|cat:$result.url|default:'')}">
+                                                    <i class="fas fa-cloud-download-alt"></i> {$result.file_nm|default:''}
+                                                </a>
+                                            </li>
+                                            {foreachelse}
+                                            <li><i class="fas fa-times"></i> Maaf, unduhan tidak tersedia.</li>
+                                            {/foreach}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="post-block mt-5 post-leave-comment">
+                            <h4 class="mb-3">
+                                Masukan terhadap Raperda 
+                                {if $result.aspirasi_st|default:'' eq 'yes'}
+                                <span class="inverted inverted"><b>dibuka</b></span>
+                                {else}
+                                <span class="inverted inverted-secondary"><b>ditutup</b></span>
+                                {/if}
+                            </h4>
+                            <div style="margin-top: -10px;">
+                                {if $result.aspirasi_st|default:'' eq 'yes'}
+                                Silahkan klik tombol dibawah untuk mengajukan usulan terhadap Rancangan Peraturan Daerah (Raperda).
+                                <br />
+                                <a href="{$config->site_url('raperda/aspirasi/'|cat:''|cat:$result.post_id|default:'')}">
+                                    <span class="btn btn-warning btn-modern" >Ajukan Usulan</span>
+                                </a>
+                                {else}
+                                Mohon maaf, anda tidak bisa mengajukan usulan terhadap Rancangan Peraturan Daerah (Raperda).
+                                {/if}
+                            </div>      
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>

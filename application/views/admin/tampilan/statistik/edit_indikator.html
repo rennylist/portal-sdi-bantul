@@ -1,0 +1,364 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".select2").select2();
+    });
+</script>
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/dashboard/admin')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item">Tampilan</li>
+                    <li class="breadcrumb-item ">Statistik</a></li>
+                    <li class="breadcrumb-item"><a
+                            href="{$config->site_url('admin/tampilan/statistik/indikator')}">Lihat
+                            Indikator</a>
+                    </li>
+                    <li class="breadcrumb-item active">Ubah Indikator</li>
+
+                </ol>
+            </div>
+            <h4 class="page-title">Statistik</h4>
+        </div>
+    </div>
+</div>
+
+<!-- notification template -->
+{include file="base/templates/notification-ubold.html"}
+<!-- end of notification template-->
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body py-2 px-3 border-bottom border-light">
+                <div class="row justify-content-between py-1">
+                    <div class="col-sm-7" style="padding-top: 15px;">
+                        <h3 class="header-title">Ubah Indikator/Variabel/Sub Variabel</h3>
+                    </div>
+                    <div class="col-auto">
+                        <div id="tooltips-container">
+                            <!-- <a href="{$config->site_url('admin/master/user')}"
+                                class="text-reset font-19 py-1 px-2 d-inline-block">
+                                <button type="button"
+                                    class="btn btn-soft-secondary rounded-pill waves-effect waves-light"><i
+                                        class="mdi mdi-chevron-double-left me-1"></i> Kembali</button>
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                {foreach $rs_id as $result}
+                <form class="kt-form" action="{$config->site_url('admin/tampilan/statistik/edit_indicator_process')}"
+                    method="post" enctype="multipart/form-data">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label>Kode urusan</label>
+                            <input type="hidden" name="data_id" id="data_id" value="{$result.data_id|default:''}">
+                            <select name="kode_urusan" class="form-select" id="kode_urusan" data-placeholder="Pilih">
+                                <option value="{$result.urusan_id|default:''}">{$result.urusan_id|default:''}</option>
+                                {foreach $urusan_id as $result}
+                                <option value="{$result.urusan_id|default:''}"> {$result.urusan_id|default:''} -
+                                    {$result.urusan_name|default:''}</option>
+
+                                {/foreach}
+                            </select>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                        <div class="col">
+                            <label>Induk Indikator</label>
+                            <select name="induk_indikator" class="form-select" id="induk_indikator"
+                                data-placeholder="Pilih">
+                                <option value="{$result.parent_id|default:''}">{$result.parent_id|default:''}</option>
+                            </select>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label>Kode Indikator/Variabel/Sub Variabel/Sub-sub Variabel</label>
+                            <input type="text" name="kode_indikator" value="{$result.data_id|default:''}"
+                                class="form-control" id="kode_indikator"
+                                placeholder="Kode Indikator/Variabel/Sub Variabel/Sub-sub Variabel">
+                            <small class="help-block text-danger">* Wajib diisi</small>
+                        </div>
+                        <div class="col">
+                            <label>Nama Indikator/Variabel/Sub Variabel/Sub-sub Variabel</label>
+                            <input type="text" name="nama_indikator" value="{$result.data_name|default:''}"
+                                class="form-control" id="nama_indikator"
+                                placeholder="Nama Indikator/Variabel/Sub Variabel/Sub-sub Variabel">
+                            <small class="help-block text-danger">* Wajib diisi</small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label>Satuan</label>
+                            <input type="text" name="unit" value="{$result.data_unit|default:''}" class="form-control"
+                                id="unit" placeholder="Satuan">
+                            <small class="help-block text-danger">* Wajib diisi</small>
+                        </div>
+                        <div class="col">
+                            <label>Tingkatan Data</label>
+                            <select name="type_indikator" class="form-select" id="select2-single"
+                                data-placeholder="Pilih">
+                                <option value="{$result.data_type|default:''}">{$result.data_type|default:''}</option>
+
+                                <option value="indikator">indikator</option>
+                                <option value="variabel">variabel</option>
+                                <option value="sub variabel">sub variabel</option>
+                                <option value="sub2 variabel">sub2 variabel</option>
+                                <option value="sub3 variabel">sub3 variabel</option>
+                                <option value="sub4 variabel">sub4 variabel</option>
+                            </select>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label>Instansi</label>
+                            <select name="instansi" class="form-select" id="instansi" data-placeholder="Pilih">
+                                <option value="{$result.instansi_cd|default:''}"> {$result.instansi_name|default:''}
+                                </option>
+                                {foreach $instansi as $result}
+                                <option value="{$result.instansi_cd|default:''}"> {$result.instansi_name|default:''}
+                                </option>
+
+                                {/foreach}
+                            </select>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                        <div class="col">
+                            <label>Type Rumus</label>
+                            <select name="rumus_type" class="form-select" id="rumus_type" data-placeholder="Pilih">
+                                <option value="{$result.rumus_type|default:''}">{$result.rumus_type|default:''}</option>
+                                {if $result.rumus_type|default:'' eq 'sum'}
+                                <option value="copy">copy</option>
+                                <option value="formula">formula</option>
+                                <option value=""></option>
+                                {elseif $result.rumus_type|default:'' eq 'copy'}
+                                <option value="sum">sum</option>
+                                <option value="formula">formula</option>
+                                <option value=""></option>
+                                {elseif $result.rumus_type|default:'' eq 'formula'}
+                                <option value="sum">sum</option>
+                                <option value="copy">copy</option>
+                                <option value=""></option>
+                                {else}
+                                <option value="sum">sum</option>
+                                <option value="copy">copy</option>
+                                <option value="formula">formula</option>
+                                {/if}
+
+
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label>Rumus Detail</label>
+                            <textarea class="form-control" name="rumus_detail" id="rumus_detail"
+                                rows="5">{$result.rumus_detail|default:''}</textarea>
+
+                        </div>
+
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label>Indikator SDG’s</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="sdgs" id="sdgs" value="yes" {if
+                                    $result.class_sdgs|default:'' eq 'yes' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="sdgs" id="sdgs" value="no" {if
+                                    $result.class_sdgs|default:'' eq 'no' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <br>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                        <div class="col">
+                            <label>Indikator RPJMD</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="rpjmd" id="rpjmd" value="yes" {if
+                                    $result.class_rpjmd|default:'' eq 'yes' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="rpjmd" id="rpjmd" value="no" {if
+                                    $result.class_rpjmd|default:'' eq 'no' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <br>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                        <div class="col">
+                            <label>IKK LPPD</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="ikklppd" id="ikklppd" value="yes" {if
+                                    $result.class_ikklppd|default:'' eq 'yes' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="ikklppd" id="ikklppd" value="no" {if
+                                    $result.class_ikklppd|default:'' eq 'no' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <br>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label>Indikator SPM</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="spm" id="spm" value="yes" {if
+                                    $result.class_spm|default:'' eq 'yes' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="spm" id="spm" value="no" {if
+                                    $result.class_spm|default:'' eq 'no' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <br>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                        <div class="col">
+                            <label>Data Daerah
+                                Dalam Angka</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="dda" id="dda" value="yes" {if
+                                    $result.class_dda|default:'' eq 'yes' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="dda" id="dda" value="no" {if
+                                    $result.class_dda|default:'' eq 'no' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <br>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                        <div class="col">
+                            <label>Data
+                                Aplikasi Dataku DIY</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="datakudiy" id="datakudiy" value="yes"
+                                    {if $result.class_datakudiy|default:'' eq 'yes' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="datakudiy" id="datakudiy" value="no"
+                                    {if $result.class_datakudiy|default:'' eq 'no' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <br>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label>Data Pilah
+                                Gender</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="gender" value="yes" {if
+                                    $result.class_pilahgender|default:'' eq 'yes' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="gender" value="no" {if
+                                    $result.class_pilahgender|default:'' eq 'no' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <br>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                        <div class="col">
+                            <label>Statistik
+                                Sektoral</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="sektoral" id="sektoral" value="yes"
+                                    {if $result.class_sektoral|default:'' eq 'yes' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="sektoral" id="sektoral" value="no"
+                                    {if $result.class_sektoral|default:'' eq 'no' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <br>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                        <div class="col">
+                            <label>Geospasial</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="spasial" id="spasial" value="yes" {if
+                                    $result.class_geospasial|default:'' eq 'yes' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="spasial" id="spasial" value="no" {if
+                                    $result.class_geospasial|default:'' eq 'no' } checked='checked' {/if}>
+                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                            </div>
+                            <br>
+                            <small class="help-block text-danger">*wajib diisi</small>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Simpan</button>
+
+                </form>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$(".select2").select2();
+        $('#kode_urusan').on('change', function () {
+            var id_urusan = $('#kode_urusan').val();
+            if (id_urusan != "") {
+                console.log(id_urusan);
+                $.ajax({
+                    type: 'POST',
+                    url: "{$config->site_url('admin/tampilan/statistik/select_induk_indicator')}",
+                    data: {
+                        id_urusan: id_urusan
+                    },
+                    async: true,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.length < 1) {
+                            $('#induk_indikator').html('<option value="0">*</option>');
+                        } else {
+
+                            var induk = '<option value="0" selected>*</option>';
+                            var hasil = '';
+                            var i;
+                            for (i = 0; i < data.length; i++) {
+                                hasil += '<option value=' + data[i].data_id + '>' + data[i].parent_id + ' - ' + data[i].data_name + '</option>';
+                            }
+
+                            $('#induk_indikator').html(induk + hasil);
+
+                        }
+
+                    }
+                });
+            }
+
+        });
+    });
+</script>

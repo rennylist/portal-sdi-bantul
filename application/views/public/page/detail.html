@@ -1,0 +1,99 @@
+<section class="page-header page-header-modern bg-color-light-scale-1 page-header-md">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 align-self-center p-static order-2 text-center">
+                <!-- <h1 class="text-dark font-weight-bold text-8">Halaman</h1> -->
+                <h1 class="text-dark font-weight-bold text-8">{$result.post_title|default:'-'}</h1>
+                <span class="sub-title text-dark"></span>
+            </div>
+            <div class="col-md-12 align-self-center order-1">
+                <ul class="breadcrumb d-block text-center">
+                    <li><a href="{$config->site_url('')}">Beranda</a></li>
+                    <li><a href="{$config->site_url('page')}">Halaman</a></li>
+                    <li class="active">Rincian Halaman</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-3 order-lg-2">
+            <aside class="sidebar">
+                <h5 class="font-weight-semi-bold pt-4" style="margin-top: -28px;">
+                    Halaman lain
+                </h5>
+                <ul class="nav nav-list flex-column mb-5">
+                    {foreach $rs_id as $result}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{$config->site_url('page/detail/'|cat:''|cat:$result.post_id|default:''|cat:'/'|cat:$result.url|default:'')}">
+                                {$result.post_title|default:''}
+                            </a>
+                        </li>
+                    {foreachelse}
+                        Maaf, data tidak ditemukan !
+                    {/foreach}
+                </ul>
+                <h5 class="font-weight-semi-bold pt-4">Tentang Kita</h5>
+                <p>Merupakan layanan yang bertujuan menampung aspirasi masyarakat kepada DPRD Kabupaten Bantul.</p>
+            </aside>
+        </div>
+
+        <div class="col-lg-9 order-lg-1">
+            <div class="blog-posts single-post">
+                <article class="post post-large blog-single-post border-0 m-0 p-0">
+                    {if !empty($rs_slider)}
+                    <div class="post-image ms-0">
+                        <div class="owl-carousel owl-theme show-nav-hover dots-inside nav-inside nav-style-1 nav-light" data-plugin-options="{literal}{'items': 1, 'margin': 10, 'loop': false, 'nav': true, 'dots': true}{/literal}">
+                            {foreach $rs_slider as $result}
+                            <div>
+                                <a href="{$BASEURL}{$result.file_path|default:''}{$result.file_nm|default:''}">
+                                    <img class="img-fluid border-radius-0" src="{$BASEURL}{$result.file_path|default:''}{$result.file_nm|default:''}" alt="">
+                                </a>
+                            </div>
+                            {/foreach}
+                        </div>
+                    </div>
+                    {/if}
+                    <div class="post-content ms-0" style="min-height: 700px; overflow: hidden;">
+                        <!-- <h2 class="font-weight-semi-bold">
+                            <a href="#">{$result.post_title|default:'-'}</a>
+                        </h2> -->
+                        <div class="post-meta">
+                            <span><i class="far fa-calendar"></i> <a href="#">{$tdtm->get_date_short_only({$result.mdd|default:''}, 'in')}</a> </span>
+                        </div>
+                        <div style="text-align: justify;">
+                            {$result.post_desc|default:'-'}
+                        </div>
+                        <div id="comments" class="post-block mt-5 post-comments">
+                        </div>
+
+                        {if !empty($rs_download)}
+                        <div class="post-block mt-5 post-leave-comment">
+                            <h4 class="mb-3">Unduhan</h4>
+                            <div style="margin-top: -10px;">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <ul class="list list-icons">
+                                            {foreach $rs_download as $result}
+                                            <li>
+                                                <a href="{$config->site_url('informasikegiatan/download/'|cat:$result.post_id|default:''|cat:'/'|cat:$result.file_id|default:''|cat:'/'|cat:$result.url|default:'')}">
+                                                    <i class="fas fa-cloud-download-alt"></i> {$result.file_nm|default:''}
+                                                </a>
+                                            </li>
+                                            {foreachelse}
+                                            <li><i class="fas fa-times"></i> Maaf, unduhan tidak tersedia.</li>
+                                            {/foreach}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/if}
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>

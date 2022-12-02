@@ -1,0 +1,173 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/dashboard/dashboard/')}">Beranda</a>
+                    </li>
+                    <!-- <li class="breadcrumb-item "><a href="#">Verifikasi</a></li> -->
+                    <li class="breadcrumb-item active">Buat Berita Acara</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Buat Draft Berita Acara Statistik</h4>
+        </div>
+    </div>
+</div>
+
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Pencarian</h4>
+                <form action="{$config->site_url('admin/berita_acara_statistik/create/search_process')}" method="post">
+                    <input type="hidden" name="urusan_id" value="{$urusan_id|default:''}" />
+                    <input type="hidden" name="process" value="process" />
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Tahun</label>
+                                <select name="tahun" id="tahun" class="form-control" data-toggle="select2"
+                                    data-width="100%">
+                                    {foreach $option_years as $thn}
+                                    <option value="{$thn|default:''}" {if $thn|default:'' eq
+                                        $search.tahun|default:''}selected='selected' {/if}> {$thn|default:''}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="mb-3" style="padding-top: 27px;">
+                                <button id="ajukan" name="ajukan" type="submit"
+                                    class="btn btn-primary waves-effect waves-light">
+                                    Cari
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- {$result_user['instansi_cd']|default:''} -->
+                <!-- {$print_data|default:''} -->
+
+                <h4 class="header-title">Data yang telah diverifikasi </h4>
+                <p class="sub-header">
+                    Berikut adalah data yang telah diverifikasi yang akan dibuat draft berita acara
+                </p>
+
+                <form action="{$config->site_url('admin/berita_acara_statistik/create/add_draft')}" method="post">
+                    <input type="hidden" name="tahun" value="{$tahun|default:''}" />
+                    <input type="hidden" name="print_data" value="{$print_data|default:''}" />
+                    <input type="hidden" name="sum_indicator" value="{$sum_indicator|default:''}" />
+                    <input type="hidden" name="sum_variabel" value="{$sum_variabel|default:''}" />
+                    <input type="hidden" name="sum_sub_variabel" value="{$sum_sub_variabel|default:''}" />
+                    <input type="hidden" name="sum_sub_sub_variabel" value="{$sum_sub_sub_variabel|default:''}" />
+                    <div class="col-md-12 mb-2" align="right">
+
+                        <!-- {if $rsid_count|default:'' eq 0 }
+                        <button id="" name="" type="submit" class="btn btn-primary waves-effect waves-light" disabled>
+                            Buat BA<span class="btn-label-right"><i class="mdi mdi-send"></i></span>
+                        </button>
+                        {else}
+                        <button id="ajukan" name="ajukan" type="submit"
+                            class="btn btn-primary waves-effect waves-light">
+                            Buat BA<span class="btn-label-right"><i class="mdi mdi-send"></i></span>
+                        </button>
+                        {/if} -->
+
+                        <button id="ajukan" name="ajukan" type="submit"
+                            class="btn btn-primary waves-effect waves-light">
+                            Buat Draft BA<span class="btn-label-right"><i class="mdi mdi-send"></i></span>
+                        </button>
+
+                    </div>
+
+                    <table id="basic-datatable" class="table dt-responsive wrap table-bordered w-100">
+                        <thead class="table-dark">
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="10%">Kode</th>
+                                <th width="45%">Indikator / Variabel / Sub Variabel</th>
+                                <th width="10%">Satuan</th>
+                                <th width="10%">Nilai</th>
+                                <th width="10%">Sifat Data</th>
+                                <th width="10%">Status Data</th>
+                                <!-- <th width="10%">Status BA</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach $rsid as $result}
+                            <tr {if $result.parent_id|default:'' eq $result.data_id } class="table-active" {/if}>
+                                <td>
+                                    {$nomor++}
+                                </td>
+                                <td>
+                                    {if $result.data_type|default:'' eq 'indicator'}
+                                    <strong>{$result.data_id|default:''}</strong>
+                                    {else}
+                                    {$result.data_id|default:''}
+                                    {/if}
+                                </td>
+                                <td>
+                                    {if $result.data_type|default:'' eq 'indicator'}
+                                    <strong>{$result.data_name|default:''}</strong>
+                                    {else}
+                                    {$result.data_name|default:''}
+                                    {/if}
+                                </td>
+                                <td>
+                                    {$result.data_unit|default:''}
+                                </td>
+                                <td>
+                                    {$result.value|default:''}
+                                </td>
+                                <td>
+                                    {$result.data_st|default:''}
+                                </td>
+                                <td>
+                                    <input type="hidden" name="datasubmissionsts[]"
+                                        value="{$result.submission_st|default:''}">
+                                    {if $result.submission_st|default:'' eq 'pending'}
+                                    <span class="badge badge-soft-warning">menunggu</span>
+                                    {elseif $result.submission_st|default:'' eq 'approved'}
+                                    <span class="badge badge-soft-success">diterima</span>
+                                    {elseif $result.submission_st|default:'' eq 'rejected'}
+                                    <span class="badge badge-soft-danger">ditolak</span>
+                                    {else}
+                                    <!-- <span class="badge badge-soft-secondary">kosong</span> -->
+                                    -
+                                    {/if}
+                                </td>
+                                <!-- <td>
+                                    <input type="hidden" name="databastatuss[]" value="{$result.ba_status|default:''}">
+                                    {if $result.ba_status|default:'' eq 'no'}
+                                    <span class="badge badge-soft-danger">belum dibuat</span>
+                                    {else}
+                                    <span class="badge badge-soft-success">sudah dibuat</span>
+                                    {/if}
+                                </td> -->
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="lt d-flex mb-3">
+    <div class="flex">
+        <h1 class="text-md mb-1 _400">Selamat datang kembali, <span>{$com_user.nama_lengkap}</span></h1>
+        <small class="text-muted">
+            Anda login terakhir pada tanggal {$last_login[1]|default:($last_login[0]|default:'-')}
+        </small>
+    </div>
+    <div>
+        <small class="text-md text-white d-block btn btn-dark">{$hari_ini.tahun}</small>
+    </div>
+</div>

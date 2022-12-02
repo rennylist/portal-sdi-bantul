@@ -1,0 +1,58 @@
+<div id="page-title">
+    <h1 class="page-header text-overflow">{$page_header}</h1>
+</div>
+<ol class="breadcrumb">
+    <li><a href="#">Pengaturan</a></li>
+    <li><a href="{$config->site_url('settings/sistem/preferences/')}">{$page_header}</a></li>
+    <li class="active">Tambah Data</li>
+</ol>
+<div id="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-tool">
+                        <a href="{$config->site_url('settings/sistem/preferences/')}" class="btn btn-sm btn-default btn-labeled fa fa-arrow-left">Kembali</a>
+                    </div>
+                    <h4 class="panel-title">Tambah Data</h4>
+                </div>
+                <form class="form-horizontal adminex-form" action="{$config->site_url('settings/sistem/preferences/add_process/')}" method="post">
+                    <div class="panel-body">
+                        <!-- notification template -->
+                        {include file="base/templates/notification.html"}
+                        <!-- end of notification template-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label"> Pref Group</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="pref_group" value="{$result.pref_group|default:''}" class="form-control" />
+                            </div>
+                            <small class="col-sm-2 control-label requiered text-danger">* wajib diisi</small>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Pref Name</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="pref_nm" value="{$result.pref_nm|default:''}" class="form-control" />
+                            </div>
+                            <small class="col-sm-2 control-label requiered text-danger">* wajib diisi</small>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Value</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="pref_value" value="{$result.pref_value|default:''}" class="form-control" />
+                            </div>
+                            <small class="col-sm-2 control-label requiered text-danger">* wajib diisi</small>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="form-group">
+                            <div class="col-md-12 control-label col-sm-offset-3">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-check"></i>&nbsp;  SIMPAN</button>
+                                <button class="btn btn-default" type="reset"><i class="fa fa-refresh"></i>&nbsp;  RESET</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,115 @@
+<section class="page-header page-header-modern bg-color-light-scale-1 page-header-md">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 align-self-center p-static order-2 text-center">
+                <h1 class="text-dark font-weight-bold text-8">Jaring Aspirasi</h1>
+                <span class="sub-title text-dark">Layanan untuk menampung aspirasi masyarakat.</span>
+            </div>
+            <div class="col-md-12 align-self-center order-1">
+                <ul class="breadcrumb d-block text-center">
+                    <li><a href="{$config->site_url('')}">Beranda</a></li>
+                    <li class="active">Jaring Aspirasi</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="examples" class="container py-2">
+    <!-- <div class="row">
+        <div class="col-lg-12 order-1 order-lg-2">
+            <div class="overflow-hidden mb-1">
+                <h2 class="font-weight-normal text-7 mb-0"><strong class="font-weight-extra-bold">Jaring</strong> Aspirasi</h2>
+            </div>
+            <div class="overflow-hidden mb-4 pb-3">
+                <p class="mb-0">Feel free to ask for details, don't save any questions!</p>
+            </div>
+        </div>
+    </div> -->
+    <div class="row">
+        <div class="col">
+            <div class="row process process-shapes process-shapes-always-animate my-5">
+                <div class="process-step col-lg-4 mb-5 mb-lg-4 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="200" style="animation-delay: 200ms;">
+                    <div class="process-step-circle">
+                        <strong class="process-step-circle-content">01</strong>
+                    </div>
+                    <div class="process-step-content">
+                        <h4 class="mb-1 text-5 font-weight-bold">Verifikasi Pengusul</h4>
+                        <p class="mb-0">Identifikasi dan verifikasi identitas pengirim</p>
+                    </div>
+                </div>
+                <div class="process-step col-lg-4 mb-5 mb-lg-4 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="400" style="animation-delay: 400ms;">
+                    <div class="process-step-circle process-shapes-always-animate-delay">
+                        <strong class="process-step-circle-content">02</strong>
+                    </div>
+                    <div class="process-step-content">
+                        <h4 class="mb-1 text-5 font-weight-bold">Kirim Aspirasi</h4>
+                        <p class="mb-0">Pengiriman aspirasi beserta dokumen pendukung</p>
+                    </div>
+                </div>
+                <div class="process-step col-lg-4 mb-5 mb-lg-4 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="400" style="animation-delay: 400ms;">
+                    <div class="process-step-circle process-shapes-always-animate-delay">
+                        <strong class="process-step-circle-content">03</strong>
+                    </div>
+                    <div class="process-step-content">
+                        <h4 class="mb-1 text-5 font-weight-bold">Selesai</h4>
+                        <p class="mb-0">Proses pemberian aspirasi selesai.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 order-1 order-lg-2">
+            <h4 class="mb-2">
+                <span class="text-light bg-color-primary">&nbsp; 01 &nbsp;</span> &nbsp; Verifikasi Pengusul
+            </h4>
+            <div class="tab-pane tab-pane-navigation active" id="formsStyleWithIcons">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <!-- notification template -->
+                                {include file="base/templates/notification-public.html"}
+                                <!-- end of notification template-->
+                                  <form class="contact-form form-with-icons" action="{$config->site_url('jaringaspirasi/ceknik_process')}" method="POST">
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                            <label class="form-label mb-1 text-2">Nomor Induk Kependudukan (NIK)</label>
+                                            <div class="position-relative">
+                                                <i class="icons icon-heart text-color-primary text-3 position-absolute left-15 top-50pct transform3dy-n50"></i>
+                                                <input type="text" value="" data-msg-required="Mohon masukkan Nomor Induk Kependudukan (NIK)" maxlength="16" class="form-control text-3 h-auto py-2 numberonly" name="aspirasi_sender_ktp" required autocomplete="off">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <label class="form-label mb-1 text-2">Nama Lengkap</label>
+                                            <div class="position-relative">
+                                                <i class="icons icon-user text-color-primary text-3 position-absolute left-15 top-50pct transform3dy-n50"></i>
+                                                <input type="text" value="" data-msg-required="Mohon masukkan nama lengkap." maxlength="50" class="form-control text-3 h-auto py-2" name="aspirasi_sender_nm" required autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                            <label class="form-label mb-1 text-2">Captcha</label>
+                                            <div class="position-relative">
+                                                {$captcha.widget|default:''}
+                                                {$captcha.script|default:''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col">
+                                            <input type="submit" value="Verifikasi" class="btn btn-primary" data-loading-text="Loading...">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

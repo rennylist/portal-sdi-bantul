@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head -->
+
+<head>
+	<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+	<meta name='description' content="{$site.meta_desc|default:''}" />
+	<meta name='keywords' content="{$site.meta_key|default:''}" />
+	<meta name='robots' content='index,follow' />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{$page.nav_title|default:'Home'} - {$site.site_title|default:''}</title>
+	<link href="{$BASEURL}/resource/doc/images/icon/favicon.png" rel="SHORTCUT ICON" />
+	<!-- themes style -->
+	<link rel="stylesheet" type="text/css" href="{$THEMESPATH}" media="screen" />
+	<!-- other style -->
+	{$LOAD_STYLE}
+	<!-- Head Libs -->
+	<script src="{$BASEURL}resource/js/jquery/jquery-3.6.0.js"></script>
+</head>
+<body class="loading authentication-bg authentication-bg-pattern">
+	<div class="account-pages mt-5 mb-5">
+		{include file="$template_content"}
+		
+	</div>
+
+	<footer class="footer footer-alt">
+		<script>document.write(new Date().getFullYear())</script> &copy; Portal SID oleh <a target="_blank" href="bantulkab.go.id" class="text-white-50">Pemerintah Kabupaten Bantul</a> 
+	</footer>
+	<!-- load javascript -->
+	{$LOAD_JAVASCRIPT}
+	<!-- end of javascript  -->
+</body>
+</html>

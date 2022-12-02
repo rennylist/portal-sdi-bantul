@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/dashboard/dashboard/')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/verifikasi/statistik')}">Verifikasi</a>
+                    </li>
+                    <li class="breadcrumb-item active">Upload Verifikasi</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Upload Verifikasi</h4>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" >
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Upload Verifikasi Data</h4>
+                <p class="sub-header">
+                    Silahkan upload verifikasi data yang sudah diisi sesuai dengan kebutuhan
+                </p>
+                <form action="{$config->site_url('admin/verifikasi/statistik/upload_process_verifikasi')}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="instansi_cd" name="instansi_cd" value="{$instansi_cd|default:''}">
+                    <div class="mb-0">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="inputGroupFile04" class="form-label">File Upload</label>
+                                    <input class="form-control" type="file" id="template" name="template" accept=".xlsx">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <!-- <label for="inputGroupFile04" class="form-label">Kode Instansi</label>
+                                    <input class="form-control" type="text" id="get_instansi_cd" name="get_instansi_cd" > -->
+
+                                    <label for="exampleDataList" class="form-label">Kode Instansi</label>
+                                    <input class="form-control" id="get_instansi_cd" name="get_instansi_cd" list="datalistOptions" id="exampleDataList" placeholder="Cari kode instansi" >
+                                    <datalist id="datalistOptions">
+                                        {foreach $rs_id as $result}
+                                        <option value="{$result.instansi_cd|default:''} - {$result.instansi_name|default:''}">
+                                        {/foreach}
+                                    </datalist>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-0">
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Kirim</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

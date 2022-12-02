@@ -1,0 +1,85 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Pengaturan</a></li>
+        <li class="breadcrumb-item active">Roles</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h4 class="box-title">Daftar Roles</h4>
+                    <div class="box-tool">
+                        <ul class="nav nav-xs">
+                            <li class="nav-item">
+                                <a href="{$config->site_url('settings/sistem/roles/add/')}" class="btn btn-outline b-primary text-primary"><i class="fa fa-plus"></i> Tambah Data</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-search">
+                    <form action="{$config->site_url('settings/sistem/roles/search_process')}" method="post">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="role_nm" value="{$search.role_nm|default:''}" placeholder="Cari nama hak akses" maxlength="50">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <select name="group_id" id="select2-single" data-plugin="select2" class="form-control" data-placeholder="Berdasarkan Groups Role">
+                                        <option value=""></option>
+                                        {foreach $rs_group as $group}
+                                        <option value="{$group.group_id}" {if $search.group_id|default:'' eq $group.group_id}selected="selected"{/if}>{$group.group_name|upper}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <button type="submit" class="btn dark" name="save" value="Cari"><i class="fa fa-search"></i> Cari</button>
+                                    <button type="submit" class="btn white" name="save" value="Reset"><i class="fa fa-refresh"></i> Reset</button>
+                                </div>								
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-body">
+                    <!-- notification template -->
+                    {include file="base/templates/notification.html"}
+                    <!-- end of notification template-->
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width='10%' class="text-center">ID</th>
+                            <th width='20%' class="text-center">Group</th>
+                            <th width='20%' class="text-center">Role Name</th>
+                            <th width='25%' class="text-center">Role Description</th>
+                            <th width='15%' class="text-center">Default Page</th>
+                            <th width='10%' class="text-center"></th>
+                        </tr>
+                        {foreach from=$rs_id item=result}
+                        <tr>
+                            <td class="text-center">{$result.role_id}</td>
+                            <td>{$result.group_name}</td>
+                            <td>{$result.role_nm}</td>
+                            <td>{$result.role_desc}</td>
+                            <td>{$result.default_page}</td>
+                            <td class="text-center">
+                                <a href="{$config->site_url('settings/sistem/roles/edit/'|cat:$result.role_id)}" class="btn btn-xs white text-success"><i class="fa fa-edit"></i></a>
+                                <a href="{$config->site_url('settings/sistem/roles/delete/'|cat:$result.role_id)}" class="btn btn-xs white text-danger"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        {foreachelse}
+                        <tr>
+                            <td colspan="6">Data tidak ditemukan!</td>
+                        </tr>
+                        {/foreach}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

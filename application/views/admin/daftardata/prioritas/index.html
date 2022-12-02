@@ -1,0 +1,154 @@
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/dashboard/admin')}">Beranda</a>
+                    </li>
+                    <!-- <li class="breadcrumb-item "><a href="#">Verifikasi</a></li> -->
+                    <li class="breadcrumb-item active">Daftar Data Prioritas</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Daftar Data Prioritas</h4>
+        </div>
+    </div>
+</div>
+
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- <h4 class="header-title">Instansi</h4>
+                <p class="sub-header">
+                    Daftar instansi
+                </p> -->
+                <div class="row">
+                    <div class="col-md-8 mb-2">
+                        <h4 class="header-title">Daftar Data Prioritas</h4>
+                        <p class="sub-header">
+                            Data Prioritas
+                        </p>
+                    </div>
+                    <div class="col-md-4 mb-2" align="right">
+                        <a target="_blank" href="{$config->site_url('admin/verifikasi/statistik/download_data_all')}"
+                            class="btn btn-danger">
+                            Unduh Data<span class="btn-label-right"><i class="mdi mdi-download"></i></span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ------- start tab ------- -->
+                <script src="{$config->base_url('resource/js/jquery/jquery.js')}"></script>
+                <script src="{$config->base_url('resource/js/jquery/plugins.js')}"></script>
+                <script src="{$config->base_url('resource/js/jquery/bs-datatable.js')}"></script>
+                <script src="{$config->base_url('resource/js/jquery/functions.js')}"></script>
+
+                <div class="clearfix">
+					<ul id="myTab" class="nav nav-tabs boot-tabs">
+						<li class="nav-item"><a class="nav-link active" href="#statistik" data-toggle="tab">Statistik</a></li>
+						<li class="nav-item"><a class="nav-link" href="#geospasial" data-toggle="tab">Geospasial</a></li>
+					</ul>
+					<div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade table-responsive show active" id="statistik">
+							<table id="datatable2" class="table table-striped nowrap w-100">
+								<thead class="table-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Kode</th>
+                                        <th>Indikator / Variabel / Sub Variabel</th>
+                                        <th>Satuan</th>
+                                        <th>Indikator / Variabel</th>
+                                        <th>Produsen Data</th>
+                                        <th>Jadwal Rilis</th>
+                                        <th>Priode Data</th>
+                                        <th>Lintas Instansi</th>
+                                        <th>Standar Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {assign var="no" value=1}
+                                    {foreach $rs_id as $result}
+                                    <tr>
+                                        <td>{$no++}</td>
+                                        <td>{$result.data_id|default:''}</td>
+                                        <td>{$result.data_name|default:''}</td>
+                                        <td>{$result.data_unit|default:''}</td>
+                                        <td>{$result.instansi_name|default:''}</td>
+                                        <td>{$result.data_category|default:''}</td>
+                                        <td>{$result.date_release|default:''}</td>
+                                        <td>{$result.data_periode|default:''}</td>
+                                        <td>{$result.cross_instansi_st|default:''}</td>
+                                        <td>{$result.data_standard|default:''}</td>
+                                    </tr>
+                                    {/foreach}
+                                </tbody>
+							</table>
+						</div>
+						<div class="tab-pane fade table-responsive " id="geospasial">
+							<table id="datatable1" class="table table-striped nowrap w-100">
+								<thead class="table-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Kode</th>
+                                        <th>Indikator / Variabel / Sub Variabel</th>
+                                        <th>Satuan</th>
+                                        <th>Indikator / Variabel</th>
+                                        <th>Produsen Data</th>
+                                        <th>Jadwal Rilis</th>
+                                        <th>Priode Data</th>
+                                        <th>Lintas Instansi</th>
+                                        <th>Standar Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {assign var="no" value=1}
+                                    {foreach $geo as $result}
+                                    <tr>
+                                        <td>{$no++}</td>
+                                        <td>{$result.geo_id|default:''}</td>
+                                        <td>{$result.geo_data_name|default:''}</td>
+                                        <td>{$result.geo_data_satuan|default:''}</td>
+                                        <td>{$result.geo_data_category|default:''}</td>
+                                        <td>{$result.geo_instansi_name|default:''}</td>
+                                        <td>{$result.geo_data_release|default:''}</td>
+                                        <td>{$result.geo_date_period|default:''}</td>
+                                        <td>{$result.geo_cross_instansi_st|default:''}</td>
+                                        <td>{$result.geo_standard_data|default:''}</td>
+                                    </tr>
+                                    {/foreach}
+                                </tbody>
+							</table>
+						</div>
+                    </div>
+				</div>
+                <!-- ------- end tab ------- -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        $('#datatable1').dataTable();
+    });
+
+    $(document).ready(function() {
+        $('#datatable2').dataTable();
+    });
+
+    $(document).ready(function() {
+        $('#datatable3').dataTable();
+    });
+
+    $(document).ready(function() {
+        $('#datatable4').dataTable();
+    });
+</script>

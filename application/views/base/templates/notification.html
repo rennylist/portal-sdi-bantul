@@ -1,0 +1,36 @@
+{if $notification_header|default:'' == "error"}
+<div class="alert alert-danger" role="alert">
+    <i class="mdi mdi-block-helper me-2"></i>
+    <strong>{$notification_header|capitalize|default:''}</strong>, {$notification_message|default:''}
+    {$notification_message|default:''}
+    {if $notification_error|default:'' neq ''}
+        <p class="mb-0 border-top pt-3">{$notification_error|default:''}</p>
+    {/if}
+</div>
+{elseif $notification_header|default:'' == "warning"}
+<div class="alert alert-warning" role="alert">
+    <i class="mdi mdi-alert-outline me-2"></i>
+    <strong>{$notification_header|capitalize|default:''}</strong>, {$notification_message|default:''}
+    {$notification_message|default:''}
+    {if $notification_error|default:'' neq ''}
+        <p class="mb-0 border-top pt-3">{$notification_error|default:''}</p>
+    {/if}
+</div>
+{elseif $notification_header|default:'' == "success"}
+<div class="alert alert-success" role="alert">
+    <i class="mdi mdi-check-all me-2"></i>
+    <strong>{$notification_header|capitalize|default:''}</strong>, {$notification_message|default:''}
+    {if $notification_error|default:'' neq ''}
+        <p class="mb-0 border-top pt-3">{$notification_error|default:''}</p>
+    {/if}
+</div>
+{elseif $notification_header|default:'' == "info"}
+<div class="alert alert-info" role="alert">
+    <i class="mdi mdi-alert-circle-outline me-2"></i>
+    <strong>{$notification_header|capitalize|default:''}</strong>, {$notification_message|default:''}
+    {if $notification_error|default:'' neq ''}
+        <p class="mb-0 border-top pt-3">{$notification_error|default:''}</p>
+    {/if}
+</div>
+{else}
+{/if}

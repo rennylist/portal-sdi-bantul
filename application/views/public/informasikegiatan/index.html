@@ -1,0 +1,69 @@
+<section class="page-header page-header-modern bg-color-light-scale-1 page-header-md">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 align-self-center p-static order-2 text-center">
+                <h1 class="text-dark font-weight-bold text-8">Informasi Kegiatan</h1>
+                <span class="sub-title text-dark"></span>
+            </div>
+            <div class="col-md-12 align-self-center order-1">
+                <ul class="breadcrumb d-block text-center">
+                    <li><a href="{$config->site_url('')}">Beranda</a></li>
+                    <li class="active">Informasi Kegiatan</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col">
+            <div class="blog-posts">
+                <div class="row">
+                    {foreach $rs_id as $result}
+                    <div class="col-md-6">
+                        <article class="post post-medium border-0 pb-0 mb-5">
+                            <div class="post-image">
+                                <a href="{$config->site_url('informasikegiatan/detail/'|cat:''|cat:$result.post_id|default:''|cat:'/'|cat:$result.url|default:'')}">
+                                    <img src="{$BASEURL}resource/doc/images/imagenotfound.jpg" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0" alt="">
+                                </a>
+                            </div>
+
+                            <div class="post-content">
+
+                                <h2 class="font-weight-semibold text-5 line-height-6 mt-3 mb-2">
+                                    <a href="{$config->site_url('informasikegiatan/detail/'|cat:''|cat:$result.post_id|default:''|cat:'/'|cat:$result.url|default:'')}">{$result.post_title|default:''}</a>
+                                </h2>
+                                <p>{$result.post_desc|default:'-'|strip_tags|truncate:600:"...":true}</p>
+
+                                <div class="post-meta">
+                                    <span><i class="far fa-calendar"></i> <a href="#">{$tdtm->get_date_short_only({$result.mdd|default:''}, 'in')}</a> </span>
+                                    <!-- <span><i class="far fa-folder"></i> <a href="#">News</a>, <a href="#">Design</a> </span>
+                                    <span><i class="far fa-comments"></i> <a href="#">12 Comments</a></span> -->
+                                    <span class="d-block mt-2">
+                                        <a href="{$config->site_url('informasikegiatan/detail/'|cat:''|cat:$result.post_id|default:''|cat:'/'|cat:$result.url|default:'')}" class="btn btn-xs btn-light text-1 text-uppercase">
+                                            Selengkapnya
+                                        </a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </article>
+                    </div>
+                    {foreachelse}
+                    Maaf, data tidak ditemukan !
+                    {/foreach}
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <ul class="pagination float-end">
+                            Menampilkan {$pagination.start|default:0} - {$pagination.end|default:0} dari {$pagination.total|default:0} data
+                            &nbsp;&nbsp;&nbsp;
+                            {$pagination.data|default:''}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

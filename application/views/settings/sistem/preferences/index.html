@@ -1,0 +1,86 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".select-2").select2();
+    });
+</script>
+<div id="page-title">
+    <h1 class="page-header text-overflow">{$page_header}</h1>
+</div>
+<ol class="breadcrumb">
+    <li><a href="#">Pengaturan</a></li>
+    <li class="active">{$page_header}</li>
+</ol>
+<div id="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-control">
+                        <a href="{$config->site_url('settings/sistem/preferences/add/')}" class="btn btn-purple  btn-labeled fa fa-plus mr5">Tambah Data</a>
+                    </div>
+                    <h4 class="panel-title">System Preferences</h4>
+                </div>
+                <div class="panel-body">
+                    <!-- notification template -->
+                    {include file="base/templates/notification.html"}
+                    <!-- end of notification template-->
+                    <div class="pad-btm">
+                        <form class="form-horizontal" action="{$config->site_url('settings/sistem/preferences/search_process/')}" method="post">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label class="sr-only">Nama</label>
+                                    <input type="text" name="pref_nm" class="form-control" value="{$search.pref_nm|default:''}" placeholder="Pref Name" maxlength="50" />
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="sr-only">Grup</label>
+                                    <select name="pref_group" class="select-2 form-control" data-placeholder="Pref Group" style="width: 100%">
+                                        <option value=""></option>
+                                        {foreach $rs_group as $group}
+                                        <option value="{$group.pref_group}" {if $search.pref_group|default:'' eq $group.pref_group}selected="selected"{/if}>{$group.pref_group|upper}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-info" type="submit" name="save" value="Cari"><i class="fa fa-search mr5"></i>&nbsp; Cari</button>
+                                    <button class="btn btn-default" type="submit" name="save" value="Reset"><i class="fa fa-refresh mr5"></i>&nbsp; Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th width='5%' class="text-center">No</th>
+                                    <th width='20%' class="text-center">Pref Group</th>
+                                    <th width='20%' class="text-center">Pref Name</th>
+                                    <th width='45%' class="text-center">Pref Value</th>
+                                    <th width='10%' class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {$pref_group = ''}
+                                {foreach from=$rs_id item=result}
+                                <tr>
+                                    <td class="text-center">{$no++}.</td>
+                                    <td>{$result.pref_group|upper}</td>
+                                    <td>{$result.pref_nm|upper}</td>
+                                    <td>{$result.pref_value}</td>
+                                    <td class="text-center">
+                                        <a href="{$config->site_url('settings/sistem/preferences/edit/'|cat:$result.pref_id)}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                        <a href="{$config->site_url('settings/sistem/preferences/delete/'|cat:$result.pref_id)}" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td colspan="5">-</td>
+                                </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

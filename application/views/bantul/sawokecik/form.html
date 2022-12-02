@@ -1,0 +1,155 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-4">
+            <div class="card bg-pattern">
+                <div class="card-body p-4">
+                    <div class="text-center w-75 m-auto">
+                        <div class="auth-logo">
+                            <a href="index.html" class="logo logo-dark text-center">
+                                <span class="logo-lg">
+                                    <img src="{$BASEURL}/resource/themes/logo/logo_satudata_bantul.png" alt=""
+                                        height="100">
+                                </span>
+                            </a>
+
+                            <a href="index.html" class="logo logo-light text-center">
+                                <span class="logo-lg">
+                                    <img src="{$BASEURL}/resource/themes/logo/logo_satudata_bantul.png" alt=""
+                                        height="80">
+                                </span>
+                            </a>
+                        </div>
+                        <h4 class="text-dark mb-4 mt-2">Portal SDI Kabupaten Bantul
+                        </h4>
+                        <!-- <p class="text-muted mb-4 mt-3">Masukkan user dan password anda untuk masuk ke halaman admin.
+                        </p> -->
+                    </div>
+
+                    <!-- notification template -->
+                    {include file="base/templates/notification.html"}
+                    <!-- end of notification template-->
+
+                    <form action="{$config->site_url('bantul/sawokecik/login_process')}" method="POST">
+
+                        <div class="mb-3">
+                            <label for="emailaddress" class="form-label">User</label>
+                            <input class="form-control" type="text" id="username" name="username" required=""
+                                autocomplete="off" placeholder="Username">
+                            <!-- <input class="form-control" type="text" placeholder="Username" name="username" autocomplete="off" required="required"> -->
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group input-group-merge">
+                                <input type="password" id="password" name="password" class="form-control"
+                                    autocomplete="off" placeholder="Masukkan password anda">
+                                <!-- <input class="form-control" type="password" placeholder="Password" name="password" autocomplete="off" required="required"> -->
+                                <div class="input-group-text" data-password="false">
+                                    <span class="password-eye"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="emailaddress" class="form-label">Capctha</label>
+                            <div class="row">
+                                <div class="col-lg-8 col-md-6  col-sm-6">
+                                    <input class="form-control" type="text" placeholder="Kode Captcha" name="captcha"
+                                        autocomplete="off" maxlength="4" required="required">
+                                </div>
+                                <div class="col-lg-4 col-md-6  col-sm-6" style="margin-top: 2px;" id="captcha_image">
+                                    {$captcha.image|default:''}
+                                </div>
+                                <div class="row">
+                                    <a href="#" id="reload_captcha">
+                                        <i class="fa fa-refresh"></i> Muat Ulang Captcha
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="text-center d-grid">
+                            {if $login_attempt.msg_error|default:'' neq 'attempt'}
+                            <button class="btn btn-primary" type="submit"> Log In </button>
+                            {/if}
+                        </div>
+
+                        <div class="text-center d-grid">
+                            {if $login_attempt.msg_error|default:'' eq 'attempt'}
+                            <div class="alert alert-solid-danger alert-bold" role="alert">
+                                <div class="alert-text">
+                                    <h5 class="alert-heading"></h5>
+                                    <p>
+                                        <strong>Mohon maaf, </strong> anda tidak bisa login karena sudah melakukan
+                                        {$login_attempt.attempt|default:''} kali percobaan dari maksimal
+                                        {$attempt_max|default:''} percobaan,
+                                        silahkan mencoba kembali setelah {$attempt_time|default:''} menit.
+                                    </p>
+                                </div>
+                            </div>
+                            {elseif $login_attempt.msg_error|default:'' eq 'password'}
+                            <!-- <div class="alert alert-solid-info alert-bold" role="alert">
+                                <div class="alert-text">
+                                    <h5 class="alert-heading"></h5>
+                                    <p>
+                                        <strong>Peringatan, </strong>anda sudah melakukan percobaan login {$login_attempt.attempt|default:''} kali dari
+                                        {$attempt_max|default:''} kali percobaan.
+                                    </p>
+                                </div>
+                            </div> -->
+                            {/if}
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12 text-center">
+                    <p> <a href="{$config->site_url('bantul/sawokecik/lupa_password')}" class="text-white-50 ms-1">Lupa
+                            Password</a></p>
+                    <!-- <p class="text-white-50">Don't have an account? <a href="auth-register.html" class="text-white ms-1"><b>Sign Up</b></a></p> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // jquery
+    $(document).ready(function () {
+
+        // ajax upload images
+        $("#reload_captcha").click(function () {
+            console.log('ob');
+
+            $.ajax({
+                url: '{$config->site_url("bantul/sawokecik/ajax_reload_captcha")}',
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $("#captcha_image").html();
+                    console.log('o2');
+
+                },
+                success: function (data) {
+                    $("#captcha_image").html(data.image);
+                    console.log('ok');
+                    console.log(data.image);
+                }
+            });
+        });
+    });
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TT02S6K1BM"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-TT02S6K1BM');
+</script>

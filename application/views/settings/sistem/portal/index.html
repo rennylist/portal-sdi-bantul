@@ -1,0 +1,61 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Settings</a></li>
+        <li class="breadcrumb-item"><a href="#">System</a></li>
+        <li class="breadcrumb-item active">Web Portal</li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header mb-3">
+                <h2>Daftar Web Portal</h2>
+                <div class="box-tool">
+                    <ul class="nav nav-xs">
+                        <li class="nav-item">
+                            <a href="{$config->site_url('settings/sistem/portal/add')}" class="btn btn-sm btn-outline b-primary text-primary">
+                                <i class="fa fa-plus mr-1"></i> Tambah Data
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="box-body pt-0">
+                <!-- notification template -->
+                {include file="base/templates/notification.html"}
+                <!-- end of notification template-->
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead class="grey text-uppercase">
+                            <tr>
+                                <th width='10%' class="text-center">ID</th>
+                                <th width='25%' class="text-center">Nama Portal</th>
+                                <th width='25%' class="text-center">Judul</th>
+                                <th width='30%' class="text-center">Deskripsi</th>
+                                <th width='10%' class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach from=$rs_id item=result}
+                            <tr>
+                                <td class="text-center">{$result.portal_id}</td>
+                                <td>{$result.portal_nm|upper}</td>
+                                <td>{$result.site_title|upper}</td>
+                                <td>{$result.site_desc|upper}</td>
+                                <td class="text-center">
+                                    <a href="{$config->site_url('settings/sistem/portal/edit/'|cat:$result.portal_id)}" class="btn btn-xs white text-success"><i class="fa fa-pencil"></i></a>
+                                    <a href="{$config->site_url('settings/sistem/portal/delete/'|cat:$result.portal_id)}" class="btn btn-xs white text-danger"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            {foreachelse}
+                            <tr>
+                                <td colspan="5">Data tidak ditemukan!</td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

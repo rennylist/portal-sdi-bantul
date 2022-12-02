@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <meta http-equiv='Content-Type' content='text/html; charset=utf-8' /> -->
+    <meta name='description' content="{$site.meta_desc|default:''}" />
+    <meta name='keywords' content="{$site.meta_key|default:''}" />
+    <meta name='robots' content='index,follow' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">	
+
+    <title>{$page.nav_title|default:'Home'} - {$site.site_title|default:''}</title>
+    <link href="{$BASEURL}resource/doc/images/icon/favicon.png" rel="SHORTCUT ICON" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D985BMGFBF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-D985BMGFBF');
+    </script>
+
+    <!-- Mobile Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+
+    <!-- themes style -->
+    <link rel="stylesheet" type="text/css" href="{$THEMESPATH}" media="screen" />
+
+    <!-- other style -->
+    {$LOAD_STYLE}
+    <link rel="stylesheet" type="text/css" href="{$BASEURL}resource/js/datatables/css/bs-datatable.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="{$BASEURL}resource/js/datetimepicker/2.5.20/jquery.datetimepicker.css" media="all" />
+	<link rel="stylesheet" href="{$BASEURL}resource/js/jqueryui/jquery-ui.css">
+
+    <!-- Head Libs -->
+    <script src="{$BASEURL}resource/themes/porto.1.0/vendor/modernizr/modernizr.min.js"></script>
+</head>
+
+<body data-plugin-page-transition>
+	<div class="body">
+		<header id="header" class="header-effect-shrink" 
+        data-plugin-options="{literal}{'stickyEnabled': true, 'stickyEffect': 'shrink', 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': false, 'stickyChangeLogo': true, 'stickyStartAt': 30, 'stickyHeaderContainerHeight': 70}{/literal}">
+			<div class="header-body border-top-0">
+				<div class="header-container container-fluid px-lg-4">
+					<div class="header-row">
+						<div class="header-column header-column-border-right flex-grow-0">
+							<div class="header-row pe-4">
+								<div class="header-logo">
+									<a href="{$config->site_url('')}">
+										<img alt="Porto" width="100" height="48" data-sticky-width="82" data-sticky-height="40" src="{$BASEURL}/resource/themes/porto.1.0/img/psd/logo.png">
+									</a>
+								</div>
+							</div>
+						</div>
+						
+                        {include file="$template_topbar"}
+						<div class="header-column header-column-border-left flex-grow-0 justify-content-center">
+							<div class="header-row ps-4 justify-content-end">
+								<ul class="header-social-icons social-icons d-none d-sm-block social-icons-clean m-0">
+									{if $setting.youtube|default:'' neq ''}<li class="social-icons-youtube"><a href="http://www.youtube.com/{$setting.youtube|default:''}" target="_blank" title="youtube"><i class="fab fa-youtube"></i></a></li>{/if}
+									{if $setting.facebook|default:'' neq ''}<li class="social-icons-facebook"><a href="http://www.facebook.com/{$setting.facebook|default:''}" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>{/if}
+									{if $setting.instagram|default:'' neq ''}<li class="social-icons-instagram"><a href="http://www.instagram.com/{$setting.instagram|default:''}" target="_blank" title="instagram"><i class="fab fa-instagram"></i></a></li>{/if}
+									{if $setting.twitter|default:'' neq ''}<li class="social-icons-twitter"><a href="http://www.twitter.com/{$setting.twitter|default:''}" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a></li>{/if}
+								</ul>
+								<button class="btn header-btn-collapse-nav ms-0 ms-sm-3" data-bs-toggle="collapse" data-bs-target=".header-nav-main nav">
+									<i class="fas fa-bars"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div role="main" class="main">
+            {include file="$template_content"}
+		</div>
+
+		<footer id="footer" class="mt-0">
+			<div class="container">
+				<div class="row py-5">
+					<div class="col text-center">
+						<ul class="footer-social-icons social-icons social-icons-clean social-icons-big social-icons-opacity-light social-icons-icon-light mt-1">
+							{if $setting.youtube|default:'' neq ''}<li class="social-icons-youtube"><a href="http://www.youtube.com/{$setting.youtube|default:''}" target="_blank" title="youtube"><i class="fab fa-youtube"></i></a></li>{/if}
+							{if $setting.facebook|default:'' neq ''}<li class="social-icons-facebook"><a href="http://www.facebook.com/{$setting.facebook|default:''}" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>{/if}
+							{if $setting.instagram|default:'' neq ''}<li class="social-icons-instagram"><a href="http://www.instagram.com/{$setting.instagram|default:''}" target="_blank" title="instagram"><i class="fab fa-instagram"></i></a></li>{/if}
+							{if $setting.twitter|default:'' neq ''}<li class="social-icons-twitter"><a href="http://www.twitter.com/{$setting.twitter|default:''}" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a></li>{/if}
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="footer-copyright footer-copyright-style-2">
+				<div class="container py-2">
+					<div class="row py-4">
+						<div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
+							<p>
+								<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-dot-circle text-color-primary top-1 p-relative"></i><span class="text-color-light opacity-7 ps-1">{$setting.alamat|default:''}</span></span>
+								<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="fab fa-whatsapp text-color-primary top-1 p-relative"></i><a href="tel:0274367417" class="text-color-light opacity-7 ps-1">{$setting.no_telp|default:''}</a></span>
+								<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-envelope text-color-primary top-1 p-relative"></i><a href="mailto:mail@example.com" class="text-color-light opacity-7 ps-1">{$setting.email|default:''}</a></span>
+							</p>
+						</div>
+						<div class="col-lg-4 d-flex align-items-center justify-content-center justify-content-lg-end mb-4 mb-lg-0 pt-4 pt-lg-0">
+							<p>© Copyright <script>document.write(new Date().getFullYear())</script>. DPRD Kabupaten Bantul <i class="mdi mdi-heart text-danger"></i> oleh <a href="https://bantulkab.go.id/" target="_blank" class="text-reset">bantulkab</a>.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
+
+    <!-- load javascript -->
+    {$LOAD_JAVASCRIPT}
+    <!-- end of javascript  -->
+
+	<script>
+		$(document).ready(function() {
+			var lang = "{$BASEURL}resource/js/datatables/lang/indonesian.json";
+			$('#datatable1').dataTable({
+				"language": {
+					"url": lang
+				}
+			});
+		});
+
+		$('.numberonly').bind('keyup blur', function () {
+			var node = $(this);
+			node.val(node.val().replace(/[^0-9]/g, ''));
+		});
+
+		$('.textonly').bind('keyup blur', function (e) {
+			var node = $(this);
+			var key = e.keyCode;
+			if (key >= 48 && key <= 57) {
+				e.preventDefault();
+			}
+		});
+
+		$('.dtplocal').datetimepicker({
+			format: 'dd-mm-yy',
+			showClose: true
+		});
+		$('.readonly').keydown(function (event) {
+			event.preventDefault();
+		})
+		$(function() {
+			$(".datepicker").datepicker({
+				minDate: -7,
+				maxDate: "7d", // or: maxDate: "1w",
+				dateFormat: "yy-m-d",
+				showClose: true
+			});
+		});
+
+		$(function () {
+			$('.datetimepicker1').datetimepicker({
+				format: 'HH',
+				showClose: true
+			});
+		});
+	</script>
+</body>
+</html>

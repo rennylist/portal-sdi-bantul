@@ -1,0 +1,165 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        //edit foto
+        $(".edit").click(function () {
+            $('#modal_edit').modal('show');
+        });
+        $(".file-styled").uniform({
+            fileButtonClass: 'action btn btn-dark'
+        });
+    });
+</script>
+<section class="content">
+    <!-- notification template -->
+    {include file="base/templates/notification.html"}
+    <!-- end of notification template-->
+    <div class="row">
+        <div class="col-12">
+            <div class="box">
+                <div class="content-main " id="content-main">
+                    <div>
+                        <div class="item">
+                            <div class="item-bg">
+                                <img src="{$com_user.user_img}" alt="" class="blur opacity-3" />
+                            </div>
+                            <div class="p-4">
+                                <div class="row mt-3">
+                                    <div class="col-sm-7">
+                                        <div class="media">
+                                            <div class="avatar w-96">
+                                                <div class="profile-img-container">
+                                                    <img class="profile-img img-circle img-responsive" src="{$com_user.user_img}" alt="" />
+                                                    <a class="edit" href="#">
+                                                        <span class="fa fa-upload fa-4x"></span>
+                                                    </a>                                           
+                                                </div>
+                                            </div>
+                                            <div class="media-body mx-3 mb-2">
+                                                <h4>
+                                                    {$com_user.nama_lengkap|default:''}
+                                                </h4>
+                                                <p>
+                                                    <span class="text-success">
+                                                        Developer
+                                                    </span> 
+                                                    <small class="text-danger">{$com_user.struktur_nama|default:'Jaring Aspirasi - DPRD Kabupaten Bantul'}</small>
+                                                </p>
+                                                <p class="text-muted"><span class="m-r">{$com_user.user_mail|default:'-'}</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="white bg b-b px-3">
+                            <div class="row">
+                                <div class="col-sm-6 order-sm-1">
+                                    <div class="py-4 clearfix nav-active-theme">
+                                        <ul class="nav nav-pills nav-sm">
+                                            <li class="nav-item mr-2">
+                                                <a class="btn btn-md btn-info active" href="{$config->site_url('settings/welcome/profile')}">
+                                                    <i class="fa fa-user mr-2"></i>
+                                                    Data Pribadi
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="btn btn-md btn-dark" href="{$config->site_url('settings/welcome/profile/account_settings')}">
+                                                    <i class="fa fa-key mr-2"></i>
+                                                    Ganti Password
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="padding">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="tab-content">                                       
+                                        <div class="box-body">  
+                                            <div class="row mb-2">
+                                                <div class="col-5">
+                                                    <small class="text-muted">Nomor Induk Pegawai</small>
+                                                    <div class="_500">{$pegawai.pegawai_nip|default:''|upper}</div>
+                                                </div>
+                                                <div class="col-7">
+                                                    <small class="text-muted">Tempat / Tanggal lahir</small>
+                                                    <div class="_500">{$pegawai.tempat_lahir|default:'-'|upper} / {$dtm->get_full_date($pegawai.tanggal_lahir|default:'')|default:'-'|upper}</div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-5">
+                                                    <small class="text-muted">Nama Lengkap</small>
+                                                    <div class="_500">{$pegawai.nama_lengkap|default:''|upper}</div>
+                                                </div>
+                                                <div class="col-7">
+                                                    <small class="text-muted">Nomor Telepon</small>
+                                                    <div class="_500">{$pegawai.nomor_telepon|default:'-'|upper}</div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-5">
+                                                    <small class="text-muted">Departemen</small>
+                                                    <div class="_500">{$pegawai.struktur_nama|default:'-'|upper}</div>
+                                                </div>
+                                                <div class="col-7">
+                                                    <small class="text-muted">Alamat Domisili</small>
+                                                    <div class="_500">{$pegawai.alamat_tinggal|default:'-'|upper}</div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-5">
+                                                    <small class="text-muted">Jabatan</small>
+                                                    <div class="_500">
+                                                        {if $pegawai.jabatan_struktural_st eq '1'}
+                                                        {$pegawai.jabatan_struktural|default:'-'|upper}
+                                                        {else}
+                                                        {$pegawai.jabatan_fungsional|default:'-'|upper}
+                                                        {/if}
+                                                    </div>
+                                                </div>
+                                                <div class="col-7">
+                                                    <small class="text-muted">Email</small>
+                                                    <div class="_500">{$pegawai.user_mail|default:'-'|upper}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal Update Foto Pofil -->
+<div class="modal fade" id="modal_edit" role="dialog"  aria-labelledby="demo-default-modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content box-shadow-md mb-3">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Foto Profil</h5>
+            </div>
+            <form class="form-horizontal" action="{$config->site_url('settings/welcome/profile/edit_foto_process')}" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input name="page" type="hidden" value="profil" />
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Browse Foto</label>
+                        <div class="col-md-8">
+                            <div class="form-file">
+                                <input type="file" name="user_img_upload" class="form-control file-styled" />
+                            </div>
+                        </div>
+                    </div>
+                    <!--Modal footer-->
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn dark-white" type="button">Close</button>
+                        <button class="btn primary">Upload dan Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

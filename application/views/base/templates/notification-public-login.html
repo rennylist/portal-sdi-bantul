@@ -1,0 +1,34 @@
+{if $notification_header|default:'' == "error"}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {$notification_header|capitalize|default:''}, {$notification_message|default:''}
+    {if $notification_error|default:'' neq ''}
+        <p class="mb-0 border-top pt-3">{$notification_error|default:''}</p>
+    {/if}
+</div>
+{elseif $notification_header|default:'' == "warning"}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {$notification_header|capitalize|default:''}, {$notification_message|default:''}
+    {if $notification_error|default:'' neq ''}
+        <p class="mb-0 border-top pt-3">{$notification_error|default:''}</p>
+    {/if}
+</div>
+{elseif $notification_header|default:'' == "success"}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {$notification_header|capitalize|default:''}, {$notification_message|default:''}
+    {if $notification_error|default:'' neq ''}
+        <p class="mb-0 border-top pt-3">{$notification_error|default:''}</p>
+    {/if}
+</div>
+{elseif $notification_header|default:'' == "info"}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {$notification_header|capitalize|default:''}, {$notification_message|default:''}
+    {if $notification_error|default:'' neq ''}
+        <p class="mb-0 border-top pt-3">{$notification_error|default:''}</p>
+    {/if}
+</div>
+{else}
+{/if}

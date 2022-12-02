@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- head -->
+
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <meta name='description' content="{$site.meta_desc|default:''}" />
+    <meta name='keywords' content="{$site.meta_key|default:''}" />
+    <meta name='robots' content='index,follow' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{$page.nav_title|default:'Home'} - {$site.site_title|default:''}</title>
+    <link href="{$BASEURL}/resource/doc/images/icon/favicon.png" rel="SHORTCUT ICON" />
+    <!-- themes style -->
+    <link rel="stylesheet" type="text/css" href="{$THEMESPATH}" media="screen" />
+    <!-- other style -->
+    {$LOAD_STYLE}
+    <!-- load javascript -->
+    {$LOAD_JAVASCRIPT}
+    <!-- end of javascript  -->
+</head>
+
+<!-- begin::Body -->
+<body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+    <!-- begin:: Page -->
+    <div class="kt-grid kt-grid--ver kt-grid--root">
+        <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v1" id="kt_login">
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--desktop kt-grid--ver-desktop kt-grid--hor-tablet-and-mobile">
+
+                <!--begin::Aside-->
+                <div class="kt-grid__item kt-grid__item--order-tablet-and-mobile-2 kt-grid kt-grid--hor kt-login__aside" style="background-image: url({$BASEURL}/resource/themes/metronic.1.0/media/bg/bg-4.jpg);">
+                    <div class="kt-grid__item">
+                        <a href="#" class="kt-login__logo">
+                            <img src="{$BASEURL}/resource/themes/metronic.1.0/media/logos/logo-4.png">
+                        </a>
+                    </div>
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver">
+                        <div class="kt-grid__item kt-grid__item--middle">
+                            <h3 class="kt-login__title">Selamat Datang di Jaring Aspirasi DPRD Kabupaten Bantul!</h3>
+                            <h4 class="kt-login__subtitle">Silahkan masukkan user dan password untuk masuk ke portal Administrator Jaring Aspirasi DPRD Kabupaten Bantul.</h4>
+                        </div>
+                    </div>
+                    <div class="kt-grid__item">
+                        <div class="kt-login__info">
+                            <div class="kt-login__copyright">
+                                &copy 2020 Jaring Aspirasi DPRD Kabupaten Bantul
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--begin::Aside-->
+
+                <!--begin::Content-->
+                <div class="kt-grid__item kt-grid__item--fluid  kt-grid__item--order-tablet-and-mobile-1  kt-login__wrapper">
+
+                    <!--begin::Body-->
+                    <div class="kt-login__body">
+
+                        <!--begin::Signin-->
+                        <div class="kt-login__form">
+                            <div class="kt-login__title">
+                                <h3>Login</h3>
+                            </div>
+
+                            {include file="$template_content"}
+                            <!-- load javascript -->
+                            {$LOAD_JAVASCRIPT}
+                            <!-- end of javascript	-->
+                        </div>
+
+                        <!--end::Signin-->
+                    </div>
+
+                    <!--end::Body-->
+                </div>
+
+                <!--end::Content-->
+            </div>
+        </div>
+    </div>
+
+    <!-- end:: Page -->
+
+</body>
+
+</html>

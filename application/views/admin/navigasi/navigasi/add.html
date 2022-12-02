@@ -1,0 +1,139 @@
+<!-- begin:: Content Head -->
+<div class="kt-subheader  kt-grid__item" id="kt_subheader">
+	<div class="kt-container  kt-container--fluid ">
+		<div class="kt-subheader__main">
+			<span class="kt-subheader__separator kt-hidden"></span>
+			<div class="kt-subheader__breadcrumbs">
+				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="fa fa-bars"></i></a>
+                <a href="{$config->site_url('admin/navigasi/navigasi')}" class="kt-subheader__breadcrumbs-link">Navigasi</a>
+                &nbsp;&nbsp;&nbsp;
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="#" class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</a>
+			</div>
+		</div>
+		<div class="kt-subheader__toolbar">
+			<div class="kt-subheader__wrapper">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end:: Content Head -->
+
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+	<!-- notification template -->
+	{include file="base/templates/notification.html"}
+	<!-- end of notification template-->
+
+	<div class="kt-portlet kt-portlet--mobile">
+		<div class="kt-portlet__head kt-portlet__head--lg">
+			<div class="kt-portlet__head-label">
+				<h3 class="kt-portlet__head-title">
+					Tambah Navigasi
+					<!-- <small>Berikut adalah daftar kategori berita</small> -->
+				</h3>
+			</div>
+			<div class="kt-portlet__head-toolbar">
+				<div class="kt-portlet__head-wrapper">
+					<div class="kt-portlet__head-actions">
+						<a href="{$config->site_url('admin/navigasi/navigasi')}" class="btn btn-clean kt-margin-r-10">
+							<i class="la la-arrow-left"></i>
+							<span class="kt-hidden-mobile">Kembali</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="kt-portlet__body kt-portlet__body">
+			<form class="kt-form kt-form--label-right" action="{$config->site_url('admin/navigasi/navigasi/add_process')}" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="portal_id" value="{$portal.portal_id|default:''}" />
+				<div class="kt-portlet__body">
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Parent</label>
+						<div class="col-lg-4 col-md-6 col-sm-12">
+							<select class="form-control kt-select2" name="parent_id" id="parent_id" aria-hidden="true">
+								<option value="0">Tidak Ada</option>
+								{$list_parent|default:''}
+							</select>
+							<br />
+							<small class="help-text text-muted">Opsional</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Judul</label>
+						<div class="col-lg-10 col-md-10 col-sm-12">
+							<input type="text" class="form-control" name="nav_title" value="{$result.nav_title|default:''}" required="required">
+							<small class="help-block text-danger">* Wajib diisi</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Deskripsi</label>
+						<div class="col-lg-10 col-md-10 col-sm-12">
+							<input type="text" class="form-control" name="nav_desc" value="{$result.nav_desc|default:''}" required="required">
+							<small class="help-block text-muted">* Opsional</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Alamat</label>
+						<div class="col-lg-10 col-md-10 col-sm-12">
+							<input type="text" class="form-control" name="nav_url" value="{$result.nav_url|default:''}" required="required">
+							<small class="help-block text-danger">* Wajib diisi</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Urutan</label>
+						<div class="col-lg-10 col-md-10 col-sm-12">
+							<input type="text" class="form-control numberonly" name="nav_no" value="{$result.nav_no|default:''}" required="required" maxlength="4">
+							<small class="help-block text-danger">* Wajib diisi</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Status Ditampilkan</label>
+						<div class="col-lg-4 col-md-9 col-sm-12">
+							<select class="form-control" name="active_st" id="active_st">
+								<option value="1"{if {$result.active_st|default:''} == "1"}selected="selected"{/if}>Ya</option>
+								<option value="0" {if {$result.active_st|default:''} == "0"}selected="selected"{/if}>Tidak</option>
+							</select>
+							<small class="help-block text-danger">* Wajib Diisi</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Ditampilkan</label>
+						<div class="col-lg-4 col-md-9 col-sm-12">
+							<select class="form-control" name="display_st" id="display_st">
+								<option value="1"{if {$result.display_st|default:''} == "1"}selected="selected"{/if}>Ya</option>
+								<option value="0" {if {$result.display_st|default:''} == "0"}selected="selected"{/if}>Tidak</option>
+							</select>
+							<small class="help-block text-danger">* Wajib Diisi</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Status</label>
+						<div class="col-lg-4 col-md-9 col-sm-12">
+							<select class="form-control" name="nav_st" id="nav_st">
+								<option value="eksternal"{if {$result.nav_st|default:''} == "eksternal"}selected="selected"{/if}>Eksternal</option>
+								<option value="internal" {if {$result.nav_st|default:''} == "internal"}selected="selected"{/if}>Internal</option>
+							</select>
+							<small class="help-block text-danger">* Wajib Diisi</small>
+						</div>
+					</div>
+				</div>
+				<div class="kt-portlet__foot">
+					<div class="kt-form__actions">
+						<button type="submit" class="btn btn-primary">Simpan</button>
+						<button type="reset" class="btn btn-secondary">Reset</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- end:: Content -->
+
+
+<script>
+	$(document).ready(function() {
+		$('.kt-select2').select2();
+	});
+</script>

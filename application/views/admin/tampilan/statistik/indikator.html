@@ -1,0 +1,134 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/dashboard/dashboard')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item">Tampilan</li>
+                    <li class="breadcrumb-item active">Statistik</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Statistik</h4>
+        </div>
+    </div>
+</div>
+
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- <h4 class="header-title">Pencarian</h4> -->
+                <form action="{$config->site_url('admin/tampilan/statistik/search_process')}" method="post">
+                    <input type="hidden" name="process" value="process" />
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Urusan</label>
+                                <select name="urusan_id" class="form-select" id="urusan_id" data-placeholder="Pilih">
+                                    <option value="">Pilih</option>
+                                    {foreach $induk_urusan as $result}
+                                    <option value="{$result.urusan_id|default:''}" {$result.urusan_id|default:''} -
+                                        {$result.urusan_name|default:''} {if $result.urusan_id|default:'' eq
+                                        $search.urusan_id|default:''}selected='selected' {/if}>
+                                        {$result.urusan_id|default:''} -
+                                        {$result.urusan_name|default:''}
+                                    </option>
+
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3" style="padding-top: 27px;">
+                                <button id="ajukan" name="ajukan" type="submit"
+                                    class="btn btn-primary waves-effect waves-light">
+                                    Cari<span class="btn-label-right"><i class="mdi mdi-magnify"></i></span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <!-- {$result_user['instansi_cd']|default:''} -->
+
+                <div class="row">
+                    <div class="col-md-9 mb-2">
+
+                        <h4 class="header-title">Indikator/Variabel/Sub Variabel</h4>
+                        <p class="sub-header">
+                            Berikut adalah daftar Indikator/Variabel/Sub Variabel yang tersedia
+                        </p>
+                    </div>
+
+                    <!-- <div class="col-md-3 mb-2" align="right">
+                        <a target="_blank" href="{$config->site_url('admin/tampilan/statistik/download_data_all')}"
+                            class="btn btn-danger">
+                            Unduh<span class="btn-label-right"><i class="mdi mdi-download"></i></span>
+                        </a>
+                    </div> -->
+                </div>
+                <table id="basic-datatable" class="table dt-responsive nowrap table-bordered w-100">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Kode</th>
+                            <th>Indikator/Variabel/Sub Variabel/Sub2 Variabel/Sub3 Variabel/Sub4
+                                Variabel</th>
+
+                            <th>Type</th>
+                            <!-- <th>Instansi</th> -->
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $rs_id as $result}
+                        <tr>
+                            <td style="width:5%">
+                                {$result.data_id|default:''}
+                            </td>
+                            <td style="width:60%">
+                                {$result.data_name|default:''}
+                            </td>
+
+                            <td style="width:5%">
+                                {$result.data_type|default:''}
+                            </td>
+                            <!-- <td style="width:20%">
+                                {$result.instansi_name|default:''}
+                            </td> -->
+                            <td style="width:10%">
+                                <a href="{$config->site_url('admin/tampilan/statistik/edit_indikator/'|cat:$result.data_id|default:'')}"
+                                    class="btn btn-success">
+                                    Ubah<span class="btn-label-right"><i class="mdi mdi-lead-pencil"></i></span>
+                                </a>
+                                <a href="{$config->site_url('admin/tampilan/statistik/delete_urusan_process/'|cat:$result.data_id|default:'')}"
+                                    class="btn btn-danger" onclick="return confirm('Yakin hapus data?')">
+                                    Hapus<span class="btn-label-right"><i class="mdi mdi-delete"></i></span>
+                                </a>
+
+                            </td>
+                        </tr>
+                        {/foreach}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

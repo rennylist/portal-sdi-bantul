@@ -1,0 +1,382 @@
+<script>
+	$(document).ready(function () {
+		// tanggal
+		$('.tgl').datepicker({
+			format: "yyyy-mm-dd"
+		});
+
+		// set selected search kategori
+		$('select#category').select2({
+			placeholder: "Pilih Kategori"
+		}).val([{ $search.category }]).trigger('change')
+	})
+</script>
+
+<!-- begin:: Content Head -->
+<div class="kt-subheader  kt-grid__item" id="kt_subheader">
+	<div class="kt-container  kt-container--fluid ">
+		<div class="kt-subheader__main">
+			<h3 class="kt-subheader__title">Tambah</h3>
+			<span class="kt-subheader__separator kt-hidden"></span>
+			<div class="kt-subheader__breadcrumbs">
+				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="" class="kt-subheader__breadcrumbs-link">Berita</a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="" class="kt-subheader__breadcrumbs-link">Kategori Berita</a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="" class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Tambah</a>
+			</div>
+		</div>
+		<div class="kt-subheader__toolbar">
+			<div class="kt-subheader__wrapper">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end:: Content Head -->
+
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+	<!-- notification template -->
+	{include file="base/templates/notification.html"}
+	<!-- end of notification template-->
+
+	<div class="kt-portlet kt-portlet--mobile">
+		<div class="kt-portlet__head kt-portlet__head--lg">
+			<div class="kt-portlet__head-label">
+				<span class="kt-portlet__head-icon">
+					<i class="kt-font-brand flaticon2-line-chart"></i>
+				</span>
+				<h3 class="kt-portlet__head-title">
+					Form Kategori Berita
+					<!-- <small>Berikut adalah daftar kategori berita</small> -->
+				</h3>
+			</div>
+			<div class="kt-portlet__head-toolbar">
+				<div class="kt-portlet__head-wrapper">
+					<div class="kt-portlet__head-actions">
+						<a href="#" class="btn btn-clean kt-margin-r-10">
+							<i class="la la-arrow-left"></i>
+							<span class="kt-hidden-mobile">Kembali</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="kt-portlet__body kt-portlet__body">
+			<form class="kt-form">
+				<div class="kt-portlet__body">
+					<div class="form-group form-group-last">
+						<div class="alert alert-secondary" role="alert">
+							<div class="alert-icon"><i class="flaticon-warning kt-font-brand"></i></div>
+							<div class="alert-text">
+								The example form below demonstrates common HTML form elements that receive updated
+								styles from Bootstrap with additional classes.
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Email address</label>
+						<input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+						<span class="form-text text-muted">We'll never share your email with anyone else.</span>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">Password</label>
+						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+					</div>
+					<div class="form-group">
+						<label>Static:</label>
+						<p class="form-control-static">email@example.com</p>
+					</div>
+					<div class="form-group">
+						<label for="exampleSelect1">Example select</label>
+						<select class="form-control" id="exampleSelect1">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="exampleSelect2">Example multiple select</label>
+						<select multiple="" class="form-control" id="exampleSelect2">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="exampleTextarea">Example textarea</label>
+						<textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+					</div>
+					<div class="form-group">
+						<label>Default Checkboxes</label>
+						<div class="kt-checkbox-list">
+							<label class="kt-checkbox">
+								<input type="checkbox"> Default
+								<span></span>
+							</label>
+							<label class="kt-checkbox">
+								<input type="checkbox"> Option 2
+								<span></span>
+							</label>
+							<label class="kt-checkbox kt-checkbox--disabled">
+								<input type="checkbox" disabled=""> Disabled
+								<span></span>
+							</label>
+							<label class="kt-checkbox">
+								<input type="checkbox" checked="checked"> Checked
+								<span></span>
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Inline Checkboxes</label>
+						<div class="kt-checkbox-inline">
+							<label class="kt-checkbox">
+								<input type="checkbox"> Option 1
+								<span></span>
+							</label>
+							<label class="kt-checkbox">
+								<input type="checkbox"> Option 2
+								<span></span>
+							</label>
+							<label class="kt-checkbox">
+								<input type="checkbox"> Option 3
+								<span></span>
+							</label>
+						</div>
+						<span class="form-text text-muted">Some help text goes here</span>
+					</div>
+					<div class="form-group">
+						<label>Inline Radios</label>
+						<div class="kt-radio-inline">
+							<label class="kt-radio">
+								<input type="radio" name="radio2"> Option 1
+								<span></span>
+							</label>
+							<label class="kt-radio">
+								<input type="radio" name="radio2"> Option 2
+								<span></span>
+							</label>
+							<label class="kt-radio">
+								<input type="radio" name="radio2"> Option 3
+								<span></span>
+							</label>
+						</div>
+						<span class="form-text text-muted">Some help text goes here</span>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label">Inline Radios Selected State</label>
+						<div class="col-9">
+							<div class="kt-radio-inline">
+								<label class="kt-radio">
+									<input type="radio" name="radio4"> Option 1
+									<span></span>
+								</label>
+								<label class="kt-radio">
+									<input type="radio" checked="checked" name="radio4"> Option 2
+									<span></span>
+								</label>
+								<label class="kt-radio">
+									<input type="radio" name="radio4"> Option 3
+									<span></span>
+								</label>
+							</div>
+							<span class="form-text text-muted">Some help text goes here</span>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-3 col-form-label">Default Switch</label>
+						<div class="col-3">
+							<span class="kt-switch">
+								<label>
+									<input type="checkbox" checked="checked" name="">
+									<span></span>
+								</label>
+							</span>
+						</div>
+						<label class="col-3 col-form-label">With Icon</label>
+						<div class="col-3">
+							<span class="kt-switch kt-switch--icon">
+								<label>
+									<input type="checkbox" checked="checked" name="">
+									<span></span>
+								</label>
+							</span>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-3 col-sm-12">Input Group Setup</label>
+						<div class="col-lg-4 col-md-9 col-sm-12">
+							<div class="input-group date">
+								<input type="text" class="form-control" readonly="" placeholder="Select date"
+									id="kt_datepicker_2">
+								<div class="input-group-append">
+									<span class="input-group-text">
+										<i class="la la-calendar-check-o"></i>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group form-group-last row">
+						<label class="col-form-label col-lg-3 col-sm-12">Basic example</label>
+						<div class="col-lg-6 col-md-9 col-sm-12">
+							<input id="kt_tagify_1" name="tags" placeholder="type..." value="css, html, javascript"
+								autofocus="" data-blacklist=".NET,PHP">
+						</div>
+					</div>
+					<div class="form-group row" data-select2-id="165">
+						<label class="col-form-label col-lg-3 col-sm-12">Basic Example</label>
+						<div class=" col-lg-4 col-md-9 col-sm-12" data-select2-id="164">
+							<select class="form-control kt-select2 select2-hidden-accessible" id="kt_select2_1"
+								name="param" data-select2-id="kt_select2_1" tabindex="-1" aria-hidden="true">
+								<option value="AK" data-select2-id="2">Alaska</option>
+								<option value="HI" data-select2-id="166">Hawaii</option>
+								<option value="CA" data-select2-id="167">California</option>
+								<option value="NV" data-select2-id="168">Nevada</option>
+								<option value="OR" data-select2-id="169">Oregon</option>
+								<option value="WA" data-select2-id="170">Washington</option>
+								<option value="AZ" data-select2-id="171">Arizona</option>
+								<option value="CO" data-select2-id="172">Colorado</option>
+								<option value="ID" data-select2-id="173">Idaho</option>
+								<option value="MT" data-select2-id="174">Montana</option>
+								<option value="NE" data-select2-id="175">Nebraska</option>
+								<option value="NM" data-select2-id="176">New Mexico</option>
+								<option value="ND" data-select2-id="177">North Dakota</option>
+								<option value="UT" data-select2-id="178">Utah</option>
+								<option value="WY" data-select2-id="179">Wyoming</option>
+								<option value="AL" data-select2-id="180">Alabama</option>
+								<option value="AR" data-select2-id="181">Arkansas</option>
+								<option value="IL" data-select2-id="182">Illinois</option>
+								<option value="IA" data-select2-id="183">Iowa</option>
+								<option value="KS" data-select2-id="184">Kansas</option>
+								<option value="KY" data-select2-id="185">Kentucky</option>
+								<option value="LA" data-select2-id="186">Louisiana</option>
+								<option value="MN" data-select2-id="187">Minnesota</option>
+								<option value="MS" data-select2-id="188">Mississippi</option>
+								<option value="MO" data-select2-id="189">Missouri</option>
+								<option value="OK" data-select2-id="190">Oklahoma</option>
+								<option value="SD" data-select2-id="191">South Dakota</option>
+								<option value="TX" data-select2-id="192">Texas</option>
+								<option value="TN" data-select2-id="193">Tennessee</option>
+								<option value="WI" data-select2-id="194">Wisconsin</option>
+								<option value="CT" data-select2-id="195">Connecticut</option>
+								<option value="DE" data-select2-id="196">Delaware</option>
+								<option value="FL" data-select2-id="197">Florida</option>
+								<option value="GA" data-select2-id="198">Georgia</option>
+								<option value="IN" data-select2-id="199">Indiana</option>
+								<option value="ME" data-select2-id="200">Maine</option>
+								<option value="MD" data-select2-id="201">Maryland</option>
+								<option value="MA" data-select2-id="202">Massachusetts</option>
+								<option value="MI" data-select2-id="203">Michigan</option>
+								<option value="NH" data-select2-id="204">New Hampshire</option>
+								<option value="NJ" data-select2-id="205">New Jersey</option>
+								<option value="NY" data-select2-id="206">New York</option>
+								<option value="NC" data-select2-id="207">North Carolina</option>
+								<option value="OH" data-select2-id="208">Ohio</option>
+								<option value="PA" data-select2-id="209">Pennsylvania</option>
+								<option value="RI" data-select2-id="210">Rhode Island</option>
+								<option value="SC" data-select2-id="211">South Carolina</option>
+								<option value="VT" data-select2-id="212">Vermont</option>
+								<option value="VA" data-select2-id="213">Virginia</option>
+								<option value="WV" data-select2-id="214">West Virginia</option>
+							</select>
+							<span
+								class="select2 select2-container select2-container--default select2-container--below"
+								dir="ltr" data-select2-id="1" style="width: 303.65px;"><span class="selection"><span
+										class="select2-selection select2-selection--single" role="combobox"
+										aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false"
+										aria-labelledby="select2-kt_select2_1-container"><span
+											class="select2-selection__rendered" id="select2-kt_select2_1-container"
+											role="textbox" aria-readonly="true" title="Alaska">Alaska</span><span
+											class="select2-selection__arrow" role="presentation"><b
+												role="presentation"></b></span></span></span><span
+									class="dropdown-wrapper" aria-hidden="true"></span></span>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-3 col-sm-12">Limiting Selections</label>
+						<div class=" col-lg-4 col-md-9 col-sm-12" data-select2-id="217">
+							<select class="form-control kt-select2 select2-hidden-accessible" id="kt_select2_9" name="param" multiple="" data-select2-id="kt_select2_9" tabindex="-1" aria-hidden="true">
+								<option data-select2-id="218"></option>
+								<optgroup label="Alaskan/Hawaiian Time Zone" data-select2-id="219">
+									<option value="AK" data-select2-id="220">Alaska</option>
+									<option value="HI" data-select2-id="221">Hawaii</option>
+								</optgroup>
+								<optgroup label="Pacific Time Zone" data-select2-id="222">
+									<option value="CA" data-select2-id="223">California</option>
+									<option value="NV" selected="" data-select2-id="36">Nevada</option>
+									<option value="OR" data-select2-id="224">Oregon</option>
+									<option value="WA" data-select2-id="225">Washington</option>
+								</optgroup>
+								<optgroup label="Mountain Time Zone" data-select2-id="226">
+									<option value="AZ" data-select2-id="227">Arizona</option>
+									<option value="CO" data-select2-id="228">Colorado</option>
+									<option value="ID" data-select2-id="229">Idaho</option>
+									<option value="MT" data-select2-id="230">Montana</option>
+									<option value="NE" data-select2-id="231">Nebraska</option>
+									<option value="NM" data-select2-id="232">New Mexico</option>
+									<option value="ND" data-select2-id="233">North Dakota</option>
+									<option value="UT" data-select2-id="234">Utah</option>
+									<option value="WY" data-select2-id="235">Wyoming</option>
+								</optgroup>
+								<optgroup label="Central Time Zone" data-select2-id="236">
+									<option value="AL" data-select2-id="237">Alabama</option>
+									<option value="AR" data-select2-id="238">Arkansas</option>
+									<option value="IL" data-select2-id="239">Illinois</option>
+									<option value="IA" data-select2-id="240">Iowa</option>
+									<option value="KS" data-select2-id="241">Kansas</option>
+									<option value="KY" data-select2-id="242">Kentucky</option>
+									<option value="LA" data-select2-id="243">Louisiana</option>
+									<option value="MN" data-select2-id="244">Minnesota</option>
+									<option value="MS" data-select2-id="245">Mississippi</option>
+									<option value="MO" data-select2-id="246">Missouri</option>
+									<option value="OK" data-select2-id="247">Oklahoma</option>
+									<option value="SD" data-select2-id="248">South Dakota</option>
+									<option value="TX" data-select2-id="249">Texas</option>
+									<option value="TN" data-select2-id="250">Tennessee</option>
+									<option value="WI" data-select2-id="251">Wisconsin</option>
+								</optgroup>
+								<optgroup label="Eastern Time Zone" data-select2-id="252">
+									<option value="CT" data-select2-id="253">Connecticut</option>
+									<option value="DE" data-select2-id="254">Delaware</option>
+									<option value="FL" data-select2-id="255">Florida</option>
+									<option value="GA" data-select2-id="256">Georgia</option>
+									<option value="IN" data-select2-id="257">Indiana</option>
+									<option value="ME" data-select2-id="258">Maine</option>
+									<option value="MD" data-select2-id="259">Maryland</option>
+									<option value="MA" data-select2-id="260">Massachusetts</option>
+									<option value="MI" data-select2-id="261">Michigan</option>
+									<option value="NH" data-select2-id="262">New Hampshire</option>
+									<option value="NJ" data-select2-id="263">New Jersey</option>
+									<option value="NY" data-select2-id="264">New York</option>
+									<option value="NC" data-select2-id="265">North Carolina</option>
+									<option value="OH" data-select2-id="266">Ohio</option>
+									<option value="PA" data-select2-id="267">Pennsylvania</option>
+									<option value="RI" data-select2-id="268">Rhode Island</option>
+									<option value="SC" data-select2-id="269">South Carolina</option>
+									<option value="VT" data-select2-id="270">Vermont</option>
+									<option value="VA" data-select2-id="271">Virginia</option>
+									<option value="WV" data-select2-id="272">West Virginia</option>
+								</optgroup>
+							</select><span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" data-select2-id="35" style="width: 303.65px;"><span class="selection"><span class="select2-selection select2-selection--multiple" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="-1" aria-disabled="false"><ul class="select2-selection__rendered"><li class="select2-selection__choice" title="Hawaii" data-select2-id="278"><span class="select2-selection__choice__remove" role="presentation">×</span>Hawaii</li><li class="select2-selection__choice" title="Nevada" data-select2-id="279"><span class="select2-selection__choice__remove" role="presentation">×</span>Nevada</li><li class="select2-search select2-search--inline"><input class="select2-search__field" type="search" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" role="searchbox" aria-autocomplete="list" placeholder="" style="width: 0.75em;"></li></ul></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+						</div>
+					</div>
+				</div>
+				<div class="kt-portlet__foot">
+					<div class="kt-form__actions">
+						<button type="reset" class="btn btn-primary">Submit</button>
+						<button type="reset" class="btn btn-secondary">Cancel</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- end:: Content -->

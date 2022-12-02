@@ -1,0 +1,243 @@
+<script type="text/javascript" src="{$BASEURL}resource/js/jquery/jquery-3.6.0.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+        //init
+        $total = 0;
+		// menamhah form input file
+		$('#addFile').click(function() {
+            $total =  $total+1;
+            // alert( $total);
+            if($total == 2){
+                $('#addFile').hide();
+            }else{
+                $('#addFile').show();
+            }
+			// tambahkan element
+			$('#uploadContainer').append(
+                    '<div class="row upload">' +
+					'<div class="col-10" style="margin-left: 0 !important; padding-left: 0 !important; margin-bottom: 10px !important;">'+
+					'<input name="post_file[]" class="form-control upload-file file-styled"type="file" accept=".jpg,.png,.gif,.jpeg,.bmp,.pdf">' +
+					'</div>'+
+					'<div class="col-2" >'+
+					'<button type="button" class="btn btn-danger add-tooltip remove-upload" data-toggle="tooltip" data-container="body" data-placement="top" data-original-title="hapus"><i class="fa fa-times"></i></button>'+
+					'</div>'+
+					'</div>');
+			// initial event
+			$('.remove-upload').click(function() {
+				$(this).parent().parent().remove();
+			});
+			// init uniform js
+			$(".file-styled").uniform({
+				fileButtonClass: 'action btn btn-primary'
+			});
+		});
+
+        $('.remove-upload').click(function() {
+            // $total =  $total-1;
+            alert("ss");
+        });
+	});
+</script>
+<style>
+	.upload{
+		margin: 0;
+		padding: 0;
+		
+	}
+</style>
+<section class="page-header page-header-modern bg-color-light-scale-1 page-header-md">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 align-self-center p-static order-2 text-center">
+                <h1 class="text-dark font-weight-bold text-8">Jaring Aspirasi</h1>
+                <span class="sub-title text-dark">Layanan untuk menampung aspirasi masyarakat.</span>
+            </div>
+            <div class="col-md-12 align-self-center order-1">
+                <ul class="breadcrumb d-block text-center">
+                    <li><a href="{$config->site_url('')}">Beranda</a></li>
+                    <li class="active">Jaring Aspirasi</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="examples" class="container py-2">
+    <div class="row">
+        <div class="col">
+            <div class="row process process-shapes process-shapes-always-animate my-5">
+                <div class="process-step col-lg-6 mb-5 mb-lg-6 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="400" style="animation-delay: 400ms;">
+                    <div class="process-step-circle process-shapes-always-animate-delay">
+                        <strong class="process-step-circle-content">01</strong>
+                    </div>
+                    <div class="process-step-content">
+                        <h4 class="mb-1 text-5 font-weight-bold">Kirim Aspirasi</h4>
+                        <p class="mb-0">Pengiriman aspirasi beserta dokumen pendukung</p>
+                    </div>
+                </div>
+                <div class="process-step col-lg-6 mb-5 mb-lg-6 appear-animation animated fadeInUpShorter appear-animation-visible" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="400" style="animation-delay: 400ms;">
+                    <div class="process-step-circle process-shapes-always-animate-delay">
+                        <strong class="process-step-circle-content">02</strong>
+                    </div>
+                    <div class="process-step-content">
+                        <h4 class="mb-1 text-5 font-weight-bold">Selesai</h4>
+                        <p class="mb-0">Proses pemberian aspirasi selesai.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 order-1 order-lg-2">
+            <h4 class="mb-2">
+                <span class="text-light bg-color-primary">&nbsp; 02 &nbsp;</span> &nbsp; Kirim Aspirasi
+            </h4>
+            <div class="tab-pane tab-pane-navigation active" id="formsStyleWithIcons">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <!-- notification template -->
+                                {include file="base/templates/notification-public.html"}
+                                <!-- end of notification template-->
+                                  <form class="contact-form form-with-icons" action="{$config->site_url('jaringaspirasi/detail_process')}" method="POST" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="form-group col-lg-12">
+                                            <label class="form-label mb-1 text-2">Nomor Induk Kependudukan (NIK)</label>
+                                            <div class="position-relative">
+                                                <i class="icons icon-heart text-color-primary text-3 position-absolute left-15 top-50pct transform3dy-n50"></i>
+                                                <span style="margin-left: 40px;">
+                                                    {$jaringaspirasi_sender.data->NIK|default:'-'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <label class="form-label mb-1 text-2">Nama Lengkap</label>
+                                            <div class="position-relative">
+                                                <i class="icons icon-user text-color-primary text-3 position-absolute left-15 top-50pct transform3dy-n50"></i>
+                                                <span style="margin-left: 40px;">
+                                                    {$jaringaspirasi_sender.aspirasi_sender_nm|default:'-'}
+                                                    <!-- <b>{$jaringaspirasi_sender.data->NAMA_LGKP|default:'-'}</b> -->
+                                                    <input type="hidden" value="{$jaringaspirasi_sender.data->NIK|default:'-'}" name="aspirasi_sender_ktp" >
+                                                    <input type="hidden" value="{$jaringaspirasi_sender.data->NAMA_LGKP|default:'-'}" name="aspirasi_sender_ktp_nm" >
+                                                    <input type="hidden" value="{$jaringaspirasi_sender.aspirasi_sender_nm|default:'-'}" name="aspirasi_sender_nm" >
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col">
+                                            <label class="form-label mb-1 text-2">Nomor Telepon</label>
+                                            <span class="text-secondary">*</span>
+                                            <div class="position-relative">
+                                                <i class="icons icon-phone text-color-primary text-3 position-absolute left-15 top-50pct transform3dy-n50"></i>
+                                                <input type="text" value="{$result.aspirasi_sender_phone|default:''}" data-msg-required="Mohon masukkan Nomor Telepon" maxlength="13" class="form-control text-3 h-auto py-2 numberonly" name="aspirasi_sender_phone" required autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col">
+                                            <label class="form-label mb-1 text-2">Email</label>
+                                            <div class="position-relative">
+                                                <i class="icons icon-envelope text-color-primary text-3 position-absolute left-15 top-50pct transform3dy-n50"></i>
+                                                <input type="text" value="{$result.aspirasi_sender_mail|default:''}" data-msg-required="Mohon masukkan email" maxlength="30" class="form-control text-3 h-auto py-2" name="aspirasi_sender_mail" autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col">
+                                            <label class="form-label mb-1 text-2">Subjek</label>
+                                            <span class="text-secondary">*</span>
+                                            <div class="position-relative">
+                                                <i class="icons icon-note text-color-primary text-3 position-absolute left-15 top-50pct transform3dy-n50"></i>
+                                                <input type="text" value="{$result.aspirasi_subject|default:''}" data-msg-required="Mohon masukkan subjek" maxlength="100" class="form-control text-3 h-auto py-2" name="aspirasi_subject" autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col">
+                                            <label class="form-label mb-1 text-2">Aspirasi</label>
+                                            <span class="text-secondary">*</span>
+                                            <div class="position-relative">
+                                                <i class="icons icon-bubble text-color-primary text-3 position-absolute left-15 top-15"></i>
+                                                <textarea maxlength="5000" data-msg-required="Please enter your message." rows="2" class="form-control text-3 h-auto py-2" name="aspirasi_desc" required="">{$result.aspirasi_desc|default:''}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="form-label mb-1 text-2">Status Pengirim (Identitas pengirim akan ditampilkan apabila tidak pilih)</label>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="custom-checkbox-1">
+                                                <input id="anonim_st" type="checkbox" name="anonim_st" value="1">
+                                                <label 
+                                                    for="anonim_st" 
+                                                    data-bs-toggle="tooltip" 
+                                                    data-bs-animation="false" 
+                                                    data-bs-placement="top" 
+                                                    title="" 
+                                                    data-bs-original-title="Nama Anda tidak akan terpublikasi pada laporan">
+                                                        Anonim
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="custom-checkbox-1">
+                                                <input id="secret_st" type="checkbox" name="secret_st" value="1">
+                                                <label  
+                                                    for="secret_st" 
+                                                    data-bs-toggle="tooltip" 
+                                                    data-bs-animation="false" 
+                                                    data-bs-placement="top" 
+                                                    title="" 
+                                                    data-bs-original-title="Laporan anda tidak dapat dilihat oleh publik">
+                                                    Rahasia
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 15px;">
+                                        <div class="form-group col">
+                                            <label class="form-label mb-1 text-2">Dokumen Pendukung (jika ada, dengan format file *.jpg, *.jpeg, *.bmp, *.pdf dan ukuran file maksimal 2MB)</label>
+                                            <!-- <span class="text-secondary">*</span> -->
+                                            <div class="position-relative">
+                                            <div id="uploadContainer" style="margin-bottom: 10px">
+                                                <div class="upload">
+                                                    <div class="col-md-10" style="margin-left: 0 !important; padding-left: 0 !important; margin-bottom: 10px !important;">
+                                                        <input name="post_file[]" class="form-control upload-file file-styled" type="file" accept=".jpg,.png,.gif,.jpeg,.bmp,.pdf,.doc,.docx,.xls,.xslx,.ppt,.pptx,.mp3">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-default" id="addFile">Tambah File Lain</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 5px;">
+                                        <div class="form-group col">
+                                            <label class="form-label mb-1 text-2">Captcha</label>
+                                            {$captcha.widget|default:''}
+                                            {$captcha.script|default:''}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col">
+                                            <span class="text-secondary">* wajib diisi.</span>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="row">
+                                        <div class="form-group col">
+                                            <input type="submit" value="Kirim" class="btn btn-primary" data-loading-text="Loading...">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

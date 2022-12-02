@@ -1,0 +1,79 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Settings</a></li>
+        <li class="breadcrumb-item"><a href="#">System</a></li>
+        <li class="breadcrumb-item"><a href="{$config->site_url('settings/sistem/portal')}">Web Portal</a></li>
+        <li class="breadcrumb-item active">Tambah Data</li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">			
+            <div class="box-header">
+                <h2>Tambah Data</h2>
+                <div class="box-tool">
+                    <ul class="nav nav-xs">
+                        <li class="nav-item">
+                            <a href="{$config->site_url('settings/sistem/portal')}" class="btn btn-sm btn-outline b-primary text-primary">
+                                <i class="fa fa-arrow-left mr-1"></i> Kembali
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="box-divider m-0"></div>
+            <form action="{$config->site_url('settings/sistem/portal/add_process')}" method="post" class="p-x-xs">
+                <div class="box-body">
+                    <!-- notification template -->
+                    {include file="base/templates/notification.html"}
+                    <!-- end of notification template-->
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Nama Portal</label>
+                        <div class="col-md-6">
+                            <input type="text" name="portal_nm" value="{$result.portal_nm|default:''}" class="form-control" placeholder="Isikan nama web portal" required="required" />
+                        </div>
+                        <small class="col-md-3 form-text text-warning">Wajib diisi</small>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Judul Web</label>
+                        <div class="col-md-6">
+                            <input type="text" name="site_title" value="{$result.site_title|default:''}" class="form-control" placeholder="Isikan judul web portal" required="required" />
+                        </div>
+                        <small class="col-md-3 form-text text-warning">Wajib diisi</small>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Deskripsi Web</label>
+                        <div class="col-md-6">
+                            <input type="text" name="site_desc" value="{$result.site_desc|default:''}" class="form-control" placeholder="Isikan uraian keterangan web portal" required="required" />
+                        </div>
+                        <small class="col-md-3 form-text text-warning">Wajib diisi</small>
+                    </div>
+                    <hr />
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Meta Keyword</label>
+                        <div class="col-md-6">
+                            <input type="text" name="meta_keyword" value="{$result.meta_keyword|default:''}" class="form-control" placeholder="Isikan meta keyword" required="required" />
+                        </div>
+                        <small class="col-md-3 form-text text-warning">Wajib diisi</small>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Meta Description</label>
+                        <div class="col-md-6">
+                            <input type="text" name="meta_desc" value="{$result.meta_desc|default:''}" class="form-control" placeholder="Isikan meta description" required="required" />
+                        </div>
+                        <small class="col-md-3 form-text text-warning">Wajib diisi</small>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="form-group row">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Simpan</button>
+                            <button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Reset</button>
+                        </div>                            
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

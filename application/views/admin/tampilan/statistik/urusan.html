@@ -1,0 +1,154 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/dashboard/admin')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item">Tampilan</li>
+                    <li class="breadcrumb-item">Statistik</li>
+                    <li class="breadcrumb-item active">Lihat Urusan</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Statistik</h4>
+        </div>
+    </div>
+</div>
+
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+
+<!-- <div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Pencarian</h4>
+                <form action="{$config->site_url('admin/tampilan/statistik/search_process')}" method="post">
+                    <input type="hidden" name="search_url" value="admin/tampilan/statistik" />
+                    <input type="hidden" name="urusan_id" value="{$urusan_id|default:''}" />
+                    <input type="hidden" name="process" value="process" />
+
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Tahun</label>
+                                <select name="tahun" id="tahun" class="form-control" data-toggle="select2"
+                                    data-width="100%">
+                                    {foreach $option_years as $thn}
+                                    <option value="{$thn|default:''}" {if $thn|default:'' eq
+                                        $search.tahun|default:''}selected='selected' {/if}> {$thn|default:''}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Indikator</label>
+                                <select name="indicator_id" id="indicator_id" class="form-control" data-toggle="select2"
+                                    data-width="100%">
+                                    <option value="">Semua</option>
+                                    {foreach $indicators as $indicator}
+                                    <option value="{$indicator.data_id|default:''}" {if $indicator.data_id|default:'' eq
+                                        $search.indicator_id|default:''}selected='selected' {/if}>
+                                        {$indicator.data_name|default:''}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Klasifikasi Indikator</label>
+                                <select name="indicator_class" id="indicator_class" class="form-select">
+                                    <option value="1">Indikator SDG’s</option>
+                                    <option value="2">Indikator RPJMD</option>
+                                    <option value="3">IKK LPPD</option>
+                                    <option value="4">Indikator SPM</option>
+                                    <option value="5">Data Daerah Dalam Angka</option>
+                                    <option value="6">Data Aplikasi Dataku DIY</option>
+                                    <option value="7">Data Pilah Gender</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="mb-3" style="padding-top: 27px;">
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">Cari</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- {$result_user['instansi_cd']|default:''} -->
+                <!-- <h4 class="header-title">Urusan</h4>
+                <p class="sub-header">
+                    Berikut adalah daftar urusan / bidang urusan yang tersedia
+                </p> -->
+                <div class="row">
+                    <div class="col-md-9 mb-2">
+                        <h4 class="header-title">Urusan</h4>
+                        <strong>Berikut adalah daftar urusan / bidang urusan yang tersedia</strong>
+                    </div>
+
+                    <!-- <div class="col-md-3 mb-2" align="right">
+                        <a target="_blank" href="{$config->site_url('admin/tampilan/statistik/download_data_all')}"
+                            class="btn btn-danger">
+                            Unduh<span class="btn-label-right"><i class="mdi mdi-download"></i></span>
+                        </a>
+                    </div> -->
+                </div>
+                <table id="basic-datatable" class="table dt-responsive nowrap table-bordered w-100">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Kode</th>
+                            <th>Urusan / Bidang Urusan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $rs_id as $result}
+                        <tr {if $result.parent_id|default:'' eq '0' } class="table-active" {/if}>
+                            <td style="width:5%">
+                                {if $result.parent_id|default:'' neq '0'}
+                                {$result.urusan_id|default:''}
+                                {else}
+                                <strong>{$result.urusan_id|default:''}</strong>
+                                {/if}
+                            </td>
+                            <td style="width:80%">
+                                {if $result.parent_id|default:'' neq '0'}
+                                <!-- <i class="fe-corner-down-right"></i> -->
+
+                                {$result.urusan_name|default:''}
+                                {else}
+                                <strong>{$result.urusan_name|default:''}</strong>
+                                {/if}
+                            </td>
+                            <td style="width:15%">
+                                <a href="{$config->site_url('admin/tampilan/statistik/edit_urusan/'|cat:$result.urusan_id|default:'')}"
+                                    class="btn btn-success">
+                                    Ubah<span class="btn-label-right"><i class="mdi mdi-lead-pencil"></i></span>
+                                </a>
+                                <a href="{$config->site_url('admin/tampilan/statistik/delete_urusan_process/'|cat:$result.urusan_id|default:'')}"
+                                    class="btn btn-danger" onclick="return confirm('Yakin hapus data?')">
+                                    Hapus<span class="btn-label-right"><i class="mdi mdi-delete"></i></span>
+                                </a>
+
+                            </td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

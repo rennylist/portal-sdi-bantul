@@ -1,0 +1,182 @@
+<script>
+	$(document).ready(function () {
+		// tanggal
+		$('.tgl').datepicker({
+			format: "yyyy-mm-dd"
+		});
+
+		// set selected search kategori
+		$('select#category').select2({
+			placeholder: "Pilih Kategori"
+		}).val([{ $search.category }]).trigger('change')
+	})
+</script>
+
+<!-- begin:: Content Head -->
+<div class="kt-subheader  kt-grid__item" id="kt_subheader">
+	<div class="kt-container  kt-container--fluid ">
+		<div class="kt-subheader__main">
+			<h3 class="kt-subheader__title">Daftar</h3>
+			<span class="kt-subheader__separator kt-hidden"></span>
+			<div class="kt-subheader__breadcrumbs">
+				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="flaticon2-shelter"></i></a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="" class="kt-subheader__breadcrumbs-link">Berita</a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="" class="kt-subheader__breadcrumbs-link">Kategori Berita</a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="" class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Daftar</a>
+			</div>
+		</div>
+		<div class="kt-subheader__toolbar">
+			<div class="kt-subheader__wrapper">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end:: Content Head -->
+
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+	<!-- notification template -->
+	{include file="base/templates/notification.html"}
+	<!-- end of notification template-->
+	<div class="kt-portlet kt-portlet--mobile">
+		<div class="kt-portlet__head kt-portlet__head--lg">
+			<div class="kt-portlet__head-label">
+				<span class="kt-portlet__head-icon">
+					<i class="kt-font-brand flaticon2-line-chart"></i>
+				</span>
+				<h3 class="kt-portlet__head-title">
+					Daftar Kategori Berita
+				</h3>
+			</div>
+			<div class="kt-portlet__head-toolbar">
+				<div class="kt-portlet__head-wrapper">
+					<div class="kt-portlet__head-actions">
+						<a href="{$config->site_url('admin/berita/kategori/add')}"
+							class="btn btn-brand btn-elevate btn-icon-sm">
+							<i class="la la-plus"></i>
+							Tambah Data
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--begin: Search Form -->
+		<!-- <div class="kt-portlet__body">
+			<form action="{$config->site_url('admin/berita/berita/search_process')}" method="post">
+				<div class="kt-form kt-form--label-right kt-margin-t-0">
+					<div class="row align-items-center ">
+						<div class="col-xl-8 order-2 order-xl-1">
+							<div class="row align-items-center">
+								<div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+									<div class="kt-input-icon kt-input-icon--left">
+										<input type="text" class="form-control" placeholder="Judul..."
+											id="generalSearch">
+										<span class="kt-input-icon__icon kt-input-icon__icon--left">
+											<span><i class="la la-search"></i></span>
+										</span>
+									</div>
+								</div>
+								<div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+									<div class="kt-input-icon kt-input-icon--left">
+										<input type="text" class="form-control" placeholder="Judul..."
+											id="generalSearch">
+										<span class="kt-input-icon__icon kt-input-icon__icon--left">
+											<span><i class="la la-search"></i></span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-4 order-1 order-xl-2 kt-align-right kt-margin-b-20-tablet-and-mobile">
+							<a href="#" class="btn btn-success btn-icon-sm">
+								<i class="fa fa-search"></i>
+								Cari &nbsp;&nbsp;
+							</a>
+							<a href="#" class="btn btn-secondary kt-margin-l-10">
+								<i class="fa fa-undo"></i>
+								Reset
+							</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div> -->
+		<!--end: Search Form -->
+
+		<div class="kt-portlet__body kt-portlet__body">
+			<div class="kt-section">
+				<div class="kt-section__content">
+					<table class="table">
+						<thead>
+							<tr>
+								<th width="5%">No</th>
+								<th width="25%">Indonesia</th>
+								<th width="25%">Inggris</th>
+								<th width="25%">Jawa</th>
+								<th width="9%">Status</th>
+								<th width="11%">Aksi</th>
+							</tr>
+						</thead>
+						<tbody>
+							{foreach $rs_id as $result}
+							<tr>
+								<th scope="row">{$no++}</th>
+								<td>{$result.kategori_indo|default:''}</td>
+								<td>{$result.kategori_eng|default:''}</td>
+								<td>{$result.kategori_jawa|default:''}</td>
+								<td>
+									{if ($result.publish_st|default:'' eq 'yes')}
+									<span style="width: 110px;">
+										<span class="kt-badge  kt-badge--brand kt-badge--inline kt-badge--pill">tampil</span>
+									</span>
+									{else}
+									<span style="width: 110px;">
+										<span class="kt-badge  kt-badge--danger kt-badge--inline kt-badge--pill">sembunyi</span>
+									</span>
+									{/if}
+								</td>
+								<td>
+									<span style="overflow: visible; position: relative; width: 110px;">
+										<a href="{$config->site_url('admin/berita/kategori/edit/'|cat:$result.id_berita_kategori|default:'')}"
+											title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md">
+											<i class="la la-eye"></i>
+										</a>
+										<a href="{$config->site_url('admin/berita/kategori/edit/'|cat:$result.id_berita_kategori|default:'')}"
+											title="Edit details" class="btn btn-sm btn-clean btn-icon btn-icon-md">
+											<i class="la la-edit"></i>
+										</a>
+										<a href="{$config->site_url('admin/berita/kategori/delete/'|cat:$result.id_berita_kategori|default:'')}"
+											title="Delete" class="btn btn-sm btn-clean btn-icon btn-icon-md">
+											<i class="la la-trash"></i>
+										</a>
+									</span>
+								</td>
+							</tr>
+							{foreachelse}
+							<tr>
+								<td colspan="8">
+									Data tidak ditemukan!
+								</td>
+							</tr>
+							{/foreach}
+						</tbody>
+					</table>
+				</div>
+				<div class="kt-pagination  kt-pagination--brand  kt-font-bold">
+					{$pagination.data|default:''}
+					<div class="kt-pagination__toolbar">
+						<span class="pagination__desc kt-font-regular">
+							Menampilkan {$pagination.start|default:'0'} -
+							{$pagination.end|default:'0'} dari
+							{$pagination.total|default:'0'} data
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end:: Content -->

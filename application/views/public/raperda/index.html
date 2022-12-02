@@ -1,0 +1,67 @@
+<section class="page-header page-header-modern bg-color-light-scale-1 page-header-md">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 align-self-center p-static order-2 text-center">
+                <h1 class="text-dark font-weight-bold text-8">Raperda</h1>
+                <span class="sub-title text-dark">Rancangan Peraturan Daerah</span>
+            </div>
+            <div class="col-md-12 align-self-center order-1">
+                <ul class="breadcrumb d-block text-center">
+                    <li><a href="{$config->site_url('')}">Beranda</a></li>
+                    <li class="active">Raperda</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col">
+            <div class="blog-posts">
+                {foreach $rs_id as $result}
+                <article class="post post-large">
+                    <div class="post-date">
+                        <span class="day">{$result.post_day|default:''}</span>
+                        <span class="month">{$tdtm->get_bulan_singkatan($result.post_month|default:'')}</span>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="font-weight-semibold text-6 line-height-3 mb-3">
+                            <a href="{$config->site_url('raperda/detail/'|cat:''|cat:$result.post_id|default:''|cat:'/'|cat:$result.url|default:'')}">
+                                {$result.post_title|default:''}
+                            </a>
+                        </h2>
+                        <div style="text-align: justify; margin-bottom: 10px;">
+                            {$result.post_desc|default:'-'|truncate:600:"...":true}
+                        </div>
+                        <div class="post-meta">
+                            <!-- <span><i class="far fa-user"></i> By <a href="#">John Doe</a> </span> -->
+                            <!-- <span><i class="far fa-folder"></i> <a href="#">Lifestyle</a>, <a href="#">Design</a> </span> -->
+                            <span>
+                                <i class="far fa-comment"></i>
+                                 Masukan Raperda
+                                 {if $result.aspirasi_st|default:'' eq 'yes'}
+                                 <span class="inverted inverted"><b>dibuka</b></span>
+                                 {else}
+                                 <span class="inverted inverted-secondary"><b>ditutup</b></span>
+                                 {/if}
+                            </span>
+                            <!-- <span><i class="far fa-comments"></i> <a href="#">12 Masukan</a></span> -->
+                            <span class="d-block d-sm-inline-block float-sm-end mt-3 mt-sm-0">
+                                <a href="{$config->site_url('raperda/detail/'|cat:''|cat:$result.post_id|default:''|cat:'/'|cat:$result.url|default:'')}" class="btn btn-xs btn-light text-1 text-uppercase">Selengkapnya</a>
+                            </span>
+                        </div>
+                    </div>
+                </article>
+                {foreachelse}
+                Maaf, data tidak ditemukan !
+                {/foreach}
+                <ul class="pagination float-end">
+                    Menampilkan {$pagination.start|default:0} - {$pagination.end|default:0} dari {$pagination.total|default:0} data
+                    &nbsp;&nbsp;&nbsp;
+                    {$pagination.data|default:''}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

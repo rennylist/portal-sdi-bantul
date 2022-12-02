@@ -1,0 +1,157 @@
+<script type="text/javascript">
+	// preview gambar sebelum di upload
+	function tampilkanPreview(gambar, idpreview) {
+	    // membuat objek gambar
+	    var gb = gambar.files;
+	    // loop untuk merender gambar
+	    for (var i = 0; i < gb.length; i++) {
+	        // bikin variabel
+	        var gbPreview = gb[i];
+	        var imageType = /image.*/;
+	        var preview = document.getElementById(idpreview);
+	        var reader = new FileReader();
+	        if (gbPreview.type.match(imageType)) {
+	            //jika tipe data sesuai
+	            preview.file = gbPreview;
+	            reader.onload = (function (element) {
+	                return function (e) {
+	                    element.src = e.target.result;
+	                };
+	            })(preview);
+	            // membaca data URL gambar
+	            reader.readAsDataURL(gbPreview);
+	        } else {
+	            // jika tipe data tidak sesuai
+	            alert("Type file tidak sesuai. Khusus image.");
+	        }
+	    }
+	}
+	$(document).ready(function () {
+		// select2
+		$(".select-2").select2();
+		// file
+		$(".file-styled").uniform({
+            fileButtonClass: 'action btn btn-primary'
+        });
+	})
+</script>
+
+<!-- begin:: Content Head -->
+<div class="kt-subheader  kt-grid__item" id="kt_subheader">
+	<div class="kt-container  kt-container--fluid ">
+		<div class="kt-subheader__main">
+			<small class="kt-subheader__separator kt-hidden"></small>
+			<div class="kt-subheader__breadcrumbs">
+                <a href="#" class="kt-subheader__breadcrumbs-home"><i class="fa fa-bars"></i></a>
+				<a href="#" class="kt-subheader__breadcrumbs-link">Data Pendukung</a>
+				&nbsp;&nbsp;&nbsp;
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="{$config->site_url('admin/datas/slideshow')}" class="kt-subheader__breadcrumbs-link">Slideshow</a>
+				&nbsp;&nbsp;&nbsp;
+				<small class="kt-subheader__breadcrumbs-separator"></small>
+				<a href="#" class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Ubah</a>
+			</div>
+		</div>
+		<div class="kt-subheader__toolbar">
+			<div class="kt-subheader__wrapper">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end:: Content Head -->
+
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+	<!-- notification template -->
+	{include file="base/templates/notification.html"}
+	<!-- end of notification template-->
+	
+	<div class="kt-portlet kt-portlet--mobile">
+		<div class="kt-portlet__head kt-portlet__head--lg">
+			<div class="kt-portlet__head-label">
+				<h3 class="kt-portlet__head-title">
+					Ubah Slide Show
+					<!-- <small>Berikut adalah daftar kategori berita</small> -->
+				</h3>
+			</div>
+			<div class="kt-portlet__head-toolbar">
+				<div class="kt-portlet__head-wrapper">
+					<div class="kt-portlet__head-actions">
+						<a href="{$config->site_url('admin/datas/slideshow')}" class="btn btn-clean kt-margin-r-10">
+							<i class="la la-arrow-left"></i>
+							<span class="kt-hidden-mobile">Kembali</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="kt-portlet__body kt-portlet__body">
+			<form class="kt-form" action="{$config->site_url('admin/datas/slideshow/edit_process')}" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="slideshow_id" value="{$detail.slideshow_id|default:''}">
+				<div class="kt-portlet__body">
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Judul</label>
+						<div class="col-lg-8 col-md-9 col-sm-12">
+							<input type="text" class="form-control" name="slideshow_title" value="{$result.slideshow_title|default:''}">
+							<small class="help-block text-danger">* Wajib Diisi</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Deskripsi</label>
+						<div class="col-lg-8 col-md-9 col-sm-12">
+							<input type="text" class="form-control" name="slideshow_desc" value="{$result.slideshow_desc|default:''}">
+							<small class="help-block text-danger">* Wajib Diisi</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Urutan Menu</label>
+						<div class="col-lg-8 col-md-9 col-sm-12">
+							<input type="text" class="form-control" name="slideshow_order" value="{$result.slideshow_order|default:''}" required="required">
+							<small class="help-block text-danger">* Wajib Diisi</small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Gambar Pendukung</label>
+						<div class="col-lg-8 col-md-9 col-sm-12">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="custom-file">
+										<input type="file" class="custom-file-input" name="gambar_slideshow" accept="image/*" onchange="tampilkanPreview(this, 'preview')" />
+										<input type="hidden" name="gambar_lama" value="{$result.img_name|default:''}">
+										<input type="hidden" name="img_path" value="{$result.img_path|default:''}">
+										<label class="custom-file-label" for="customFile"></label>
+									</div>
+									<small class="help-block">Tipe gambar : JPG, JPEG, PNG (Ukuran file : 500kb, 3150 × 2100 pixels)</small>
+								</div>
+							</div>
+							<img id="preview" src="{$BASEURL}{$result.img_path|default:''}/{$result.img_name|default:''}" style="max-width: 300px; max-height: 300px;" alt="" />
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-form-label col-lg-2 col-sm-12">Status Ditampilkan</label>
+						<div class="col-lg-4 col-md-9 col-sm-12">
+							<div class="kt-radio-inline">
+								<label class="kt-radio kt-radio--solid kt-radio--success">
+									<input type="radio" name="publish_st" {if $result.publish_st|default:'' eq 'yes'} checked="checked"{/if} value="yes" required="required"> IYA
+									<span></span>
+								</label>
+								<label class="kt-radio kt-radio--solid kt-radio--danger">
+									<input type="radio" name="publish_st" {if $result.publish_st|default:'' eq 'no'} checked="checked"{/if} value="no"> TIDAK
+									<span></span>
+								</label>
+							</div>
+							<small class="help-block text-danger">* Wajib Diisi</small>
+						</div>
+					</div>
+				</div>
+				<div class="kt-portlet__foot">
+					<div class="kt-form__actions">
+						<button type="submit" class="btn btn-primary">Simpan</button>
+						<button type="reset" class="btn btn-secondary">Reset</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- end:: Content -->

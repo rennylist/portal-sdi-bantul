@@ -1,0 +1,122 @@
+<!-- begin:: Content Head -->
+<div class="kt-subheader  kt-grid__item" id="kt_subheader">
+	<div class="kt-container  kt-container--fluid ">
+		<div class="kt-subheader__main">
+			<span class="kt-subheader__separator kt-hidden"></span>
+			<div class="kt-subheader__breadcrumbs">
+                <a href="#" class="kt-subheader__breadcrumbs-home"><i class="fa fa-bars"></i></a>
+				<a href="#" class="kt-subheader__breadcrumbs-link">Data Pendukung</a>
+				&nbsp;&nbsp;&nbsp;
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="{$config->site_url('admin/datas/slideshow')}" class="kt-subheader__breadcrumbs-link">Slideshow</a>
+				&nbsp;&nbsp;&nbsp;
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="#" class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Hapus</a>
+			</div>
+		</div>
+		<div class="kt-subheader__toolbar">
+			<div class="kt-subheader__wrapper">
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end:: Content Head -->
+
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+
+	<!-- notification template -->
+	{include file="base/templates/notification.html"}
+	<!-- end of notification template-->
+
+	<div class="kt-portlet kt-portlet--mobile">
+		<div class="kt-portlet__head kt-portlet__head--lg">
+			<div class="kt-portlet__head-label">
+				<h3 class="kt-portlet__head-title">
+					Hapus Slide Show
+					<!-- <small>Berikut adalah daftar kategori berita</small> -->
+				</h3>
+			</div>
+			<div class="kt-portlet__head-toolbar">
+				<div class="kt-portlet__head-wrapper">
+					<div class="kt-portlet__head-actions">
+						<a href="{$config->site_url('admin/datas/slideshow')}" class="btn btn-clean kt-margin-r-10">
+							<i class="la la-arrow-left"></i>
+							<span class="kt-hidden-mobile">Kembali</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="kt-portlet__body kt-portlet__body">
+			<form class="kt-form" action="{$config->site_url('admin/datas/slideshow/delete_process')}" method="post" onsubmit="return confirm('Apakah anda yakin akan menghapus data berikut ini?');">
+				<input type="hidden" name="slideshow_id" value="{$detail.slideshow_id|default:''}">
+				<div class="kt-portlet__body">
+					<div class="form-group form-group-last">
+						<p class="text-danger">Apakah anda yakin akan menghapus data berikut ini ?</p>
+						<br />
+					</div>
+					<div class="form-group">
+						<label>Judul</label> <br/>
+						<label class="form-label">
+							{$detail.slideshow_title|default:'-'}
+							{if $view_eng|default:'' eq 'yes'}
+							<br />
+							{$detail.title_eng|default:'-'}
+							{/if}
+							{if $view_jav|default:'' eq 'yes'}
+							<br />
+							{$detail.title_jav|default:'-'}
+							{/if}
+						</label>
+					</div>
+					<div class="form-group">
+						<label>Deskripsi</label> <br/>
+						<label class="form-label">
+							{$detail.slideshow_desc|default:'-'}
+							{if $view_eng|default:'' eq 'yes'}
+							<br />
+							{$detail.description_eng|default:'-'}
+							{/if}
+							{if $view_jav|default:'' eq 'yes'}
+							<br />
+							{$detail.description_jav|default:'-'}
+							{/if}
+						</label>
+					</div>
+					<div class="form-group">
+						<label>Urutan</label> <br/>
+						<label class="form-label">
+						    {$detail.slideshow_order|default:'-'}
+						</label>
+					</div>
+					<div class="form-group">
+						<label for="exampleSelect1">Status Ditampilkan</label> <br/>
+						<label class="form-label">
+							{if $result.publish_st|default:'' eq 'yes'}
+						    IYA
+						    {else}
+						    TIDAK
+						    {/if}
+						</label>
+					</div>
+					<div class="form-group">
+						<label for="exampleSelect1">Gambar Pendukung</label> <br/> <br/>
+						<label class="form-label">
+							{if !empty($detail.img_path|default:'') && !empty($detail.img_name|default:'')}
+							<img id="preview" src="{$foto|default:''}" style="max-width: 300px; max-height: 300px;" alt="" /> <br/> <br/>
+						    {$detail.img_name|default:'-'}
+						    {else} - {/if}
+						</label>
+					</div>
+				</div>
+				<div class="kt-portlet__foot">
+					<div class="kt-form__actions">
+						<button type="submit" class="btn btn-danger">Hapus</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- end:: Content -->

@@ -1,0 +1,59 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Settings</a></li>
+        <li class="breadcrumb-item"><a href="#">System</a></li>
+        <li class="breadcrumb-item"><a href="{$config->site_url('settings/sistem/groups')}">Groups</a></li>
+        <li class="breadcrumb-item active">Hapus Data</li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">			
+            <div class="box-header">
+                <h2>Hapus Data</h2>
+                <div class="box-tool">
+                    <ul class="nav nav-xs">
+                        <li class="nav-item">
+                            <a href="{$config->site_url('settings/sistem/groups')}" class="btn btn-sm btn-outline b-primary text-primary">
+                                <i class="fa fa-arrow-left mr-1"></i> Kembali
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="box-divider m-0"></div>
+            <form action="{$config->site_url('settings/sistem/groups/delete_process')}" method="post" class="p-x-xs" onsubmit="return confirm('Apakah anda yakin akan menghapus data berikut ini?');">
+                <input type="hidden" name="group_id" value="{$detail.group_id|default:''}" />
+                <div class="box-body">
+                    <!-- notification template -->
+                    {include file="base/templates/notification.html"}
+                    <!-- end of notification template-->
+                    <p class="text-danger">Apakah anda yakin akan menghapus data berikut ini?</p>
+                    <div class="form-group row">
+                        <label class="col-md-3 form-label">Nama Group</label>
+                        <div class="col-md-6">
+                            <label class="control-label">
+                                <b>{$detail.group_name|upper|default:''}</b>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 form-label">Deskripsi Group</label>
+                        <div class="col-md-6">
+                            <label class="control-label">
+                                <b>{$detail.group_desc|upper|default:''}</b>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus</button>
+                        </div>                            
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

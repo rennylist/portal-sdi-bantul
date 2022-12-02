@@ -1,0 +1,118 @@
+<script type="text/javascript">
+    $(function () {
+        $(".checked-all-menu").click(function () {
+            // alert("sss");
+            var status = $(this).is(":checked");
+            if (status === true) {
+                $(".submission_st").prop('checked', true);
+            } else {
+                $(".submission_st").prop('checked', false);
+            }
+        });
+        $(".select-2").select2();
+    });
+</script>
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/dashboard/dashboard/')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item "><a href="#">Master</a></li>
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/master/hakakses')}">Hak Akses</a></li>
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/master/hakakses/detail/'|cat:$instansi_cd|default:''|cat:'/'|cat:$tahun|default:'')}">Urusan / Bidang Urusan</a>
+                    </li>  
+                    <li class="breadcrumb-item active">Indikator</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Indikator</h4>
+        </div>
+    </div>
+</div>
+
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+
+<div class="row" >
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">{$urusan.urusan_id|default:''} Bidang {$urusan.urusan_name|default:''}</h4>
+                <p class="sub-header">
+                    {$urusan_parent.urusan_id|default:''} {$urusan_parent.urusan_name|default:''}
+                </p>
+
+                <form action="{$config->site_url('admin/master/hakakses/ajukan_process')}" method="post">
+                    <input type="hidden" name="data_id" value="{$data_id|default:''}" />
+                    <input type="hidden" name="year" value="{$tahun|default:''}" />
+                    <input type="hidden" name="instansi_cd" value="{$instansi_cd|default:''}" />
+                    <input type="hidden" name="process" value="process" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <!-- <h4 class="header-title">Indikator</h4>
+                            Daftar variabel / sub variabel -->
+                            <!-- <p class="sub-header">
+                                Daftar variabel / sub variabel
+                            </p> -->
+                        </div>
+          
+                        <div class="col-md-6 mb-2" align="right">
+
+                            <!-- <span class="mb-2 form-check-success"  style="margin-right: 9px;">
+                                <input class="form-check-input rounded-circle checked-all-menu" type="checkbox" style="margin-top: 9px;">
+                                <label class="form-check-label" for="customckeck11">Jadikan <b>diterima</b> semua</label>
+                            </span> -->
+                            <a href="{$config->site_url('admin/master/hakakses/detail/'|cat:$instansi_cd|default:''|cat:'/'|cat:$tahun|default:'')}" >
+                                <span class="btn btn-secondary">kembali</span>
+                            </a>
+                            <!-- <button id="ajukan" name="ajukan" type="submit" class="btn btn-primary">Ajukan</button> -->
+                            <button id="ajukan" name="ajukan" type="submit" class="btn btn-primary">Ajukan</button>
+                        </div>
+                    </div>
+
+                    <table class="table">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>
+                                    <input class="form-check-input rounded-circle checked-all-menu" type="checkbox" style="margin-top: 9px;">
+                                </th>
+                                <th>Kode</th>
+                                <th>Indikator</th>
+                                <th>Satuan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {assign var="no" value =0}
+                            {foreach $rs_id as $result}
+                            <tr>
+                                <td>
+                                    <input class="form-check-input rounded-circle submission_st" type="checkbox" value="yes" name="submission_st_{$no++}"
+                                    {if $result.check|default:'' eq 'yes'} checked='checked' {/if}>
+                                </td>
+                                <td>    
+                                    <input type="hidden" name="datas[]" value="{$result.data_id|default:''}">
+                                    {$result.data_id|default:''}
+                                </td>
+                                <td>
+                                    {$result.data_name|default:''}
+                                </td>
+                                <td>
+                                    {$result.data_unit|default:''}
+                                </td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

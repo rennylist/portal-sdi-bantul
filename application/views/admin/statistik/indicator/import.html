@@ -1,0 +1,124 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/dashboard/dashboard/')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/statistik/urusan')}">Statistik</a>
+                    </li>
+                    <li class="breadcrumb-item active">Upload</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Upload</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Bidang Urusan</h4>
+                <p class="sub-header">
+                    {$urusan_id|default:''}
+                    {$urusan_name|default:''}
+
+                </p>
+                <!-- {$status|default:''} -->
+                <form action="{$config->site_url('admin/statistik/indicator/ajukan_process')}" method="post">
+                    <input type="hidden" name="tahun_id" value="{$tahun_id|default:''}" />
+                    <input type="hidden" name="urusan_id" value="{$urusan_id|default:''}" />
+                    <input type="hidden" name="process" value="process" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <!-- <h4 class="header-title">Indikator</h4>
+                            Daftar variabel / sub variabel -->
+                            <!-- <p class="sub-header">
+                                Daftar variabel / sub variabel
+                            </p> -->
+                        </div>
+                        <div class="col-md-6 mb-2" align="right">
+                            <a target="_blank" href="" class="btn btn-success">Unduh</a>
+                            <!-- <input type="submit" value="Ajukan" class="btn btn-primary"> -->
+                            <button id="ajukan" name="ajukan" type="submit" class="btn btn-primary">Ajukan</button>
+                        </div>
+                    </div>
+
+                    <table class="table">
+                        <thead class="table-dark">
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="20%">Kode</th>
+                                <th width="40%">Indikator / Variabel / Sub Variabel</th>
+
+                                <th width="10%">Tahun</th>
+                                <th width="15%">Sifat Data</th>
+                                <th width="10%">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach $data as $result}
+
+                            <tr>
+                                <td> {$result.no}</td>
+                                <td><input type="hidden" name="kode[]" value="{$result.data_id|default:''}">
+                                    <!-- {if $result.data_type|default:'' eq 'indicator'}
+                                    <strong>{$result.data_id|default:''}</strong>
+                                    {else}
+                                    {$result.data_id|default:''}
+                                    {/if} -->
+                                    {$result.data_id}
+                                </td>
+                                <td>
+                                    {$result.nama|default:''}
+                                </td>
+
+                                <td>
+                                    {$result.year|default:''}
+                                </td>
+
+                                <td>
+                                    {$result.data_st|default:''}
+
+                                </td>
+                                <td>
+                                    {if $result.submission_st|default:'' eq 'pending'}
+                                    <span class="badge badge-soft-warning">menunggu</span>
+                                    {elseif $result.submission_st|default:'' eq 'indicator'}
+                                    <span class="badge badge-soft-success">diterima</span>
+                                    {elseif $result.submission_st|default:'' eq 'rejected'}
+                                    <span class="badge badge-soft-danger">ditolak</span>
+                                    {else}
+                                    <span class="badge badge-soft-warning">menunggu</span>
+                                    <!-- <span class="badge badge-soft-secondary">belum ada</span> -->
+                                    {/if}
+                                </td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<!-- <script>
+    function validateForm() {
+
+        if (document.forms["FormStatistik"]["tahun"].selectedIndex < 1) {
+            alert("Silahkan pilih tahun");
+            document.forms["FormStatistik"]["tahun"].focus();
+            return false;
+        }
+    }
+</script> -->
+<script>
+    window.setTimeout(function () {
+        $(".alert").fadeTo(500, 0).slideUp(500, function () {
+            $(this).remove();
+        });
+    }, 5000);
+</script>

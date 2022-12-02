@@ -1,0 +1,104 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/dashboard/dashboard/')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item "><a href="#">Master</a></li>
+                    <li class="breadcrumb-item active">Hak Akses</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Hak Akses</h4>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Pencarian</h4>
+                <form action="{$config->site_url('admin/master/hakakses/search_process')}" method="post">
+                    <input type="hidden" name="process" value="process" />
+                    
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Tahun</label>
+                                <select name="tahun" id="tahun"  class="form-control" data-toggle="select2" data-width="100%">
+                                    {foreach $option_years as $thn}
+                                        <option value="{$thn|default:''}" {if $thn|default:'' eq $search.tahun|default:''}selected='selected'{/if}> {$thn|default:''}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="mb-3" style="padding-top: 27px;">
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">Cari</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- {$result_user['instansi_cd']|default:''} -->
+                <h4 class="header-title">Instansi</h4>
+                <p class="sub-header">
+                    Daftar instansi
+                </p>
+
+                <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nama Instansi</th>
+                            <th>Indikator</th>
+                            <!-- <th>Variabel</th>
+                            <th>Sub variabel</th>
+                            <th>Sub-sub variabel</th> -->
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $rs_id as $result}
+                        <tr>
+                            <td>
+                                {$result.instansi_name|default:0}
+                            </td>
+                            <td align="right">
+                                {$result.tot_indicator|default:0}
+                            </td>
+                            <!-- <td align="right">
+                                {$result.tot_variable|default:0}
+                            </td>
+                            <td align="right">
+                                {$result.tot_subvariable|default:0}
+                            </td>
+                            <td align="right">
+                                {$result.tot_subsubvariable|default:0}
+                            </td> -->
+                            <td>
+                                <a href="{$config->site_url('admin/master/hakakses/detail/'|cat:$result.instansi_cd|default:''|cat:'/'|cat:$search.tahun|default:'')}"
+                                    title="Ubah Data">
+                                    <span class="mdi mdi-border-color"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

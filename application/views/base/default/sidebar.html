@@ -1,0 +1,21 @@
+<div class="sidenav modal-dialog dk">
+    <div class="navbar lt bg-white text-dark">
+        <a href="#" class="navbar-brand">
+            <span class="hidden-folded d-inline" style="font-size: 16px;">
+                {$hari_ini.hari}, {$hari_ini.tanggal} {$hari_ini.bulan} {$hari_ini.tahun}
+            </span>
+        </a>
+    </div>
+    <div class="nav-fold px-2 mt-1">
+        <div class="hidden-folded flex p-2">
+            <div class="d-flex nav nav-tabs">
+                {$list_top_nav|default:''}
+            </div>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-content">
+            {$list_sidebar_nav|default:''}
+        </div>
+    </div>
+</div>

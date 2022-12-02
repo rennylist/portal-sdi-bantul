@@ -1,0 +1,275 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/dashboard/dashboard/')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/statistik/urusan')}">Statistik</a>
+                    </li>
+                    <li class="breadcrumb-item active">Bidang Urusan</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Bidang {$urusan.urusan_name|default:''}</h4>
+        </div>
+    </div>
+</div>
+
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Pencarian</h4>
+                <form action="{$config->site_url('admin/statistik/indicator/search_process')}" method="post">
+                    <input type="hidden" name="urusan_id" value="{$urusan_id|default:''}" />
+                    <input type="hidden" name="process" value="process" />
+
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Tahun</label>
+                                <select name="tahun" id="tahun" class="form-control" data-toggle="select2"
+                                    data-width="100%">
+                                    {foreach $option_years as $thn}
+                                    <option value="{$thn|default:''}" {if $thn|default:'' eq
+                                        $search.tahun|default:''}selected='selected' {/if}> {$thn|default:''}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Indikator</label>
+                                <select name="indicator_id" id="indicator_id" class="form-control" data-toggle="select2"
+                                    data-width="100%">
+                                    <option value="">Semua</option>
+                                    {foreach $indicators as $indicator}
+                                    <option value="{$indicator.data_id|default:''}" {if $indicator.data_id|default:'' eq
+                                        $search.indicator_id|default:''}selected='selected' {/if}>
+                                        {$indicator.data_name|default:''} (terisi {$indicator.tot_fill|default:0} dari
+                                        {$indicator.tot|default:0})
+                                    </option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Klasifikasi Indikator</label>
+                                <select name="indicator_class" id="indicator_class" class="form-select">
+                                    <option value="">Semua</option>
+
+                                    <option value="class_sdgs" {if "class_sdgs" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Indikator SDG’s
+                                    </option>
+                                    <option value="class_rpjmd" {if "class_rpjmd" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Indikator RPJMD
+                                    </option>
+                                    <option value="class_ikklppd" {if "class_ikklppd" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>IKK LPPD
+                                    </option>
+                                    <option value="class_spm" {if "class_spm" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Indikator SPM
+                                    </option>
+                                    <option value="class_dda" {if "class_dda" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Data Daerah
+                                        Dalam Angka</option>
+                                    <option value="class_datakudiy" {if "class_datakudiy" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Data
+                                        Aplikasi Dataku DIY</option>
+                                    <option value="class_pilahgender" {if "class_pilahgender" eq
+                                        $search['indicator_class']|default:''}selected='selected' {/if}>Data Pilah
+                                        Gender</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-2">
+                            <div class="mb-3" style="padding-top: 27px;">
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">Cari</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">{$urusan.urusan_id|default:''} Bidang {$urusan.urusan_name|default:''}</h4>
+                <p class="sub-header">
+                    {$urusan_parent.urusan_id|default:''} {$urusan_parent.urusan_name|default:''}
+                </p>
+
+                <form action="{$config->site_url('admin/statistik/indicator/ajukan_process')}" method="post">
+                    <input type="hidden" name="year" value="{$year_selected|default:''}" />
+                    <input type="hidden" name="urusan_id" value="{$urusan_id|default:''}" />
+                    <input type="hidden" name="instansi_cd" value="{$instansi_cd|default:''}" />
+                    <input type="hidden" name="process" value="process" />
+
+                    <div class="row">
+                        <!-- <div class="col-md-6 mb-2">
+                           
+                        </div> -->
+                        <div class="col-md-12 mb-2" align="right">
+                            <!-- <a href="{$config->site_url('admin/statistik/indicator/upload')}" class="btn btn-success">Unggah</a>
+                            <a target="_blank" href="{$config->site_url('admin/statistik/indicator/download/'|cat:$data_id|default:'')}" class="btn btn-success">Unduh</a> -->
+
+                            <a href="{$config->site_url('admin/statistik/indicator/upload')}" class="btn btn-success">
+                                Unggah Data<span class="btn-label-right"><i class="mdi mdi-upload"></i></span>
+                            </a>
+                            &nbsp; &nbsp;
+                            <a target="_blank"
+                                href="{$config->site_url('admin/statistik/indicator/download/'|cat:$data_id|default:'')}"
+                                class="btn btn-info">
+                                Unduh Template by Pencarian<span class="btn-label-right"><i
+                                        class="mdi mdi-download"></i></span>
+                            </a>
+                            <a target="_blank"
+                                href="{$config->site_url('admin/statistik/indicator/downloadall/'|cat:$data_id|default:'')}"
+                                class="btn btn-info">
+                                Unduh Template Semua<span class="btn-label-right"><i
+                                        class="mdi mdi-download"></i></span>
+                            </a>
+                            <a target="_blank" href="{$config->site_url('admin/statistik/indicator/download_laporan')}"
+                                class="btn btn-danger">
+                                Unduh Data<span class="btn-label-right"><i class="mdi mdi-download"></i></span>
+                            </a>
+                            &nbsp; &nbsp;
+                            <button id="ajukan" name="ajukan" type="submit"
+                                class="btn btn-primary waves-effect waves-light">
+                                Ajukan Data<span class="btn-label-right"><i class="mdi mdi-send"></i></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th align="center">Kode</th>
+                                <th align="center">Indikator / Variabel / Sub Variabel</th>
+                                <th align="center">Satuan</th>
+                                {foreach $table_years as $year}
+                                <th align="center">{$year|default:''}</th>
+                                {/foreach}
+
+                                <th align="center" width="150px">Sifat Data</th>
+                                <th align="center">Status</th>
+                                <th align="center">Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach $rs_id as $result}
+                            <tr {if $result.data_type|default:'' eq 'indicator' } class="table-active" {/if}>
+                                <td>
+                                    <input type="hidden" name="datas[]" value="{$result.data_id|default:''}">
+                                    {if $result.data_type|default:'' eq 'indicator'}
+                                    <strong>{$result.data_id|default:''}</strong>
+                                    {else}
+                                    {$result.data_id|default:''}
+                                    {/if}
+                                </td>
+                                <td>
+                                    {if $result.data_type|default:'' eq 'indicator'}
+                                    <strong>{$result.data_name|default:''}</strong>
+                                    {else}
+                                    {$result.data_name|default:''}
+                                    {/if}
+                                </td>
+                                <td>
+                                    {$result.data_unit|default:''}
+                                </td>
+                                {foreach $table_years as $year}
+                                {if $year_selected|default:'' eq $year|default:''}
+                                <td width="200px">
+                                    <input type="hidden" name="old_values[]"
+                                        value="{$result.$year.value|default:''|default:''}">
+                                    <input class="form-control tabel" type="text" name="values[]"
+                                        value="{$result.$year.value|default:''|default:''}">
+                                </td>
+                                {else}
+                                <td align="right" title="gunakan titik(.) untuk pemisah bilangan desimal">
+                                    {if $result.$year.value|default:'' eq ''}
+                                    <span class="badge badge-soft-secondary">null</span>
+                                    {elseif $result.$year.value|default:'' eq 'n/a'}
+                                    <span class="badge bg-secondary"> n/a </span>
+                                    {else}
+                                    {if $datetimemanipulation->is_decimal($result.$year.value|default:'')}
+                                    {$result.$year.value|replace:".":","}
+                                    {elseif (int) $result.$year.value|default:''}
+                                    {$result.$year.value|default:''|string_format:"%02d"|number_format:0:".":","}
+                                    {else}
+                                    {$result.$year.value|default:''}
+                                    {/if}
+                                    {/if}
+                                </td>
+                                {/if}
+                                {/foreach}
+
+                                <td>
+                                    <!-- {$result.$year_selected.submission_st|default:''} -->
+                                    <!-- {$result.$year_selected.data_st|default:''} -->
+                                    <!-- {$result.$year_selected.submission_st|default:''}
+                                    {$result.$year_selected.data_st|default:''} -->
+                                    <input type="hidden" name="old_statuses[]"
+                                        value="{$result.$year_selected.data_st|default:''}">
+                                    <select class="form-select" data-toggle="select2" data-width="100%"
+                                        name="statuses[]">
+                                        <option value="" {if $result.$year_selected.data_st|default:'' eq ''
+                                            }selected="selected" {/if}>Pilih &nbsp;</option>
+                                        <option value="tidakada" {if $result.$year_selected.data_st|default:''
+                                            eq 'tidakada' }selected="selected" {/if}>Tidak ada &nbsp;&nbsp;</option>
+                                        <option value="tetap" {if $result.$year_selected.data_st|default:'' eq 'tetap'
+                                            }selected="selected" {/if}>Tetap</option>
+                                        <option value="TW-1" {if $result.$year_selected.data_st|default:'' eq 'TW-1'
+                                            }selected="selected" {/if}>TW-1</option>
+                                        <option value="TW-2" {if $result.$year_selected.data_st|default:'' eq 'TW-2'
+                                            }selected="selected" {/if}>TW-2</option>
+                                        <option value="TW-3" {if $result.$year_selected.data_st|default:'' eq 'TW-3'
+                                            }selected="selected" {/if}>TW-3</option>
+                                        <option value="TW-4" {if $result.$year_selected.data_st|default:'' eq 'TW-4'
+                                            }selected="selected" {/if}>TW-4</option>
+                                        <!-- <option value="sementara" {if $result.$year_selected.data_st|default:'' eq 'sementara'}selected="selected"{/if}>Smtr &nbsp;</option> -->
+                                    </select>
+                                </td>
+                                <td>
+                                    {if $result.$year_selected.submission_st|default:'' eq 'pending'}
+                                    <span class="badge badge-soft-warning"
+                                        title="Diajukan oleh {$result.$year_selected.mdb_name|default:'-'} pada {$result.$year_selected.mdd|default:'-'}">menunggu</span>
+                                    {elseif $result.$year_selected.submission_st|default:'' eq 'approved'}
+                                    <span class="badge badge-soft-success"
+                                        title="Diverifikasi pada {$result.$year_selected.verify_mdd|default:'-'}">diterima</span>
+                                    {elseif $result.$year_selected.submission_st|default:'' eq 'rejected'}
+                                    <span class="badge badge-soft-danger"
+                                        title="Diverifikasi pada {$result.$year_selected.verify_mdd|default:'-'}">ditolak</span>
+                                    {else}
+                                    <!-- <span class="badge badge-soft-secondary">kosong</span> -->
+                                    -
+                                    {/if}
+                                </td>
+                                <td title="Catatan terhadap ajuan data">
+                                    {$result.$year_selected.verify_comment|default:'-'}
+                                </td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

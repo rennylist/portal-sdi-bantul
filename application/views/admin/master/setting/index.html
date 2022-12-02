@@ -1,0 +1,105 @@
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        // select2
+        $(".select-2").select2();
+    });
+</script>
+<!-- begin:: Content Head -->
+<div class="kt-subheader  kt-grid__item" id="kt_subheader">
+    <div class="kt-container  kt-container--fluid ">
+        <div class="kt-subheader__main">
+            <span class="kt-subheader__separator kt-hidden"></span>
+            <div class="kt-subheader__breadcrumbs">
+				<a href="#" class="kt-subheader__breadcrumbs-home"><i class="fa fa-tags"></i></a>
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="#" class="kt-subheader__breadcrumbs-link">Master</a>
+                &nbsp;&nbsp;&nbsp;
+				<span class="kt-subheader__breadcrumbs-separator"></span>
+				<a href="#" class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Setting</a>
+			</div>
+        </div>
+    </div>
+</div>
+<!-- end:: Content Head -->
+
+<!-- begin:: Content -->
+<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+    <!-- notification template -->
+    {include file="base/templates/notification.html"}
+    <!-- end of notification template-->
+    <div class="kt-portlet kt-portlet--mobile">
+        <div class="kt-portlet__head kt-portlet__head--lg">
+            <div class="kt-portlet__head-label">
+                <h3 class="kt-portlet__head-title">
+                    Form Pengaturan Website
+                </h3>
+            </div>
+        </div>
+        <div class="kt-portlet__body kt-portlet__body">
+            <form class="form-horizontal" action="{$config->site_url('admin/master/setting/set_process')}" method="post" enctype="multipart/form-data">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="title" class="col-sm-2 control-label">Nama Instansi</label>
+                        <div class="col-sm-12">
+                            <input type="text"  name="title" value="{$result.title|default:''}" class="form-control" id="title" placeholder="Nama Instansi">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat" class="col-sm-2 control-label">Alamat</label>
+                        <div class="col-sm-12">
+                            <textarea name="alamat"  id="alamat" class="form-control" placeholder="Alamat Instansi">{$result.alamat|default:''}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-2 control-label">E-Mail</label>
+                        <div class="col-sm-4">
+                            <input type="email"  name="email" value="{$result.email|default:''}" class="form-control" id="email" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="no_telp" class="col-sm-2 control-label">No Telpone</label>
+                        <div class="col-sm-4">
+                            <input type="text"  name="no_telp" value="{$result.no_telp|default:''}" class="form-control" id="no_telp" placeholder="No Telpone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="facebook" class="col-sm-2 control-label">Facebook</label>
+                        <div class="col-sm-4">
+                            <input type="text"  name="facebook" value="{$result.facebook|default:''}" class="form-control" id="facebook" placeholder="Facebook">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="twitter" class="col-sm-2 control-label">Twitter</label>
+                        <div class="col-sm-4">
+                            <input type="text"  name="twitter" value="{$result.twitter|default:''}" class="form-control" id="twitter" placeholder="Twitter">
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="gplus" class="col-sm-2 control-label">G Plus</label>
+                        <div class="col-sm-4">
+                            <input type="text"  name="gplus" value="{$result.gplus|default:''}" class="form-control" id="gplus" placeholder="G Plus">
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="youtube" class="col-sm-2 control-label">Youtube</label>
+                        <div class="col-sm-4">
+                            <input type="text"  name="youtube" value="{$result.youtube|default:''}" class="form-control" id="youtube" placeholder="Youtube">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="instagram" class="col-sm-2 control-label">Instagram</label>
+                        <div class="col-sm-4">
+                            <input type="text"  name="instagram" value="{$result.instagram|default:''}" class="form-control" id="instagram" placeholder="Instagram">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="panel-footer text-left">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Simpan</button>
+                    <button class="btn btn-default" type="reset"><i class="fa fa-refresh"></i> Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end:: Content

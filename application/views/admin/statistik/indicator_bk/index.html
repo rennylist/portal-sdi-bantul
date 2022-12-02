@@ -1,0 +1,171 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/dashboard/dashboard/')}">Beranda</a>
+                    </li>
+                    <li class="breadcrumb-item "><a href="{$config->site_url('admin/statistik/urusan/')}">Urusan</a>
+                    </li>
+                    <li class="breadcrumb-item active">Bidang Urusan</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Statistik</h4>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title"> Bidang Urusan</h4>
+                <p class="sub-header">
+                    {foreach $rs_id as $result}
+                    {$result.urusan_id|default:''}
+                    {$result.urusan_name|default:''}
+                    {/foreach}
+                </p>
+
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingOne">
+                            <button class="accordion-button collapsed " type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                aria-controls="flush-collapseOne">
+                                Input Data Manual
+                            </button>
+                        </h2>
+                        <div id="flush-collapseOne" class="accordion-collapse collapse"
+                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="input-group mb-3">
+                                        <form action="{$config->site_url('admin/statistik/indicator/search_process')}"
+                                            method="POST">
+                                            <input type="hidden" name="urusan_id"
+                                                value="{$result.urusan_id|default:''}" />
+                                            <input type="hidden" name="urusan_name"
+                                                value="{$result.urusan_name|default:''}" />
+                                            <input type="hidden" name="process" value="process" />
+                                            <div class="mb-2">
+                                                <div class="col-sm">
+                                                    <!-- <label>Tahun</label> -->
+                                                    <select name="tahun" id="tahun" class="form-select">
+                                                        <option value="{$year|default:''}" selected>Pilih Tahun</option>
+                                                        {foreach $select_tahun as $thn}
+                                                        <option value="{$thn|default:''}">{$thn|default:''}</option>
+                                                        {/foreach}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mb-2">
+                                                <div class="col-sm">
+                                                    <!-- <label>Pilih Klasifikasi</label> -->
+                                                    <select name="indikator" id="indikator" class="form-select">
+                                                        <option value="" disabled selected>Klasifikasi Indikator
+                                                        </option>
+                                                        <option value="0">Semua</option>
+                                                        <option value="1">Indikator SDG’s</option>
+                                                        <option value="2">Indikator RPJMD</option>
+                                                        <option value="3">IKK LPPD</option>
+                                                        <option value="4">Indikator SPM</option>
+                                                        <option value="5">Data Daerah Dalam Angka</option>
+                                                        <option value="6">Data Aplikasi Dataku DIY</option>
+                                                        <option value="7">Data Pilah Gender</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mb-2">
+                                                <div class="col-sm">
+                                                    <button id="save" name="save" type="submit" value="Cari"
+                                                        class="btn btn-primary">Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                aria-controls="flush-collapseTwo">
+                                Input Data Dengan Unggah File
+                            </button>
+                        </h2>
+                        <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                            aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="input-group mb-3">
+                                        <form action="{$config->site_url('admin/statistik/indicator/upload')}"
+                                            class="excel-upl" id="excel-upl" enctype="multipart/form-data" method="post"
+                                            accept-charset="utf-8">
+                                            <input type="hidden" name="urusan_id"
+                                                value="{$result.urusan_id|default:''}" />
+                                            <input type="hidden" name="urusan_name"
+                                                value="{$result.urusan_name|default:''}" />
+
+                                            <div class="col-sm-12 mb-2">
+                                                Sebelum mengunggah file harap diperhatikan kriteria sebagai berikut:
+                                                <br>
+                                                1. Pastikan format data yang akan diunggah sudah sesuai dengan aturan
+                                                format data yang telah ditentukan (format terlampir)
+                                                <br>
+                                                2. Jenis file unggah adalah CSV (ekstension .csv)
+                                                <br>
+                                                3. Maksimal ukuran file yang diunngah adalah 5MB.
+                                                <br>
+                                                4. Loremp ipsum.
+                                                <br>
+
+                                                <div class="col-sm">
+                                                    <a href="{$config->base_url('resource/csv/format.csv')}"
+                                                        class="btn btn-success">Unduh Format</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 mb-2">
+
+                                                <div class="col-sm">
+                                                    <!-- <label>Pilih Tahun Unggah:</label> -->
+
+                                                    <select name="tahun" id="tahun" class="form-select">
+                                                        <option value="{$year|default:''}" selected>Pilih Tahun
+                                                        </option>
+                                                        {foreach $select_tahun as $thn}
+                                                        <option value="{$thn|default:''}">{$thn|default:''}</option>
+                                                        {/foreach}
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-sm-4 mb-2">
+                                                <!-- <label for="file" class="form-label">Pilih Unggah File:</label> -->
+                                                <input type="file" name="file" class="form-control"
+                                                    id="exampleInputFile">
+                                            </div>
+
+                                            <div class="mb-2">
+                                                <div class="col-sm">
+                                                    <button id="submit" name="submit" type="submit" value="Preview"
+                                                        class="btn btn-primary">Preview</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

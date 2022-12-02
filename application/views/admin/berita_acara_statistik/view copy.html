@@ -1,0 +1,148 @@
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item ">
+                        <a href="{$config->site_url('admin/dashboard/dashboard/')}">Beranda</a>
+                    </li>
+                    <!-- <li class="breadcrumb-item "><a href="#">Verifikasi</a></li> -->
+                    <li class="breadcrumb-item active">Buat Berita Acara</li>
+                </ol>
+            </div>
+            <h4 class="page-title">Daftar Berita Acara</h4>
+        </div>
+    </div>
+</div>
+
+
+<!-- notification template -->
+{include file="base/templates/notification.html"}
+<!-- end of notification template-->
+
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Pencarian</h4>
+                <form action="{$config->site_url('admin/berita_acara_statistik/view/search_process')}" method="post">
+                    <input type="hidden" name="urusan_id" value="{$urusan_id|default:''}" />
+                    <input type="hidden" name="process" value="process" />
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="mb-3">
+                                <label for="simpleinput" class="form-label">Tahun</label>
+                                <select name="tahun" id="tahun" class="form-control" data-toggle="select2"
+                                    data-width="100%">
+                                    {foreach $option_years as $thn}
+                                    <option value="{$thn|default:''}" {if $thn|default:'' eq
+                                        $search.tahun|default:''}selected='selected' {/if}> {$thn|default:''}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="mb-3" style="padding-top: 27px;">
+                                <button id="ajukan" name="ajukan" type="submit"
+                                    class="btn btn-primary waves-effect waves-light">
+                                    Cari
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- {$result_user['instansi_cd']|default:''} -->
+                <h4 class="header-title">Daftar yang sudah dibuat berita acara</h4>
+                <p class="sub-header">
+                    Berikut adalah daftar yang sudah dibuat berita acara
+                </p>
+
+                <form action="{$config->site_url('admin/berita_acara_statistik/create/add_draft')}" method="post">
+                    <input type="hidden" name="tahun" value="{$tahun|default:''}" />
+
+                    <table id="basic-datatable" class="table dt-responsive nowrap table-bordered w-100">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="text-center" width="5%">No</th>
+                                <th class="text-center" width="10%">Bulan</th>
+                                <th class="text-center" width="10%">Nomor</th>
+                                <th class="text-center" width="35%">Judul</th>
+                                <th class="text-center" width="10%">Status BA</th>
+                                <th class="text-center" width="40%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach $rsid as $result}
+                            <tr>
+                                <td>
+                                    <input type="hidden" name="dataids[]" value="{$result.data_id|default:''}">
+                                    <input type="hidden" name="datatypes[]" value="{$result.data_type|default:''}">
+                                    <input type="hidden" name="datadetails[]" value="{$result.detail_id|default:''}">
+                                    {$nomor++}
+
+                                </td>
+                                <td>
+                                    <input type="hidden" name="ba_month[]" value="{$result.ba_month|default:''}">
+                                    {$result.ba_month|default:''}
+                                </td>
+                                <td>
+                                    <input type="hidden" name="ba_nomor[]" value="{$result.ba_nomor|default:''}">
+                                    {$result.ba_nomor|default:''}
+                                </td>
+                                <td>
+                                    <input type="hidden" name="ba_judul[]" value="{$result.ba_judul|default:''}">
+                                    {$result.ba_judul|default:''}
+                                </td>
+
+
+                                <td>
+                                    <input type="hidden" name="datasubmissionsts[]"
+                                        value="{$result.submission_st|default:''}">
+                                    {if $result.ba_upload|default:'' eq NULL }
+                                    <span class="badge badge-soft-danger">belum diunggah</span>
+                                    {else}
+                                    <span class="badge badge-soft-success">sudah diunggah</span>
+                                    {/if}
+                                </td>
+                                <td>
+                                    <a href="{$config->site_url('admin/berita_acara_statistik/view/upload/'|cat:$result.ba_id|default:'')}"
+                                        class="btn btn-success">
+                                        Unggah Pdf<span class="btn-label-right"><i class="mdi mdi-upload"></i></span>
+                                    </a>
+
+                                    <a href="{$config->site_url('admin/berita_acara_statistik/generatepdf/index/'|cat:$result.ba_id|default:'')}"
+                                        class="btn btn-danger">
+                                        Unduh Pdf<span class="btn-label-right"><i class="mdi mdi-download"></i></span>
+                                    </a>
+                                    <a href="{$config->site_url('admin/berita_acara_statistik/generatepdf/unduh_rincian/'|cat:$result.ba_id|default:'')}"
+                                        class="btn btn-info">
+                                        Unduh Rincian<span class="btn-label-right"><i
+                                                class="mdi mdi-download"></i></span>
+                                    </a>
+                                    <a href="{$config->site_url('admin/berita_acara_statistik/view/edit/'|cat:$result.ba_id|default:'')}"
+                                        class="btn btn-primary">
+                                        Ubah<span class="btn-label-right"><i class="mdi mdi-lead-pencil"></i></span>
+                                    </a>
+
+                                </td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
