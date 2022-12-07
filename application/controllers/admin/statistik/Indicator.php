@@ -787,6 +787,99 @@ class Indicator extends OperatorBase
         redirect("admin/statistik/indicator/index/" . $urusan_id);
     }
 
+    public function ajukan_rumus()
+    {
+        // SET PAGE RULES
+        $this->_set_page_rule("R");
+
+        // GET DATA FROM POST
+        $year = trim(strip_tags($this->input->post('year', TRUE)));
+        $urusan_id = trim(strip_tags($this->input->post('urusan_id', TRUE)));
+        $instansi_cd = trim(strip_tags($this->input->post('instansi_cd', TRUE)));
+        $datas =   $this->input->post('datas', TRUE);
+        $values =  $this->input->post('values', TRUE);
+        $old_values =  $this->input->post('old_values', TRUE);
+        $old_statuses =  $this->input->post('old_statuses', TRUE);
+        $statuses =  $this->input->post('statuses', TRUE);
+        $verify_comments =  $this->input->post('verify_comment', TRUE);
+
+        // LOOP ARRAY POST DATA
+        foreach ($datas as $key => $data) {
+
+            $check_sts =  $this->input->post('check_st_' . $key, TRUE);
+
+            // PARSING DATA POST
+            if ($check_sts == '1') {
+                $verify_comment = trim(strip_tags($verify_comments[$key]));
+                $verify_comment = (!isset($verify_comment) || empty($verify_comment)) ? NULL : $verify_comment;
+                $value = trim(strip_tags($values[$key]));
+                $old_value = trim(strip_tags($old_values[$key]));
+                $value = str_replace(",", ".", $value);
+                $old_value = str_replace(",", ".", $old_value);
+                $old_status = trim(strip_tags($old_statuses[$key]));
+                $status = trim(strip_tags($statuses[$key]));
+
+                if ($value == '') {
+                    $value = NULL;
+                }
+
+                // SET DETAIL DATA
+                $detail_id = $this->_get_id();
+
+                // DELETE DATA BEFORE INSERT
+                $params = array(
+                    "data_id" => $data,
+                    "year" => $year
+                );
+                $this->M_indicator_data_pg->delete($params);
+
+                if ($value == '') {
+                    $params = array(
+                        "data_id" => $data,
+                        "year" => $year,
+                        "value" => $value,
+                        "data_st" => $status,
+                        "submission_st" => '-',
+                        "verify_comment" => $verify_comment,
+                        "detail_id" => $detail_id,
+                        "mdb_name" => $this->com_user['user_alias'],
+                        'mdb' => $this->com_user['user_id'],
+                        'mdd' => date('Y-m-d H:i:s')
+                    );
+                } else {
+
+                    // SET PARAMS
+                    $params = array(
+                        "data_id" => $data,
+                        "year" => $year,
+                        "value" => $value,
+                        "data_st" => $status,
+                        "submission_st" => 'pending',
+                        "verify_comment" => $verify_comment,
+                        "detail_id" => $detail_id,
+                        "mdb_name" => $this->com_user['user_alias'],
+                        'mdb' => $this->com_user['user_id'],
+                        'mdd' => date('Y-m-d H:i:s')
+                    );
+                }
+
+                if ($verify_comment != 'system') {
+                    //INSERT DATA
+                    $this->M_indicator_data_pg->insert($params);
+                    // INSERT DETAIL DATA
+                    $this->M_indicator_data_detail_pg->insert($params);
+                }
+                
+            }
+        }
+
+        //}
+
+        // REDIRECT
+        $this->tnotification->sent_notification("success",  "Data berhasil diajukan");
+        redirect("admin/statistik/indicator/index/" . $urusan_id);
+    }
+
     public function klasifikasi()
     {
         $instansi_cd = $this->com_user['instansi_cd'];

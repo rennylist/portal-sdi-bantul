@@ -299,6 +299,12 @@ ul {
                             &nbsp; &nbsp;
                             
                             <!-- <a type="button" class="btn btn-primary" onclick="sweet()">Proses Ajukan<span class="btn-label-right"><i class="mdi mdi-send"></i></span></a> -->
+                            <!-- {$config->site_url('admin/statistik/indicator/ajukan_rumus')} -->
+                            <a href="{$config->site_url('admin/statistik/indicator/ajukan_rumus/')}"
+                                class="btn btn-danger ">
+                                Proses Rumus<span class="btn-label-right"><i class="mdi mdi-sync"></i></span>
+                            </a>
+                            </button>
                             <button id="ajukan" name="ajukan" type="submit"
                                 class="btn btn-primary waves-effect waves-light">
                                 Proses Ajukan<span class="btn-label-right"><i class="mdi mdi-send"></i></span>
@@ -335,6 +341,7 @@ ul {
                                     </center>
                                 </th>
                                 <th align="center" >Catatan</th>
+                                <th align="center" >Status Rumus</th>
                             </tr>
                         </thead>
 
@@ -351,6 +358,7 @@ ul {
                                     {/if} >
                                     
                                     <input type="hidden" name="datas[]" value="{$result.data_id|default:''}">
+
 
                                     {if $result.data_type|default:'' eq 'indicator'}
                                     <strong>{$result.data_id|default:''}</strong>
@@ -553,7 +561,7 @@ ul {
                                                                     <button type="button" id="btn" class="btn btn-info btn-sm"><i class="mdi mdi-plus" aria-hidden="true"></i></button>
                                                                 </div>
                                                                 <!-- contentEditable="true" -->
-                                                                <div id="text_area" >
+                                                                <div id="text_area" contentEditable="true">
                                                                     <ul id="to-do-list">
                                                                     </ul>
                                                                 </div>
@@ -571,6 +579,10 @@ ul {
                                         </div>
                                     </div>
                                 </td>
+                                <td align="center">
+                                    <span class="badge bg-warning rounded-pill"><i class="mdi mdi-rotate-3d"></i></span>
+                                    <span class="badge bg-success rounded-pill"><i class="mdi mdi-check"></i></span>
+                                </td>
                             </tr>
                             {/foreach}
                         </tbody>
@@ -581,24 +593,11 @@ ul {
         </div>
     </div>
 </div>
-<!-- catatan simple
-<script>
-    $('#btn').click(function() {
-	var val = $('#field').val();
-    
-	if(val !=="") {
-		var newElem = $('<li class="list"></li>').html(val),
-			newList = $(newElem).append('<button class="rem">x</button>');
-		$('#to-do-list').append(newList);
-		$('.rem').click(function() {
-			$(this).parent().remove();
-		});
-		$('#field').val("");
-	};
-});
-</script> -->
 
-<!-- catatan simple -->
+
+
+
+
 <script>
     $('#btn').click(function() {
 	var val = $('#field').val();
@@ -679,18 +678,16 @@ ul {
                 break;
 
                 case "ajukan":
-                swal("Sukses!", "Data telah di ajukan!", "success");
+                swal("Sukses!", "Data telah diajukan!", "success");
                 break;
             
                 default:
-                swal("Cancled!", "Ajukan data dicanceled", "error");
+                swal("Cancled!", "Ajukan data dicancele", "error");
             }
         });
     }
 </script> -->
-<!-- end button confirm ajukan -->
 
-<!-- search datatable -->
 <script>
     $(document).ready( function () {
         var table = $('#basic-datatable').DataTable({
