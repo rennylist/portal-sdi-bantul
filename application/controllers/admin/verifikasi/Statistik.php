@@ -65,8 +65,14 @@ class Statistik extends OperatorBase
             $rs_id[$key]['tot_fill']    = $data['tot_pending'] + $data['tot_reject'] + $data['tot_approve'];
             $rs_id[$key]['tot_pending'] = $data['tot_pending'];
             $rs_id[$key]['tot_reject']  = $data['tot_reject'];
-            $rs_id[$key]['tot_approve'] = $data['tot_approve'];
+            $rs_id[$key]['tot_approve'] = $data['tot_approve']; // + 
             $rs_id[$key]['tot_min']     = $data['total'] - ($data['tot_pending'] + $data['tot_reject'] + $data['tot_approve']);
+            // aprove = where submiss = approve + data yang memiliki destination_st other yang value masih kosong
+            // aproved = 2169 + 2 (jika data memiliki destination st = others)
+            // 1. jumlahkan data yang  destination_st nya other set var a
+            // 2. pilih trx indikator data dan left join ke trx indicator  yang destinationnya 'other' set var b
+            // 3. kurangi data var a - b = set var c
+            // 4. aprove = $aprove + var c
         }
 
         // ASSIGN DATA
@@ -873,6 +879,110 @@ class Statistik extends OperatorBase
         redirect($url);
     }
 
+    // public function ajukan_process()
+    // {
+    //     // SET PAGE RULES
+    //     $this->_set_page_rule("C");
+
+    //     // GET DATA POST & PARSING
+    //     $year = trim(strip_tags($this->input->post('year', TRUE)));
+    //     $urusan_id = trim(strip_tags($this->input->post('urusan_id', TRUE)));
+    //     $instansi_cd = trim(strip_tags($this->input->post('instansi_cd', TRUE)));
+    //     $datas =  $this->input->post('datas', TRUE);
+    //     $submission_sts =  $this->input->post('submission_st', TRUE);
+    //     $verify_comments =  $this->input->post('verify_comment', TRUE);
+    //     $detail_ids =  $this->input->post('detail_ids', TRUE);
+    //     $values =  $this->input->post('values', TRUE); 
+    //     $old_values =  $this->input->post('old_values', TRUE); 
+    //     $old_statuses =  $this->input->post('old_statuses', TRUE); 
+    //     $statuses =  $this->input->post('statuses', TRUE); 
+
+
+    //     // LOOP DATA FOR UPDATE pengajuan
+    //     foreach ($datas as $key => $data) {
+
+    //         // PARSING DATA
+    //         $detail_id = '';
+    //         if ($detail_ids != ''){
+    //             $detail_id = trim(strip_tags($detail_ids[$key]));
+    //         }
+    //         // $detail_id = trim(strip_tags($detail_ids[$key]));
+    //         $submission_st =  $this->input->post('submission_st_' . $key, TRUE);
+    //         if ($submission_st != 'approved') $submission_st = 'rejected';
+    //         $verify_comment = trim(strip_tags($verify_comments[$key]));
+    //         $verify_comment = (!isset($verify_comment) || empty($verify_comment)) ? NULL : $verify_comment;
+    //         if ( ($submission_st != 'approved') && isset($verify_comment) ) {
+    //             $submission_st = 'rejected';
+    //         }
+    //         $value = trim(strip_tags($values[$key])); 
+    //         $old_value = trim(strip_tags($old_values[$key])); 
+    //         $value = str_replace(",", ".", $value); 
+    //         $old_value = str_replace(",", ".", $old_value); 
+    //         $old_status = trim(strip_tags($old_statuses[$key])); 
+    //         $status = trim(strip_tags($statuses[$key])); 
+
+    //         if ($value == '') {
+    //             $value = NULL;
+    //         }
+
+    //         $detail_id = $this->_get_id();
+            
+    //         $params = array(
+    //             "data_id" => $data,
+    //             "year" => $year
+    //         );
+
+    //         // $this->M_indicator_data_pg->delete($params);
+
+    //         // UPDATE INDICATOR DATA
+    //         if ($value == '') { 
+    //             $params = array(
+    //                 "data_id" => $data,
+    //                 "year" => $year,
+    //                 "value" => $value, 
+    //                 "data_st" => $status, 
+    //                 "submission_st" => '-',
+    //                 "detail_id" => $detail_id,
+    //                 "verify_comment" => $verify_comment,
+    //                 "verify_mdb_name" => $this->com_user['user_alias'],
+    //                 "verify_mdb" => $this->com_user['user_id'],
+    //                 "verify_mdd" => date("Y-m-d H:i:s")
+    //             );
+    //         } else {
+    //             $params = array(
+    //                 "data_id" => $data,
+    //                 "year" => $year,
+    //                 "value" => $value, 
+    //                 "data_st" => $status, 
+    //                 "submission_st" => $submission_st,
+    //                 "detail_id" => $detail_id,
+    //                 "verify_comment" => $verify_comment,
+    //                 "verify_mdb_name" => $this->com_user['user_alias'],
+    //                 "verify_mdb" => $this->com_user['user_id'],
+    //                 "verify_mdd" => date("Y-m-d H:i:s")
+    //             );
+    //         }
+            
+    //         $where = array(
+    //             "data_id" => $data,
+    //             "year" => $year
+    //         );
+
+    //             if($value != '')
+    //             {
+    //                 $this->M_indicator_data_pg->update($params, $where);
+
+    //             }else 
+    //             if($submission_st == 'rejected' && $verify_comment == NULL)
+    //             {
+                    
+    //         }
+    //     }
+
+    //     // REDIRECT
+    //     redirect("admin/verifikasi/statistik/indicator/" . $instansi_cd . "/" . $urusan_id);
+    // }
+
     public function ajukan_process()
     {
         // SET PAGE RULES
@@ -894,89 +1004,98 @@ class Statistik extends OperatorBase
         // LOOP DATA FOR UPDATE pengajuan
         foreach ($datas as $key => $data) {
 
-            // PARSING DATA
-            $detail_id = '';
-            if ($detail_ids != ''){
-                $detail_id = trim(strip_tags($detail_ids[$key]));
-            }
-
             $submission_st =  $this->input->post('submission_st_' . $key, TRUE);
-            $verify_comment = trim(strip_tags($verify_comments[$key]));
-            $verify_comment = (!isset($verify_comment) || empty($verify_comment)) ? NULL : $verify_comment;
-            if ( ($submission_st != 'approved') && isset($verify_comment) ) {
+            
+            if ( $submission_st != 'approved' && isset($verify_comment) ) {
                 $submission_st = 'rejected';
             }
-            $value = trim(strip_tags($values[$key])); 
-            $old_value = trim(strip_tags($old_values[$key])); 
-            $value = str_replace(",", ".", $value); 
-            $old_value = str_replace(",", ".", $old_value); 
-            $old_status = trim(strip_tags($old_statuses[$key])); 
-            $status = trim(strip_tags($statuses[$key])); 
-
-            if ($value == '') {
-                $value = NULL;
-            }
-
-            $detail_id = $this->_get_id();
             
-            $params = array(
-                "data_id" => $data,
-                "year" => $year
-            );
+            if ($submission_st == 'approved') {
 
-            // $this->M_indicator_data_pg->delete($params);
+                // PARSING DATA
+                $detail_id = '';
+                if ($detail_ids != ''){
+                    $detail_id = trim(strip_tags($detail_ids[$key]));
+                }
+                // $submission_st =  $this->input->post('submission_st_' . $key, TRUE);
+                $verify_comment = trim(strip_tags($verify_comments[$key]));
+                $verify_comment = (!isset($verify_comment) || empty($verify_comment)) ? NULL : $verify_comment;
+                $value = trim(strip_tags($values[$key])); 
+                $old_value = trim(strip_tags($old_values[$key])); 
+                $value = str_replace(",", ".", $value); 
+                $old_value = str_replace(",", ".", $old_value); 
+                $old_status = trim(strip_tags($old_statuses[$key])); 
+                $status = trim(strip_tags($statuses[$key]));
 
-            // UPDATE INDICATOR DATA
-            if ($value == '') { 
+                if ( isset($verify_comment) ) {
+                    $submission_st = 'rejected';
+                }
+
+                if ($value == '') {
+                    $value = NULL;
+                }
+
+                $detail_id = $this->_get_id();
+                
                 $params = array(
                     "data_id" => $data,
-                    "year" => $year,
-                    "value" => $value, 
-                    "data_st" => $status, 
-                    "submission_st" => '-',
-                    "detail_id" => $detail_id,
-                    "verify_comment" => $verify_comment,
-                    "verify_mdb_name" => $this->com_user['user_alias'],
-                    "verify_mdb" => $this->com_user['user_id'],
-                    "verify_mdd" => date("Y-m-d H:i:s")
+                    "year" => $year
                 );
-            } else {
-                $params = array(
+
+                // $this->M_indicator_data_pg->delete($params);
+
+                // UPDATE INDICATOR DATA
+                if ($value == '') { 
+                    $params = array(
+                        "data_id" => $data,
+                        "year" => $year,
+                        "value" => $value, 
+                        "data_st" => $status, 
+                        "submission_st" => '',
+                        "detail_id" => $detail_id,
+                        "verify_comment" => $verify_comment,
+                        "verify_mdb_name" => $this->com_user['user_alias'],
+                        "verify_mdb" => $this->com_user['user_id'],
+                        "verify_mdd" => date("Y-m-d H:i:s")
+                    );
+                } else {
+                    $params = array(
+                        "data_id" => $data,
+                        "year" => $year,
+                        "value" => $value, 
+                        "data_st" => $status, 
+                        "submission_st" => $submission_st,
+                        "detail_id" => $detail_id,
+                        "verify_comment" => $verify_comment,
+                        "verify_mdb_name" => $this->com_user['user_alias'],
+                        "verify_mdb" => $this->com_user['user_id'],
+                        "verify_mdd" => date("Y-m-d H:i:s")
+                    );
+                }
+                
+                $where = array(
                     "data_id" => $data,
-                    "year" => $year,
-                    "value" => $value, 
-                    "data_st" => $status, 
-                    "submission_st" => $submission_st,
-                    "detail_id" => $detail_id,
-                    "verify_comment" => $verify_comment,
-                    "verify_mdb_name" => $this->com_user['user_alias'],
-                    "verify_mdb" => $this->com_user['user_id'],
-                    "verify_mdd" => date("Y-m-d H:i:s")
+                    "year" => $year
                 );
-            }
-            
-            $where = array(
-                "data_id" => $data,
-                "year" => $year
-            );
 
-            if($value != '')
-            {
-                $this->M_indicator_data_pg->update($params, $where);
+                // if($value != '')
+                // {
+                    $this->M_indicator_data_pg->update($params, $where);
 
-                // // UPDATE DETAIL HISTORY DATA, IF detail_id IS NOT EMPTY
-                // if ($detail_id != '') {
-                //     $where = array("detail_id" => $detail_id);
-                //     //INSERT DATA
-                //     $this->M_indicator_data_pg->insert($params);
-                //     // INSERT DETAIL DATA
-                //     $this->M_indicator_data_detail_pg->insert($params);
-                    
-            }else 
-            if($submission_st == 'rejected' && $verify_comment == NULL)
-            {
+                    // // UPDATE DETAIL HISTORY DATA, IF detail_id IS NOT EMPTY
+                    // if ($detail_id != '') {
+                    //     $where = array("detail_id" => $detail_id);
+                    //     //INSERT DATA
+                    //     $this->M_indicator_data_pg->insert($params);
+                    //     // INSERT DETAIL DATA
+                    //     $this->M_indicator_data_detail_pg->insert($params);
+                        
+                // }
+                // else 
+                // if($submission_st == 'rejected' && $verify_comment == NULL)
+                // {
 
-            }   
+            } 
         }
 
         // REDIRECT

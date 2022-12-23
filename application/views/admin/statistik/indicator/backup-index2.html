@@ -15,14 +15,75 @@
     });
 </script>
 
+<!-- <style>
+li {
+	list-style: none;
+	display: flex;
+	align-items: baseline;
+    margin-top: 5px;
+}
+ul {
+	padding: 0;
+}
+
+.span_editable {
+	outline: none;
+	border: 1px solid slategrey; 
+	border-radius: 5px;
+}
+
+
+.header_title {
+	display: flex;
+	align-items: center;
+	border-bottom:1px solid slategrey;
+	margin-bottom: 10px;
+}
+
+.input_title {
+	font-size:2em;
+	font-weight: bold;
+	color: white;
+}
+
+.input_title:focus { 
+	outline: none; 
+}
+
+.edit_task_button, .edit_title_button {
+	background-color: grey;
+	color: white;
+	border: 0px;
+	border-radius: 25px;
+}
+
+.edit_task_button:focus, .edit_title_button:focus, #add_button:focus { 
+	outline: none; 
+}
+
+
+.complete {
+	text-decoration: line-through;
+	color: gray;
+}
+
+.delete {
+	background-color: tomato;
+	color: white;
+	border: 0px;
+	border-radius: 25px;
+}
+
+</style> -->
+
 <style>
-.list {
+li {
     padding: 8px 0;
 	align-items: baseline;
     margin-top: 5px;
-    margin-left: 5px;
+    margin-left: 0px;
 }
-#to-do-list {
+ul {
 	padding: 0;
 }
 
@@ -234,7 +295,7 @@
                         <div class="col-md-9 mb-1" align="right">
                             &nbsp; &nbsp;
                             
-                            <button id="btn-submit" type="button" onclick="sweet()" class="btn btn-primary" >Proses Ajukan<span class="btn-label-right"><i class="mdi mdi-send"></i></span></button>
+                            <button id="btn-submit" type="button" class="btn btn-primary" >Proses Ajukan<span class="btn-label-right"><i class="mdi mdi-send"></i></span></button>
                             <!-- {$config->site_url('admin/statistik/indicator/ajukan_rumus')} -->
 
                             <button id="ajukan" name="ajukan" type="submit" formaction="{$config->site_url('admin/statistik/indicator/ajukan_rumus')}"
@@ -277,11 +338,12 @@
                                     </center>
                                 </th>
                                 <th align="center" >Catatan</th>
+                                <th align="center" >Status Rumus</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {assign var = "no" value = 0}
+                            {assign var="no" value =0}
                             {foreach $rs_id as $result}
                             
                             <tr {if $result.data_type|default:'' eq 'indicator' } class="table-active" {/if}>
@@ -327,7 +389,7 @@
                                 {if $result.rumus_type|default:'' eq '' }
                                 {else}
                                 style="background-color:#f2f5f7;"
-                                {/if}  width="70%">
+                                {/if} >
                                     <input type="hidden" name="old_values[]"
                                         value="{$result.$year.value|default:''|default:''}">
                                     {if $result.rumus_type|default:'' eq '' }
@@ -345,7 +407,7 @@
                                 {if $result.rumus_type|default:'' eq '' }
                                 {else}
                                 style="background-color:#f2f5f7;"
-                                {/if}>
+                                {/if} >
                                     {if $result.$year.value|default:'' eq ''}
                                     <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge badge-soft-secondary">null</span>
                                     {elseif $result.$year.value|default:'' eq 'n/a'}
@@ -430,7 +492,6 @@
                                     {$dataID = str_replace(".", "", $result.data_id)}
                                     <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{$dataID}">
                                         <i class="mdi mdi-comment-check-outline"></i>
-                                        
                                     </a>
 
                                     <input class="form-control" type="text"  id="value{$dataID}" value="{$result.$year_selected.verify_comment|default:''}"
@@ -447,18 +508,57 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        
+
+                                                        <!-- <div class="container">
+                                                            <h4 id="headerText">To Do list</h4>
+                                                    
+                                                            <div class="todo">
+                                                                <div class="add-box" id="addBox">
+                                                                    <input type="text" placeholder="say something..." id="input">
+                                                                    <a type="button" onclick="addList()" class="btn btn-add">+</a>
+                                                                    <p id="errorText"></p>
+                                                                </div>
+                                                                <ul class="list" id="list">
+                                                                
+                                                                </ul>
+                                                            </div>
+                                                        </div> -->
+
+                                                        <!-- <div class="container flex lists">
+                                                            <div class="one_list">
+                                                              <div class="header_title">
+                                                                <h4 class="header-title">Pencarian</h4>
+                                                              </div>
+                                                              <form id="add_task">
+                                                                <div class="input-group">
+                                                                    <input type="text" id="input_task" name="input" class="form-control" placeholder="New task">
+                                                                    <button type="button" id="add_button" class="btn btn-info btn-sm"><i class="mdi mdi-plus" aria-hidden="true"></i></button>
+                                                                </div>
+                                                                </form>
+                                                              <div>
+                                                                <ul id="task_list">
+                                                                  <li>
+                                                                    <input class="form-check-input" type="checkbox">
+                                                                    <span class="input">One line sometimes is enough</span>
+                                                                    <button type="button" class="edit_task_button"><i class="mdi mdi-pencil " aria-hidden="true"></i></button>
+                                                                    <button type="button" class="delete"><i class="mdi mdi-close " aria-hidden="true"></i></button>
+                                                                  </li>
+                                                                </ul>	
+                                                                <h4 id="completed_title" class="header-title">Completed</h4>
+                                                                <ul id="completed_list"></ul>				
+                                                              </div>
+                                                            </div>
+                                                        </div> -->
                                                         <div class="container flex lists">
                                                             <div class="wrap-list">
                                                                 <div class="header_title">
                                                                     <h4 class="header-title">Catatan</h4>
-
                                                                 </div>
                                                                 <div class="input-group">
                                                                     <input type="text" id="field" name="input" class="form-control" placeholder="New task">
-                                                                    <button type="button" id="btn" onclick="sweet" class="btn btn-info btn-sm"><i class="mdi mdi-plus" aria-hidden="true"></i></button>
-                                                                   
+                                                                    <button type="button" id="btn" class="btn btn-info btn-sm"><i class="mdi mdi-plus" aria-hidden="true"></i></button>
                                                                 </div>
+                                                                <!-- contentEditable="true" -->
                                                                 <div id="text_area" contentEditable="true">
                                                                     <ul id="to-do-list">
                                                                     </ul>
@@ -469,12 +569,17 @@
                                                     </div>
                                                     
                                                     <div class="modal-footer">
-                                                        <button id="save" type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                                        <!-- <a id="addBtn" type="button" class="btn btn-info" >Add</a> -->
+                                                        <button id="save{$dataID}" type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
+                                </td>
+                                <td align="center">
+                                    <span class="badge bg-warning rounded-pill"><i class="mdi mdi-rotate-3d"></i></span>
+                                    <span class="badge bg-success rounded-pill"><i class="mdi mdi-check"></i></span>
                                 </td>
                             </tr>
                             {/foreach}
@@ -489,25 +594,24 @@
 
 
 <script>
-
-    
     $('#btn').click(function() {
 	var val = $('#field').val();
-    // var today = new Date();
-    // var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    // var dateTime = date+' '+time;
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
     
-        if(val !== "") {
-            var newElem = $('<li class="list"></li>').html(val),
-             newList = $(newElem).append('<span class = "remove">[X]</span>');
-            $('#to-do-list').append(newList);
-            $('.remove').click(function() {
-                $(this).parent().remove();
-            });
-            $('#field').val("");
-        };
-    });
+	if(val !== "") {
+		var newElem = $('<li class="list"></li>').html(val),
+			// newList = $(newElem).append('<button class="remove btn btn-danger btn-sm"><i class="mdi mdi-close " aria-hidden="true"></i></button>');
+			newList = $(newElem).append('<span class = "remove">[X]</span>');
+		$('#to-do-list').append(newList);
+		$('.remove').click(function() {
+			$(this).parent().remove();
+		});
+		$('#field').val("");
+	};
+});
 </script>
 
 
@@ -543,7 +647,7 @@
     }
 </script> -->
 
-<script>
+<!-- <script>
     function sweet (){
         swal("Apakah anda ingin ", "Mengajukan data dan menjalankan rumusnya ?", "warning", {
             buttons: {
@@ -580,7 +684,7 @@
             }
         });
     }
-</script>
+</script> -->
 
 <script>
     $(document).ready( function () {

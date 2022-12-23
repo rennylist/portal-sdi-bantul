@@ -523,4 +523,24 @@ class M_indicator_pg extends CI_Model
 
         return $this->db2->query($query, $params)->row_array();
     }
+
+    // function insert($params)
+    // {
+    //     return $this->db2->insert('trx_formula_request', $params);
+    // }
+
+    function insert_request($params)
+    {
+        return $this->db2->insert('trx_formula_request', $params);
+    }
+
+    function delete($params)
+    {
+        return $this->db2->delete('trx_formula_request', $params);
+    }
+
+    function update($params, $where)
+    {
+        return $this->db2->update('trx_formula_request', $params, $where);
+    }
 }

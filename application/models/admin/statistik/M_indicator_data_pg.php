@@ -201,15 +201,6 @@ class M_indicator_data_pg extends CI_Model
                     SUM(CASE WHEN aa.submission_st = 'rejected' THEN 1 else 0 END) AS tot_reject,
                     SUM(CASE WHEN aa.submission_st = 'approved' THEN 1 else 0 END) AS tot_approve,
                     SUM(CASE WHEN aa.submission_st = '-' THEN 1 else 0 END) AS tot_strip
-                    -- SUM(IF(aa.data_id IS NOT NULL,1,0)) AS tot_fill,
-                    -- SUM(IF(aa.submission_st = 'pending',1,0)) AS tot_pending,
-                    -- SUM(IF(aa.submission_st = 'rejected',1,0)) AS tot_reject,
-                    -- SUM(IF(aa.submission_st = 'approved',1,0)) AS tot_approve
-                    -- COUNT(CASE WHEN aa.value <> '' THEN 1 END) AS tot_fill,
-                    -- COUNT(CASE WHEN aa.value = '' OR aa.value IS NULL THEN 1 END) AS tot_unfill,
-                    -- COUNT(CASE WHEN aa.submission_st = 'pending' THEN 1 END) AS tot_pending,
-                    -- COUNT(CASE WHEN aa.submission_st = 'rejected' THEN 1 END) AS tot_reject,
-                    -- COUNT(CASE WHEN aa.submission_st = 'approved' THEN 1 END) AS tot_approve
                     FROM trx_indicator_data aa
                     LEFT JOIN trx_indicator bb ON aa.data_id = bb.data_id
                     WHERE
