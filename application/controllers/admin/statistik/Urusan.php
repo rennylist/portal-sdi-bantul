@@ -58,12 +58,14 @@ class Urusan extends OperatorBase
         $total = ['total' => 0, 'tot_min' => 0, 'tot_approve' =>0, 'tot_pending' => 0, 'tot_reject' => 0];
         $urusan =[];
         foreach ($rs_id as $key => $value) {
-
+       
             if (!isset($urusan[$value['urusan_id']])) {
 
                 // GET COUNTING DATA
                 $param = array($instansi_cd, $value['urusan_id'] . "%", $instansi_cd, $value['urusan_id'] . "%",  $tahun);
                 $data = $this->M_indicator_data_pg->get_count_by_instansi($param);
+
+                // 
 
                 // PARSING TO ARRAY DATA
                 $rs_id[$key]['tot']         = $data['total'];
@@ -87,30 +89,6 @@ class Urusan extends OperatorBase
             }
         }
         $rs_id = $urusan;
-
-        // GET DATA FOR TABLE WITH PRIVILEGES
-        // $params = array($instansi_cd,$tahun, $instansi_cd,$tahun);
-        // $rs_id = $this->M_indicator_privileges->get_all_by_instansi($params);
-        // GET LIST DATA
-        // foreach ($rs_id as $key => $value) {
-        //     if(!empty($value['parent_id']))
-        //     {
-        //         // GET COUNTING DATA
-        //         $params = array($value['urusan_id'], $tahun, $instansi_cd, "yes");
-        //         $vals = $this->M_indicator_privileges->get_usaha_by_params($params);
-        //         $tot = 0;
-        //         foreach ($vals as $keyy => $val) {
-        //             $tot = $tot + $this->M_indicator_privileges->get_total_indicator(array($val['data_id']));
-        //         }
-        //         $data = $this->M_indicator_data->get_total_urusan_by_params(array($value['urusan_id']."%",  $tahun));
-        //         // PARSING TO ARRAY DATA
-        //         $rs_id[$key]['tot'] = $tot;
-        //         $rs_id[$key]['tot_min'] = $tot - ($data['tot_pending'] + $data['tot_reject'] + $data['tot_approve']);
-        //         $rs_id[$key]['tot_pending'] = $data['tot_pending'];
-        //         $rs_id[$key]['tot_reject']  = $data['tot_reject'];
-        //         $rs_id[$key]['tot_approve'] = $data['tot_approve'];
-        //     }    
-        // }
 
         // ASSIGN DATA
         $this->tsmarty->assign("option_years", array_reverse($option_years));
