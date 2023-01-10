@@ -459,7 +459,8 @@ class Indicator extends OperatorBase
         $result[0]['value_new'] = "<b>Nilai Baru</b>";
         $result[0]['data_st_new'] = "<b>Sifat Data Baru (Diisi angka saja: 0=tidak ada data; 1=TW-1; 2=TW-2; 3=TW-3; 4=TW-4; 5=Tetap)</b>";
         $result[0]['submission_st'] = "<b>Status Pengajuan (Diisi angka saja: 0=Ditolak 1=Menunggu 2=Diterima)</b>";
-        $result[0]['verify_comment'] = "<b>Catatan</b>";
+        $result[0]['verify_comment'] = "<b>Catatan Admin  (tidak boleh diubah)</b>";
+        $result[0]['verify_comment_opd'] = "<b>Catatan OPD</b>";
         $result[0]['value'] = "<b>Nilai Lama</b>";
         $result[0]['data_st'] = "<b>Sifat Data Tahun Terakhir (Diisi angka saja: 0=tidak ada data; 1=TW-1; 2=TW-2; 3=TW-3; 4=TW-4; 5=Tetap)</b>";
 
