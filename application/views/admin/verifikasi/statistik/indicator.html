@@ -177,31 +177,49 @@
 
                 </p>
 
-                <form action="{$config->site_url('admin/verifikasi/statistik/ajukan_process')}" method="post">
+                <!-- <form action="{$config->site_url('admin/verifikasi/statistik/ajukan_process')}" method="post"> -->
+                <form action="" method="post">
                     <input type="hidden" name="year" value="{$year_selected|default:''}" />
                     <input type="hidden" name="urusan_id" value="{$urusan_id|default:''}" />
                     <input type="hidden" name="instansi_cd" value="{$instansi_cd|default:''}" />
                     <input type="hidden" name="process" value="process" />
 
                     <div class="row">
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-6 mb-3">
                             <h4 class="header-title">{$instansi.instansi_name|default:'-'}</h4>
                             <strong>{$urusan.urusan_id|default:''} Bidang {$urusan.urusan_name|default:''}</strong>
                             ({$urusan_parent.urusan_id|default:''} {$urusan_parent.urusan_name|default:''})
+                        </div>
+                        <div class="col-md-6 mb-3" align="right">
+                            <!-- <a target="_blank"
+                                href="{$config->site_url('admin/verifikasi/statistik/download_template_verifikasi')}"
+                                class="btn btn-info btn-xs">
+                                Template Verifikasi<span class="btn-label-right btn-xs"><i class="mdi mdi-download"></i></span>
+                            </a> -->
+                           
+                            
                         </div>
                     </div>
                    
                     <div class="row">
                         <div class="col-md-3 mb-2">
                             <div class="input-group">
-                                <input type="text" id="mySearchText" class="form-control border border-primary" placeholder="Cari...." >
-                                <a id="mySearchButton" name="mySearchButton" type="button" class="btn btn-outline-primary"><i class="mdi mdi-magnify"></i></a>
-                                <a type="button" onClick="window.location.reload();" class="btn btn-outline-primary"><i class="mdi mdi-sync"></i></a>
+                                <input type="text" id="mySearchText" class="form-control border border-secondary" placeholder="Cari...." >
+                                <a id="mySearchButton" name="mySearchButton" type="button" class="btn btn-outline-secondary"><i class="mdi mdi-magnify"></i></a>
+                                <a type="button" onClick="window.location.reload();" class="btn btn-outline-secondary"><i class="mdi mdi-sync"></i></a>
                         </div>
                         </div>
 
                         <div class="col-md-9 mb-2" align="right">
-                            <button id="ajukan" name="ajukan" type="submit"
+                            <a href="{$config->site_url('admin/verifikasi/statistik/upload_verifikasi')}" class="btn btn-success">
+                                Unggah Verifikasi<span class="btn-label-right"><i class="mdi mdi-upload"></i></span>
+                            </a>
+                            <button id="download" name="download" type="submit" formaction="{$config->site_url('admin/verifikasi/statistik/download_template_verifikasi_by_urusan')}"
+                                class="btn btn-info waves-effect waves-light">
+                                Template Verifikasi<span class="btn-label-right"><i class="mdi mdi-file-excel"></i></span>
+                            </button>    
+                            &nbsp; &nbsp;
+                            <button id="ajukan" name="ajukan" type="submit" formaction="{$config->site_url('admin/verifikasi/statistik/ajukan_process')}"
                                 class="btn btn-primary waves-effect waves-light">
                                 Verifikasi Data<span class="btn-label-right"><i class="mdi mdi-send"></i></span>
                             </button>
@@ -225,9 +243,10 @@
                                 <th>Sifat</th>
                                 <th>Status</th>
                                 <th>
-                                    <span class="mb-2 form-check-success">
+                                    Verifikasi
+                                    <!-- <span class="mb-2 form-check-success">
                                         <input class="form-check-input rounded-circle checked-all-menu" type="checkbox">
-                                    </span>
+                                    </span> -->
                                 </th>
                                 <th>Catatan</th>
                             </tr>
@@ -314,10 +333,20 @@
                                 style="background-color:#c8f9d0;color:white;"
                                 {else}
                                 {/if}>
-                                    <input type="hidden" name="old_values[]"
+                                    <!-- <input type="hidden" name="old_values[]"
                                         value="{$result.$year.value|default:''|default:''}">
                                     <input class="form-control" type="text" name="values[]"
+                                        value="{$result.$year.value|default:''|default:''}"> -->
+
+                                    <input type="hidden" name="old_values[]"
                                         value="{$result.$year.value|default:''|default:''}">
+                                    {if $result.rumus_type|default:'' eq '' }
+                                    <input class="form-control" type="text" name="values[]"
+                                        value="{$result.$year.value|default:''|default:''}">
+                                    {else}
+                                    <input class="form-control" type="text" name="values[]"
+                                        value="{$result.$year.value|default:''|default:''}" readonly>
+                                    {/if}
                                 </td>
                                 {else}
                                 <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
@@ -346,17 +375,6 @@
                                 style="background-color:#c8f9d0;color:white;"
                                 {else}
                                 {/if}>
-                                    <!-- {if $result.$year_selected.data_st|default:'' eq 'tetap'}
-                                    <span class="badge badge-soft-success">TTP</span>
-                                    {else if $result.$year_selected.data_st|default:'' eq 'Tidak ada data'}
-                                    <span class="badge badge-soft-secondary">TDA</span>
-                                    {else if $result.$year_selected.data_st|default:'' eq 'sementara'}
-                                    <span class="badge badge-soft-warning">SMTR</span>
-                                    {else}
-                                    <span
-                                        class="badge badge-soft-warning">{$result.$year_selected.data_st|default:''|capitalize}</span>
-                                    {/if} -->
-                                    
                                     <input type="hidden" name="old_statuses[]"
                                         value="{$result.$year_selected.data_st|default:''}">
                                     <select class="form-select" data-toggle="select2" data-width="100%"
@@ -377,7 +395,6 @@
                                             }selected="selected" {/if}>TW-4</option>
                                         <!-- <option value="sementara" {if $result.$year_selected.data_st|default:'' eq 'sementara'}selected="selected"{/if}>Smtr &nbsp;</option> -->
                                     </select>
-
                                 </td>
                                 <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if} align="center">
                                     {if $result.$year_selected.submission_st|default:'' eq 'pending'}
@@ -410,69 +427,63 @@
                                             checked='checked' {/if}>
                                             <label class="form-check-label"> Diterima </label>
                                     </div> -->
-
-                                    <input type="hidden" name="old_submission_st[]"
-                                        value="{$result.$year_selected.submission_st|default:''}">
-                                    <select class="form-select" data-toggle="select2" data-width="100%"
-                                        name="submission_st[]">
-                                        <option value="" {if $result.$year_selected.submission_st|default:'' eq ''
-                                            }selected="selected" {/if}>Pilih &nbsp;</option>
-                                        <option value="approved" {if $result.$year_selected.submission_st|default:'' eq 'approved'
-                                            }selected="selected" {/if}>Diterima</option>
-                                        <option value="rejected" {if $result.$year_selected.submission_st|default:'' eq 'rejected'
-                                            }selected="selected" {/if}>Ditolak</option>
-                                    </select>
-                                    
+                                        <input type="hidden" name="old_submission_st[]"
+                                            value="{$result.$year_selected.submission_st|default:''}">
+                                        <select class="form-select" data-toggle="select2" data-width="100%"
+                                            name="submission_st[]">
+                                            <option value="" {if $result.$year_selected.submission_st|default:'' eq ''
+                                                }selected="selected" {/if}>Pilih &nbsp;</option>
+                                            <option value="approved" {if $result.$year_selected.submission_st|default:'' eq 'approved'
+                                                }selected="selected" {/if}>Diterima</option>
+                                            <option value="rejected" {if $result.$year_selected.submission_st|default:'' eq 'rejected'
+                                                }selected="selected" {/if}>Ditolak</option>
+                                        </select>
                                 </td>
 
                                 <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if}>
-                                    <div {if $result.$year_selected.submission_st|default:'' eq '' }
-                                         {/if}>
+                                    {$dataID = str_replace(".", "", $result.data_id)}
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="{$result.$year_selected.verify_comment|default:'-'}">
+                                        <a class="btn btn-circle" data-bs-toggle="modal" data-bs-target="#modal{$dataID}">
+                                            <i class="mdi mdi-file-document-edit mdi-18px"></i>
+                                        </a>
+                                    </span>
 
-                                        {$dataID = str_replace(".", "", $result.data_id)}
-                                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="{$result.$year_selected.verify_comment|default:'-'}">
-                                            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{$dataID}">
-                                                <i class="mdi mdi-comment-check-outline"></i>
-                                            </a>
-                                        </span>
+                                    <input type="text"  id="value{$dataID}" value="{$result.$year_selected.verify_comment|default:''}"
+                                    name="verify_comment[]" hidden>                             
 
-                                        <input type="text"  id="value{$dataID}" value="{$result.$year_selected.verify_comment|default:''}"
-                                        name="verify_comment[]" hidden>                             
-
-                                       <div class="modal fade" id="modal{$dataID}" role="dialog">
-                                            <div class="modal-dialog ">
-                                            
-                                                <form method="post" action="change-goal">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                        <h4 class="modal-title">{$result.data_id}</h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                        <label for="simpleinput" class="form-label">Riwayat Catatan Terakhir Oleh : {$result.$year_selected.verify_mdd|default:'-'}</label>
-                                                        <textarea class="form-control" value="{$result.$year_selected.verify_comment|default:''}"
-                                                        id="" disabled>{$result.$year_selected.verify_comment|default:''}</textarea>
-                                                        <hr>
-                                                        <label for="simpleinput" class="form-label">Tulis Catatan Baru :</label>
-                                                        <textarea class="form-control" value=""
-                                                        id="new{$dataID}"></textarea>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                        
-                                                        <button id="save{$dataID}" type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
-                                                        </div>
+                                    <div class="modal fade" id="modal{$dataID}" role="dialog">
+                                        <div class="modal-dialog ">
+                                        
+                                            <form method="post" action="change-goal">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <h4 class="modal-title">{$result.data_id}</h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                </form>
-                                            </div>
+                                                    <div class="modal-body">
+                                                    <label for="simpleinput" class="form-label">Catatan Terakhir Oleh : {$result.$year_selected.mdb_name|default:'-'} <br> Pada : {$result.$year_selected.mdd|default:'-'}</label>
+                                                    <textarea class="form-control" value="{$result.$year_selected.verify_comment|default:''}"
+                                                    id="" disabled>{$result.$year_selected.verify_comment|default:''}</textarea>
+                                                    <hr>
+                                                    <label for="simpleinput" class="form-label">Catatan Baru :</label>
+                                                    <textarea class="form-control" value=""
+                                                    id="new{$dataID}"></textarea>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    
+                                                    <button id="save{$dataID}" type="button" class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
-
-                                        <script type="text/javascript">
-                                            $('#save{$dataID}').on('click', function() {
-                                            $('#value{$dataID}').val( $('#new{$dataID}').val() );
-                                            });
-                                        </script>
-                                    
                                     </div>
+
+                                    <script type="text/javascript">
+                                        $('#save{$dataID}').on('click', function() {
+                                        $('#value{$dataID}').val( $('#new{$dataID}').val() );
+                                        });
+                                    </script>
+                                    
                                 </td>
                             </tr>
                             {/foreach}
