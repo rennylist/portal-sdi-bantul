@@ -200,7 +200,26 @@ class M_indicator_pg extends CI_Model
                 LEFT JOIN mst_instansi c ON a.instansi_cd = c.instansi_cd
                 WHERE a.instansi_cd = '11705'
                 ORDER BY a.data_id ASC";
-        $query = $this->db2->query($sql);
+        $query = $this->db2->query($sql, $params);
+        if ($query->num_rows() > 0) {
+            $result = $query->result_array();
+            $query->free_result();
+            return $result;
+        } else {
+            return array();
+        }
+    }
+
+    public function get_indicator_by_urusan_instansi($params)
+    {
+        $sql = "SELECT a.*, b.urusan_name, c.instansi_name
+                FROM trx_indicator a
+                LEFT JOIN trx_urusan b ON a.urusan_id = b.urusan_id
+                LEFT JOIN mst_instansi c ON a.instansi_cd = c.instansi_cd
+                WHERE a.urusan_id = ?
+                AND a.instansi_cd = ?
+                ORDER BY a.data_id ASC";
+        $query = $this->db2->query($sql, $params);
         if ($query->num_rows() > 0) {
             $result = $query->result_array();
             $query->free_result();
@@ -340,7 +359,7 @@ class M_indicator_pg extends CI_Model
     {
 
         $sql = "SELECT 
-                a.data_id, a.parent_id, a.urusan_id, a.data_name, a.data_unit,a.data_type,a.active_st,a.instansi_cd, a.mdb, a.mdd
+                a.data_id, a.parent_id, a.urusan_id, a.data_name, a.data_unit, a.rumus_type, a.rumus_detail,a.data_type,a.active_st,a.instansi_cd, a.mdb, a.mdd
                 FROM trx_indicator a
                 WHERE
                 a.active_st = 'yes'

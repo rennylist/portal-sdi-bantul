@@ -6,7 +6,7 @@
                     <li class="breadcrumb-item ">
                         <a href="{$config->site_url('admin/dashboard/admin')}">Beranda</a>
                     </li>
-                    <!-- <li class="breadcrumb-item "><a href="#">monitoring</a></li> -->
+                    <!-- <li class="breadcrumb-item "><a href="#">Verifikasi</a></li> -->
                     <li class="breadcrumb-item active">Verifikasi Statistik</li>
                 </ol>
             </div>
@@ -46,32 +46,7 @@
                                 </select>
                             </div>
                         </div>
-                        <!-- <div class="col-lg-3">
-                            <div class="mb-3">
-                                <label for="simpleinput" class="form-label">Klasifikasi Indikator</label>
-                                <select name="indicator_class" id="indicator_class" class="form-select">
-                                    <option value="1">Semua</option>
-                                    <option value="1">Indikator SDG’s</option>
-                                    <option value="2">Indikator RPJMD</option>
-                                    <option value="3">IKK LPPD</option>
-                                    <option value="4">Indikator SPM</option>
-                                    <option value="5">Data Daerah Dalam Angka</option>
-                                    <option value="6">Data Aplikasi Dataku DIY</option>
-                                    <option value="7">Data Pilah Gender</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="mb-3">
-                                <label for="simpleinput" class="form-label">Indikator</label>
-                                <select name="indicator_id" id="indicator_id"  class="form-control" data-toggle="select2" data-width="100%">
-                                    <option value="" >Semua</option>
-                                    {foreach $indicators as $indicator}
-                                        <option value="{$indicator.data_id|default:''}" {if $indicator.data_id|default:'' eq $search.indicator_id|default:''}selected='selected'{/if}> {$indicator.data_name|default:''}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                        </div> -->
+                       
                         <div class="col-lg-2">
                             <div class="mb-3" style="padding-top: 27px;">
                                 <button id="ajukan" name="ajukan" type="submit"
@@ -97,22 +72,41 @@
                     Daftar instansi
                 </p> -->
                 <div class="row">
-                    <div class="col-md-8 mb-2">
+                    <div class="col-md-2 mb-2">
                         <h4 class="header-title">Instansi</h4>
                         <p class="sub-header">
                             Daftar instansi
                         </p>
                     </div>
-                    <div class="col-md-4 mb-2" align="right">
+                    <div class="col-md-10 mb-2" align="right">
+                        <a href="{$config->site_url('admin/monitoring/statistik/upload')}" class="btn btn-success ">
+                            Unggah Data<span class="btn-label-right "><i class="mdi mdi-upload"></i></span>
+                        </a>
+                        <a href="{$config->site_url('admin/monitoring/statistik/upload_verifikasi')}" class="btn btn-success ">
+                            Unggah Verifikasi<span class="btn-label-right "><i class="mdi mdi-upload"></i></span>
+                        </a>
+                        <a target="_blank"
+                            href="{$config->site_url('admin/monitoring/statistik/download_template_verifikasi_all')}"
+                            class="btn btn-info ">
+                            Template Verifikasi<span class="btn-label-right "><i class="mdi mdi-file-excel"></i></span>
+                        </a>
+                        <a target="_blank"
+                            href="{$config->site_url('admin/monitoring/statistik/download_template_data')}"
+                            class="btn btn-info ">
+                            Template Data<span class="btn-label-right "><i
+                                    class="mdi mdi-file-excel"></i></span>
+                        </a>
+                        <br>
+                        <br>
                         <a target="_blank" href="{$config->site_url('admin/monitoring/statistik/download_data_all')}"
-                            class="btn btn-danger">
-                            Unduh Data<span class="btn-label-right"><i class="mdi mdi-download"></i></span>
+                            class="btn btn-danger ">
+                            Unduh Data<span class="btn-label-right "><i class="mdi mdi-download"></i></span>
                         </a>
 
                         <a target="_blank"
                             href="{$config->site_url('admin/monitoring/statistik/download_laporan_instansi')}"
-                            class="btn btn-danger">
-                            Unduh Laporan<span class="btn-label-right"><i class="mdi mdi-download"></i></span>
+                            class="btn btn-danger ">
+                            Unduh Laporan<span class="btn-label-right "><i class="mdi mdi-download"></i></span>
                         </a>
                     </div>
                 </div>

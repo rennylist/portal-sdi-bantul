@@ -47,7 +47,6 @@ class Indicator extends OperatorBase
         // GET SESSION SEARCH & ASSIGN
         $search = $this->session->userdata('search_indicator');
 
-        //print_r($search);
         //$indicator_class = $search['indicator_class'];
 
         $tahun = empty($search['tahun']) ? date("Y") : $search['tahun'];
@@ -72,52 +71,11 @@ class Indicator extends OperatorBase
             $param = array($data_id, $instansi_cd);
             $indicators = $this->M_indicator_pg->get_indicator_by_indicator_class($param, $indicator_class);
         }
-        //print_r($indicators);
 
         // GET DETAIL DATA
         $urusan = $this->M_urusan_pg->get_detail_urusan(array($data_id));
         //print_r($data_id);
         $urusan_parent = $this->M_urusan_pg->get_detail_urusan(array($urusan['parent_id']));
-
-        // print_r($urusan_parent);
-
-        // GET DETAIL PENCARIAN WITH PRIV
-        // $indicators = $this->M_indicator_pg->get_indicator_by_instansi(array($data_id, $instansi_cd));
-        // //print_r($indicators);
-        // foreach ($indicators as $key => $value) {
-        //     $data = $this->M_indicator_data_pg->get_count(array($value['data_id'] . "%", $value['data_id'] . "%",  $tahun));
-        //     // $tot =  $this->M_indicator_privileges->get_total_indicator(array($value['data_id']));
-        //     // $tot_fill =  ($data['tot_pending'] + $data['tot_reject'] + $data['tot_approve']);
-
-        //     $indicators[$key]['tot'] = $data['total'];
-        //     $indicators[$key]['tot_fill'] = $data['tot_fill'];
-        //     $indicators[$key]['tot_min'] = $data['total'] - $data['tot_fill'];
-        // }
-
-        // GET DETAIL PENCARIAN WITHOUT PRIV
-        // $indicators = $this->M_indicator_privileges->get_indicator_by_instansi(array($data_id, $instansi_cd, $tahun));
-        // foreach ($indicators as $key => $value) {
-        //     $data = $this->M_indicator_data->get_total_urusan_by_params(array($value['data_id'] . "%",  $tahun));
-        //     $tot =  $this->M_indicator_privileges->get_total_indicator(array($value['data_id']));
-        //     $tot_fill =  ($data['tot_pending'] + $data['tot_reject'] + $data['tot_approve']);
-        //     $indicators[$key]['tot'] = $tot;
-        //     $indicators[$key]['tot_fill'] = $tot_fill;
-        //     $indicators[$key]['tot_min'] = $tot - $tot_fill;
-        // }
-
-        //GET DATA DETAIL URUSAN DENGAN PRIV
-        // $params = array($data_id, $indicator_id, $instansi_cd, $tahun);
-        // $rs_id = $this->M_indicator_privileges->get_indicator_export_by_params($params);
-
-        // $result = array();
-        // foreach ($rs_id as $key => $value) {
-        //     //ambil list data
-        //     $datas = $this->M_indicator_privileges->get_indicator_export_detail_by_params(array($value['data_id'] ));
-        //     foreach ($datas as $keys => $data) {
-        //         array_push($result, $data);
-        //     }
-        // }
-        // $rs_id = $result;
 
         //GET DATA DETAIL URUSAN TANPA PRIV
         $params = array($data_id, $indicator_id, $instansi_cd);
@@ -131,25 +89,12 @@ class Indicator extends OperatorBase
 
             $rs_id = $this->M_indicator_pg->get_indicator_export_by_params_indicator_class($params, $indicator_class);
 
-            // $indicators_with_class = $this->M_indicator_pg->get_indicator_by_instansi_with_class(array($data_id, $instansi_cd), $indicator_class);
-
-            // foreach ($indicators_with_class as $key => $value) {
-            //     $data = $this->M_indicator_data_pg->get_count_with_class(array($value['data_id'] . "%", $value['data_id'] . "%",  $tahun), $indicator_class);
-            //     // print_r($data);
-            //     // die;
-            //     // $tot =  $this->M_indicator_privileges->get_total_indicator(array($value['data_id']));
-            //     // $tot_fill =  ($data['tot_pending'] + $data['tot_reject'] + $data['tot_approve']);
-            //     $indicators_with_class[$key]['tot'] = $data['total'];
-            //     $indicators_with_class[$key]['tot_fill'] = $data['tot_fill'];
-            //     $indicators_with_class[$key]['tot_min'] = $data['total'] - $data['tot_fill'];
-            // }
+            
         } else {
 
             $rs_id = $this->M_indicator_pg->get_indicator_export_by_params($params);
         }
-        // $rs_id = $this->M_indicator->get_indicator_export_by_params($params);
-        // $rs_id = $this->M_indicator->get_indicator_export_by_params($params, $indicator_class);
-
+        
         // SET LOOP YEAR FOR SEARCH
         $option_year = date("Y");
         $option_years = array();
@@ -173,7 +118,6 @@ class Indicator extends OperatorBase
             for ($i = ($table_year - $table_year_min); $i <= $table_year; $i++) {
                 // PARSING DATA
                 $data = $this->M_indicator_data_pg->get_data_by_params(array($value['data_id'], $i));
-
                 $nilai = (!isset($data['value'])) ? '' : trim($data['value']);
                 $data_st = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
                 $submission_st = (!isset($data['submission_st']) || empty($data['submission_st'])) ? '' : $data['submission_st'];
@@ -324,110 +268,6 @@ class Indicator extends OperatorBase
         $xlsx->downloadAs($filename);
     }
 
-    // public function download_template_data_opd($data_id)
-    // {
-    //     //GET INSTANSI DARI SESSION
-    //     $instansi_cd = $this->com_user['instansi_cd'];
-
-    //     // CEK URUSAN, JIKA TIDAK ADA DIREDIRECT
-    //     $urusan = $this->M_urusan_pg->get_detail_urusan(array($data_id));
-    //     if (empty($urusan)) redirect("admin/statistik/indicator");
-
-    //     // GET SESSION SEARCH & ASSIGN
-    //     $search = $this->session->userdata('search_indicator');
-    //     $tahun = empty($search['tahun']) ? date("Y") : $search['tahun'];
-    //     $indicator_id  = empty($search['indicator_id']) ? "%" : $search['indicator_id'] . "%";
-    //     if ($instansi_cd == "10900") $indicator_id = "%";
-    //     $indicator_id  = "%";
-    //     if (empty($search)) {
-    //         $search['tahun'] =  date("Y");
-    //     }
-    //     $this->tsmarty->assign("search", $search);
-
-    //     // GET DATA INDICATOR TANPA PRIV
-    //     $rs_id = $this->M_indicator_pg->get_indicator_by_params(array($data_id, $indicator_id, $instansi_cd));
-
-    //     // LOOP DATA RESULT
-    //     foreach ($rs_id as $key => $value) {
-    //         // PARSING DATA
-    //         $data = $this->M_indicator_data_pg->get_data_by_params(array($value['data_id'], $tahun));
-    //         $nilai = (!isset($data['value'])) ? '' : trim($data['value']);
-    //         $data_st = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
-
-    //         if ( $data_st == "tidakada" || $nilai == "n/a") {
-    //             $data_st = "0";
-    //         } else if ($data_st == "TW-1") {
-    //              $data_st = "1";
-    //         } else if ($data_st == "TW-2"){
-    //             $data_st = "2";
-    //         } else if ($data_st == "TW-3"){
-    //             $data_st = "3";
-    //         } else if ($data_st == "TW-4"){
-    //             $data_st = "4";
-    //         } else if ($data_st == "tetap"){
-    //             $data_st = "5";
-    //         } else {
-    //             $data_st = "";
-    //         }
-
-    //         $verify_comment = (!isset($data['verify_comment']) || empty($data['verify_comment'])) ? '' : $data['verify_comment'];
-    //         $submission_st = (!isset($data['submission_st']) || empty($data['submission_st'])) ? '' : $data['submission_st'];
-    //         if ($submission_st == 'approved')
-    //             $submission_st = 'diterima';
-    //         elseif ($submission_st == 'empty')
-    //             $submission_st = 'kosong';
-    //         elseif ($submission_st == 'pending')
-    //             $submission_st = 'menunggu';
-    //         elseif ($submission_st == 'rejected')
-    //             $submission_st = '<s>ditolak</s>';
-    //         else
-    //             $submission_st = '';
-
-    //         // INSERT DATA TO ARRAY
-    //         $rs_id[$key]['data_id'] =  "<left>" . $rs_id[$key]['data_id'] . "</left>";
-    //         $rs_id[$key]['year'] =   $search['tahun'];
-    //         $rs_id[$key]['value'] =  $nilai;
-    //         $rs_id[$key]['data_st'] =  $data_st;
-    //         $rs_id[$key]['submission_st'] =  $submission_st;
-    //         $rs_id[$key]['verify_comment_new'] =  NULL;
-    //         $rs_id[$key]['verify_comment'] =  $verify_comment;
-
-    //         // UNSET DATA ARRAY
-    //         unset($rs_id[$key]['parent_id']);
-    //         unset($rs_id[$key]['urusan_id']);
-    //         unset($rs_id[$key]['active_st']);
-    //         unset($rs_id[$key]['data_type']);
-    //         unset($rs_id[$key]['instansi_cd']);
-    //         unset($rs_id[$key]['mdd']);
-    //         unset($rs_id[$key]['mdb']);
-    //     }
-
-    //     // INSERT TITLE IN EXCEL TEMPLATE
-    //     $title = array(
-    //         "data_id" => "<b>Kode ID</b>",
-    //         "data_name" => "<b>Nama</b>",
-    //         "data_unit" => "<b>Satuan</b>",
-    //         "year" => "<b>Tahun</b>",
-    //         "value" => "<b>Nilai Baru</b>",
-    //         "data_st" => "<b>Sifat Data Baru (Diisi angka saja: 0=tidak ada data; 1=TW-1; 2=TW-2; 3=TW-3; 4=TW-4; 5=Tetap)</b>",
-    //         "submission_st" => "<b>Status Pengajuan (tidak boleh diubah)</b>",
-    //         "verify_comment_new" => "<b>Catatan Baru</b>",
-    //         "verify_comment" => "<b>Catatan Terakhir (tidak boleh diubah)</b>",
-    //     );
-    //     array_unshift($rs_id, $title);
-
-    //     // print_r($rs_id);
-    //     // die();
-
-    //     // DONWLOAD EXCEL WITH PARAMS
-    //     $xlsx = new SimpleXLSXGen();
-    //     $xlsx->addSheet($rs_id);
-    //     $filename =  "Template Bidang " . $urusan['urusan_name'] . ".xlsx";
-    //     $filename = str_replace(" ", "_", strtolower($filename));
-    //     $filename =  "template_upload_data_bidang_urusan_" . $urusan['urusan_id'] . ".xlsx";
-    //     $xlsx->downloadAs($filename);
-    // }
-
     public function download_template_data_opd($data_id)
     {
         //GET INSTANSI DARI SESSION
@@ -459,9 +299,12 @@ class Indicator extends OperatorBase
         $result[0]['value_new'] = "<b>Nilai Baru</b>";
         $result[0]['data_st_new'] = "<b>Sifat Data Baru (Diisi angka saja: 0=tidak ada data; 1=TW-1; 2=TW-2; 3=TW-3; 4=TW-4; 5=Tetap)</b>";
         $result[0]['submission_st'] = "<b>Status Pengajuan (Diisi angka saja: 0=Ditolak 1=Menunggu 2=Diterima)</b>";
-        $result[0]['verify_comment'] = "<b>Catatan</b>";
-        $result[0]['value'] = "<b>Nilai Lama</b>";
-        $result[0]['data_st'] = "<b>Sifat Data Tahun Terakhir (Diisi angka saja: 0=tidak ada data; 1=TW-1; 2=TW-2; 3=TW-3; 4=TW-4; 5=Tetap)</b>";
+        $result[0]['verify_comment'] = "<b>Catatan Admin (Data Tidak Boleh Diubah)</b>";
+        $result[0]['verify_comment_opd'] = "<b>Catatan OPD</b>";
+        $result[0]['rumus_type'] = "<b>Rumus Type</b>";
+        $result[0]['rumus_detail'] = "<b>Rumus Detail</b>";
+        $result[0]['value'] = "<b>Nilai Lama (Data Tidak Boleh Diubah)</b>";
+        $result[0]['data_st'] = "<b>Sifat Data Lama Tahun Terakhir (Data Tidak Boleh Diubah)</b>";
 
         // GET DATA INDICATOR TANPA PRIV
         $rs_id = $this->M_indicator_pg->get_indicator_by_params(array($data_id, $indicator_id, $instansi_cd));
@@ -486,131 +329,48 @@ class Indicator extends OperatorBase
 
             // LOOP DATA FOR GET DATA IN YEAR
             // for ($i = ($table_year - $table_year_min); $i <= $table_year; $i++) {
-                // PARSING DATA
-               $data = $this->M_indicator_data_pg->get_data_by_params(array($value['data_id'], $tahun));
-               $nilai = (!isset($data['value'])) ? '' : trim($data['value']);
-               $data_st = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
-               $data_st_new = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
-                if ( $data_st_new == "tidakada" || $nilai == "n/a") {
-                    $data_st_new = "0";
-                } else if ($data_st_new == "TW-1") {
-                     $data_st_new = "1";
-                } else if ($data_st_new == "TW-2"){
-                    $data_st_new = "2";
-                } else if ($data_st_new == "TW-3"){
-                    $data_st_new = "3";
-                } else if ($data_st_new == "TW-4"){
-                    $data_st_new = "4";
-                } else if ($data_st_new == "tetap"){
-                    $data_st_new = "5";
-                } else {
-                    $data_st_new = "";
-                }
-        
+            // PARSING DATA
+            $data = $this->M_indicator_data_pg->get_data_by_params(array($value['data_id'], $tahun));
+            $nilai = (!isset($data['value'])) ? '' : trim($data['value']);
+            $data_st = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
+            $data_st_new = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
+            if ( $data_st_new == "tidakada" || $nilai == "n/a") {
+                $data_st_new = "0";
+            } else if ($data_st_new == "TW-1") {
+                    $data_st_new = "1";
+            } else if ($data_st_new == "TW-2"){
+                $data_st_new = "2";
+            } else if ($data_st_new == "TW-3"){
+                $data_st_new = "3";
+            } else if ($data_st_new == "TW-4"){
+                $data_st_new = "4";
+            } else if ($data_st_new == "tetap"){
+                $data_st_new = "5";
+            } else {
+                $data_st_new = "";
+            }
             
-        $verify_comment = (!isset($data['verify_comment']) || empty($data['verify_comment'])) ? '' : $data['verify_comment'];
-        $submission_st = (!isset($data['submission_st']) || empty($data['submission_st'])) ? '' : $data['submission_st'];
+            $verify_comment = (!isset($data['verify_comment']) || empty($data['verify_comment'])) ? '' : $data['verify_comment'];
+            $verify_comment_opd = null;
+            $submission_st = (!isset($data['submission_st']) || empty($data['submission_st'])) ? '' : $data['submission_st'];
 
-        // INSERT TO ARRAY
-        $result[$number]['year']   = $bold_start . $search['tahun'] . $bold_end;
-        $result[$number]['value_new'] =  $bold_start . $nilai . $bold_end;
-        $result[$number]['data_st_new'] = $bold_start . $data_st_new . $bold_end;
-
-               // IF TAHUN = SAMA
-            //    if ($i == $tahun) {
-            //        if ($data_st == 'tetap')
-            //            $data_st = 'Tetap';
-            //        elseif ($data_st == 'tidakada')
-            //            $data_st = 'Tidak Ada';
-
-                   // INSERT TO ARRAY
-                   
-            //    }
-
-            // }
-           
+            // INSERT TO ARRAY
+            $result[$number]['year']   = $bold_start . $search['tahun'] . $bold_end;
+            $result[$number]['value_new'] =  $bold_start . $nilai . $bold_end;
+            $result[$number]['data_st_new'] = $bold_start . $data_st_new . $bold_end;
             
             // INSERT TO ARRAY
             $result[$number]['submission_st'] =  $bold_start . $submission_st . $bold_end;
             $result[$number]['verify_comment'] =  $bold_start . $verify_comment . $bold_end;
+            $result[$number]['verify_comment_opd'] =  $bold_start . $verify_comment_opd . $bold_end;
+            $result[$number]['rumus_type'] =  $bold_start . $value['rumus_type'] . $bold_end;
+            $result[$number]['rumus_detail'] =  $bold_start . $value['rumus_detail'] . $bold_end;
             $result[$number]['value'] =  $bold_start . $nilai . $bold_end;
             $result[$number]['data_st'] = $bold_start . $data_st . $bold_end;
 
             // ADD 
             $number++;
         }
-
-        // foreach ($rs_id as $key => $value) {
-        //     // PARSING DATA
-        //     $data = $this->M_indicator_data_pg->get_data_by_params(array($value['data_id'], $tahun));
-        //     $nilai = (!isset($data['value'])) ? '' : trim($data['value']);
-        //     $data_st_new = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
-        //     $data_st = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
-        //     if ( $data_st_new == "tidakada" || $nilai == "n/a") {
-        //         $data_st_new = "0";
-        //     } else if ($data_st_new == "TW-1") {
-        //          $data_st_new = "1";
-        //     } else if ($data_st_new == "TW-2"){
-        //         $data_st_new = "2";
-        //     } else if ($data_st_new == "TW-3"){
-        //         $data_st_new = "3";
-        //     } else if ($data_st_new == "TW-4"){
-        //         $data_st_new = "4";
-        //     } else if ($data_st_new == "tetap"){
-        //         $data_st_new = "5";
-        //     } else {
-        //         $data_st_new = "";
-        //     }
-        //     $verify_comment = (!isset($data['verify_comment']) || empty($data['verify_comment'])) ? '' : $data['verify_comment'];
-        //     $submission_st = (!isset($data['submission_st']) || empty($data['submission_st'])) ? '' : $data['submission_st'];
-        //     if ($submission_st == 'approved')
-        //         $submission_st = 'diterima';
-        //     elseif ($submission_st == 'empty')
-        //         $submission_st = 'kosong';
-        //     elseif ($submission_st == 'pending')
-        //         $submission_st = 'menunggu';
-        //     elseif ($submission_st == 'rejected')
-        //         $submission_st = '<s>ditolak</s>';
-        //     else
-        //         $submission_st = '';
-
-        //     // INSERT DATA TO ARRAY
-        //     $rs_id[$key]['data_id'] =  "<left>" . $rs_id[$key]['data_id'] . "</left>";
-        //     $rs_id[$key]['year'] =   $search['tahun'];
-        //     $rs_id[$key]['value_new'] = $nilai;
-        //     $rs_id[$key]['data_st_new'] = $data_st_new;
-        //     $rs_id[$key]['value'] =  $nilai;
-        //     $rs_id[$key]['data_st'] =  $data_st;
-        //     $rs_id[$key]['submission_st'] =  $submission_st;
-        //     $rs_id[$key]['verify_comment'] =  $verify_comment;
-
-        //     // UNSET DATA ARRAY
-        //     unset($rs_id[$key]['parent_id']);
-        //     unset($rs_id[$key]['urusan_id']);
-        //     unset($rs_id[$key]['active_st']);
-        //     unset($rs_id[$key]['data_type']);
-        //     unset($rs_id[$key]['instansi_cd']);
-        //     unset($rs_id[$key]['mdd']);
-        //     unset($rs_id[$key]['mdb']);
-        // }
-
-        // // INSERT TITLE IN EXCEL TEMPLATE
-        // $title = array(
-        //     "data_id" => "<b>Kode ID</b>",
-        //     "data_name" => "<b>Nama</b>",
-        //     "data_unit" => "<b>Satuan</b>",
-        //     "year" => "<b>Tahun</b>",
-        //     "value_new" => "<b>Nilai Baru</b>",
-        //     "data_st_new" => "<b>Sifat Data Baru (Diisi angka saja: 0=tidak ada data; 1=TW-1; 2=TW-2; 3=TW-3; 4=TW-4; 5=Tetap)</b>",
-        //     "value" => "<b>Nilai Lama (tidak boleh diubah)</b>",
-        //     "data_st" => "<b>Sifat Data Lama (tidak boleh diubah)</b>",
-        //     "submission_st" => "<b>Status Pengajuan (tidak boleh diubah)</b>",
-        //     "verify_comment" => "<b>Catatan (tidak boleh diubah)</b>",
-        // );
-        // array_unshift($rs_id, $title);
-
-        // print_r($result);
-        // die();
 
         // DONWLOAD EXCEL WITH PARAMS
         $xlsx = new SimpleXLSXGen();
@@ -735,23 +495,28 @@ class Indicator extends OperatorBase
         $upload_id = $this->_get_id();
 
         // print_r($xlsx->rows());
+        // die();
+        
         // LOOP DATA EXCEL
         foreach ($xlsx->rows() as $key => $data) {
+
             // SKIP FIRST ROW
             if ($no > 0) {
                 // PARSING DATA
-                $data_id        = (!isset($data[0])) ? '' : trim(strip_tags($data[0]));
-                $data_name      = (!isset($data[1])) ? '' : trim(strip_tags($data[1]));
-                $data_unit      = (!isset($data[2])) ? '' : trim(strip_tags($data[2]));
-                $year           = (!isset($data[3])) ? '' : trim(strip_tags($data[3]));
-                $value_new      = (!isset($data[4])) ? '' : trim(strip_tags($data[4]));
-                $data_st_new    = (!isset($data[5])) ? '' : trim(strip_tags($data[5]));
-                $submission_st  = (!isset($data[6])) ? '' : trim(strip_tags($data[6]));
-                $verify_comment = (!isset($data[7])) ? '' : trim(strip_tags($data[7]));
-                $value          = (!isset($data[8])) ? '' : trim(strip_tags($data[8]));
-                $data_st        = (!isset($data[9])) ? '' : trim(strip_tags($data[9]));
+                $data_id            = (!isset($data[0])) ? '' : trim(strip_tags($data[0]));
+                $data_name          = (!isset($data[1])) ? '' : trim(strip_tags($data[1]));
+                $data_unit          = (!isset($data[2])) ? '' : trim(strip_tags($data[2]));
+                $year               = (!isset($data[3])) ? '' : trim(strip_tags($data[3]));
+                $value_new          = (!isset($data[4])) ? '' : trim(strip_tags($data[4]));
+                $data_st_new        = (!isset($data[5])) ? '' : trim(strip_tags($data[5]));
+                $submission_st      = (!isset($data[6])) ? '' : trim(strip_tags($data[6]));
+                $verify_comment     = (!isset($data[7])) ? '' : trim(strip_tags($data[7]));
+                $verify_comment_opd = (!isset($data[8])) ? '' : trim(strip_tags($data[8]));
+                $rumus_type         = (!isset($data[9])) ? '' : trim(strip_tags($data[9]));
+                $rumus_detail       = (!isset($data[10])) ? '' : trim(strip_tags($data[10]));
+                $value              = (!isset($data[11])) ? '' : trim(strip_tags($data[11]));
+                $data_st            = (!isset($data[12])) ? '' : trim(strip_tags($data[12]));
 
-                // print_r("data_id        : ".$data_id);
                 // SET ARRAY STATUS
                 $list_data = array("0", "1", "2", "3", "4", "5");
                 // CEK IF EXCEL VALUE NOT IN ARRAY
@@ -776,6 +541,7 @@ class Indicator extends OperatorBase
                 }
                 // CEK IF VALUE IS NOT EMPTY
                 else if ($data_id != "" && $year != "" &&  $value_new != "" && $data_st_new != "") {
+
                     // PARSING DATA
                     if ($data_st_new == "0") {
                         $data_st_new = "tidakada";
@@ -954,11 +720,12 @@ class Indicator extends OperatorBase
         $statuses =  $this->input->post('statuses', TRUE);
         $verify_comments =  $this->input->post('verify_comment', TRUE);
 
+        $tot_insert = 0;
         // LOOP ARRAY POST DATA
         foreach ($datas as $key => $data) {
 
             $check_sts =  $this->input->post('check_st_' . $key, TRUE);
-
+            
             // PARSING DATA POST
             if ($check_sts == '1') {
                 $verify_comment = trim(strip_tags($verify_comments[$key]));
@@ -1019,6 +786,8 @@ class Indicator extends OperatorBase
                     $this->M_indicator_data_pg->insert($params);
                     // INSERT DETAIL DATA
                     $this->M_indicator_data_detail_pg->insert($params);
+
+                    $tot_insert++;
                 }
                 
             }
@@ -1027,7 +796,7 @@ class Indicator extends OperatorBase
         //}
 
         // REDIRECT
-        $this->tnotification->sent_notification("success",  "Data berhasil diajukan");
+        $this->tnotification->sent_notification("success",  $tot_insert ." Data berhasil diajukan");
         redirect("admin/statistik/indicator/index/" . $urusan_id);
     }
 

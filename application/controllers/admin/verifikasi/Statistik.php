@@ -67,14 +67,8 @@ class Statistik extends OperatorBase
             $rs_id[$key]['tot_reject']  = $data['tot_reject'];
             $rs_id[$key]['tot_approve'] = $data['tot_approve']; // + 
             $rs_id[$key]['tot_min']     = $data['total'] - ($data['tot_pending'] + $data['tot_reject'] + $data['tot_approve']);
-            // aprove = where submiss = approve + data yang memiliki destination_st other yang value masih kosong
-            // aproved = 2169 + 2 (jika data memiliki destination st = others)
-            // 1. jumlahkan data yang  destination_st nya other set var a
-            // 2. pilih trx indikator data dan left join ke trx indicator  yang destinationnya 'other' set var b
-            // 3. kurangi data var a - b = set var c
-            // 4. aprove = $aprove + var c
         }
-
+        
         // ASSIGN DATA
         $this->tsmarty->assign("rs_id", $rs_id);
         $this->tsmarty->assign("option_years", array_reverse($option_years));
@@ -335,8 +329,12 @@ class Statistik extends OperatorBase
         $xlsx->downloadAs($filename);
     }
     
-    public function download_template_verifikasi()
-    {// GET SESSION SEARCH & ASSIGN
+    public function download_template_verifikasi_all()
+    {
+        // GET SESSION SEARCH & ASSIGN
+        $urusan_id = trim(strip_tags($this->input->post('urusan_id', TRUE)));
+        $instansi_cd = trim(strip_tags($this->input->post('instansi_cd', TRUE)));
+
         $search = $this->session->userdata('search_indicator');
         $tahun = empty($search['tahun']) ? date("Y") : $search['tahun'];
         $indicator_id_default = "%";
@@ -354,8 +352,7 @@ class Statistik extends OperatorBase
             array_push($table_years, $i);
         }
 
-        // GET DATA INDICATOR TANPA PRIV
-        // $rs_id = $this->M_indicator_pg->get_indicator_active();
+        // GET DATA INDICATOR BY INSTANSI CODE & URUSAN ID
         $rs_id = $this->M_indicator_pg->get_indicator_test_temp();
 
         // SET DATE
@@ -416,8 +413,6 @@ class Statistik extends OperatorBase
                else
                    $submission_st = '';
                
-              
-
                // INSERT TO ARRAY
                $result[$number][$i] =  $bold_start . $nilai . $bold_end;
 
@@ -452,10 +447,139 @@ class Statistik extends OperatorBase
 
        //  print_r($result);
 
-       // DONWLOAD EXCEL WITH PARAMS        
+       // DONWLOAD EXCEL WITH PARAMS 
        $xlsx = new SimpleXLSXGen();
        $xlsx->addSheet($result);
        $filename =  "Template_Verifikasi_" . $tahun. ".xlsx";
+       $xlsx->downloadAs($filename);
+    }
+
+    public function download_template_verifikasi_by_urusan()
+    {
+        // GET SESSION SEARCH & ASSIGN
+        $urusan_id = trim(strip_tags($this->input->post('urusan_id', TRUE)));
+        $instansi_cd = trim(strip_tags($this->input->post('instansi_cd', TRUE)));
+
+        
+        $search = $this->session->userdata('search_indicator');
+        $tahun = empty($search['tahun']) ? date("Y") : $search['tahun'];
+        $indicator_id_default = "%";
+        $indicator_id  = empty($search['indicator_id']) ? $indicator_id_default : $search['indicator_id'] . "%";
+        if (empty($search)) {
+            $search['tahun'] =  date("Y");
+        }
+        $this->tsmarty->assign("search", $search);
+
+        // SET LOOP YEAR FOR TABLE
+        $table_year = $tahun;
+        $table_year_min = 2;
+        $table_years = array();
+        for ($i = ($table_year -  $table_year_min); $i <= $table_year; $i++) {
+            array_push($table_years, $i);
+        }
+
+        $params = array(
+            "urusan_id" => $urusan_id,
+            "instansi_cd" => $instansi_cd
+        );
+
+        // GET DATA INDICATOR BY INSTANSI CODE & URUSAN ID
+        $rs_id = $this->M_indicator_pg->get_indicator_by_urusan_instansi($params);
+
+        // SET DATE
+        $result = array();
+
+        // TITLE
+        $result[0]['data_id'] = "<b>Kode ID</b>";
+        $result[0]['data_name'] = "<b>Indikator/Variabel/Subvariabel/Subsubvariabel</b>";
+        $result[0]['data_unit'] = "<b>Satuan</b>";
+        // LOOP
+        for ($i = ($table_year - $table_year_min); $i <= $table_year; $i++) {
+           $result[0][$i] = "<b>" . $i . "</b>";
+        }
+        $result[0]['data_st'] = "<b>Sifat Data Tahun Terakhir</b>";
+        $result[0]['submission_st'] = "<b>Status Pengajuan (Diisi angka saja: 0=Ditolak 1=Menunggu 2=Diterima)</b>";
+        $result[0]['verify_comment'] = "<b>Catatan</b>";
+        $result[0]['year'] = "<b>Tahun</b>";
+        $result[0]['data_type'] = "<b>Indikator/Variabel</b>";
+        $result[0]['rumus_type'] = "<b>Rumus</b>";
+        $result[0]['rumus_detail'] = "<b>Detail Rumus</b>";
+        $result[0]['instansi_name'] = "<b>Nama Instansi / OPD</b>";
+        $result[0]['urusan_id'] = "<b>Kode Urusan</b>";
+
+        // LOOP DATA
+        $number = 1;
+        foreach ($rs_id as $key => $value) {
+
+            // INSERT TO ARRAY & CHECK IF indicator
+            $bold_start = "";
+            $bold_end   = "";
+            if ($value['data_type'] == 'indicator') {
+                $bold_start = "<b>";
+                $bold_end   = "</b>";
+            }
+             
+            // INSERT DATA TO ARRAY
+            $result[$number]['data_id']     = $bold_start . $value['data_id'] . $bold_end;
+            $result[$number]['data_name']   = $bold_start . $value['data_name'] . $bold_end;
+            $result[$number]['data_unit']   = $bold_start . $value['data_unit'] . $bold_end;
+
+
+            // LOOP DATA FOR GET DATA IN YEAR
+            for ($i = ($table_year - $table_year_min); $i <= $table_year; $i++) {
+                // PARSING DATA
+               $data = $this->M_indicator_data_pg->get_data_by_params(array($value['data_id'], $i));
+               $nilai = (!isset($data['value'])) ? '' : trim($data['value']);
+               $data_st = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
+               $verify_comment = (!isset($data['verify_comment']) || empty($data['verify_comment'])) ? '' : $data['verify_comment'];
+               $submission_st = (!isset($data['submission_st']) || empty($data['submission_st'])) ? '' : $data['submission_st'];
+               if ($submission_st == 'approved')
+                   $submission_st = '2';
+               elseif ($submission_st == 'empty')
+                   $submission_st = 'kosong';
+               elseif ($submission_st == 'pending')
+                   $submission_st = '1';
+               elseif ($submission_st == 'rejected')
+                   $submission_st = '0';
+               else
+                   $submission_st = '';
+               
+               // INSERT TO ARRAY
+               $result[$number][$i] =  $bold_start . $nilai . $bold_end;
+
+               // IF TAHUN = SAMA
+               if ($i == $tahun) {
+                   if ($data_st == 'tetap')
+                       $data_st = 'Tetap';
+                   elseif ($data_st == 'tidakada')
+                       $data_st = 'Tidak Ada';
+
+                   // INSERT TO ARRAY
+                   $result[$number]['data_st'] = $bold_start . $data_st . $bold_end;
+               }
+
+            }
+           
+            // INSERT TO ARRAY
+            $result[$number]['submission_st'] =  $bold_start . $submission_st . $bold_end;
+            $result[$number]['verify_comment'] =  $bold_start . $verify_comment . $bold_end;
+            $result[$number]['year']   = $bold_start . $tahun . $bold_end;
+            $result[$number]['data_type'] = $bold_start . $value['data_type'] . $bold_end;
+            $result[$number]['rumus_type'] = $bold_start . $value['rumus_type'] . $bold_end;
+            $result[$number]['data_type'] = $bold_start . $value['data_type'] . $bold_end;
+            $result[$number]['rumus_detail'] = $bold_start . $value['rumus_detail'] . $bold_end;
+            $result[$number]['instansi_name'] = $bold_start . $value['instansi_name'] . $bold_end;
+            $urusan_id = $bold_start . "'" . $value['urusan_id'] . $bold_end;
+            $result[$number]['urusan_id'] = $bold_start . $urusan_id . $bold_end;
+
+            // ADD 
+            $number++;
+        }
+
+       // DONWLOAD EXCEL WITH PARAMS         
+       $xlsx = new SimpleXLSXGen();
+       $xlsx->addSheet($result);
+       $filename =  "Template_Verifikasi_Bidang ".$value['urusan_name']."_".$value['instansi_name']."_".$tahun.".xlsx";
        $xlsx->downloadAs($filename);
     }
 
@@ -469,14 +593,6 @@ class Statistik extends OperatorBase
             $search['tahun'] =  date("Y");
         }
         $this->tsmarty->assign("search", $search);
-
-        // SET LOOP YEAR FOR TABLE
-        // $table_year = $tahun;
-        // $table_year_min = 2;
-        // $table_years = array();
-        // for ($i = ($table_year -  $table_year_min); $i <= $table_year; $i++) {
-        //     array_push($table_years, $i);
-        // }
 
         // GET DATA INDICATOR TANPA PRIV
         // $rs_id = $this->M_indicator_pg->get_indicator_active();
@@ -549,19 +665,6 @@ class Statistik extends OperatorBase
                 $result[$number]['year']   = $bold_start . $search['tahun'] . $bold_end;
                 $result[$number]['value'] =  $bold_start . $nilai . $bold_end;
                 $result[$number]['data_st'] = $bold_start . $data_st . $bold_end;
-
-               // IF TAHUN = SAMA
-            //    if ($i == $tahun) {
-            //        if ($data_st == 'tetap')
-            //            $data_st = 'Tetap';
-            //        elseif ($data_st == 'tidakada')
-            //            $data_st = 'Tidak Ada';
-
-                   // INSERT TO ARRAY
-                   
-            //    }
-
-            // }
            
             // INSERT TO ARRAY
             $result[$number]['submission_st'] =  $bold_start . $submission_st . $bold_end;
@@ -576,8 +679,6 @@ class Statistik extends OperatorBase
             // ADD 
             $number++;
         }
-
-        // print_r($result);
 
        // DONWLOAD EXCEL WITH PARAMS        
        $xlsx = new SimpleXLSXGen(); 
@@ -640,55 +741,6 @@ class Statistik extends OperatorBase
         }
         $rs_id = $urusan;
 
-
-        // // GET DATA FOR TABLE WITHOUT PRIVILEGES
-        // $rs_id = $this->M_urusan_pg->get_all_by_instansi(array($instansi_cd, $instansi_cd,));
-        // foreach ($rs_id as $key => $value) {
-        //     // GET COUNTING DATA
-        //     $param = array($instansi_cd, $value['urusan_id'] . "%", $instansi_cd, $value['urusan_id'] . "%",  $tahun);
-        //     // print_r($param);
-        //     $data = $this->M_indicator_data_pg->get_count_by_instansi($param);
-            
-        //     // PARSING TO ARRAY DATA
-        //     $rs_id[$key]['tot']         = $data['total'];
-        //     $rs_id[$key]['tot_fill']    = $data['tot_fill'];
-        //     $rs_id[$key]['tot_pending'] = $data['tot_pending'];
-        //     $rs_id[$key]['tot_reject']  = $data['tot_reject'];
-        //     $rs_id[$key]['tot_approve'] = $data['tot_approve'];
-        //     $rs_id[$key]['tot_min']     = $data['total'] - ($data['tot_pending'] + $data['tot_reject'] + $data['tot_approve']) ;
-        // }
-
-        // GET DATA FOR TABLE WITH PRIVILEGES
-        // $rs_id = $this->M_indicator_privileges->get_all_by_instansi(array($instansi_cd,$tahun, $instansi_cd,$tahun));
-        // foreach ($rs_id as $key => $value) {
-        //     if(!empty($value['parent_id'])){
-        //         $data = $this->M_indicator_data->get_total_by_urusan(array($value['urusan_id']."%"));
-        //         $rs_id[$key]['tot_pending'] = $data['tot_pending'];
-        //         $rs_id[$key]['tot_reject']  = $data['tot_reject'];
-        //         $rs_id[$key]['tot_approve'] = $data['tot_approve'];
-
-        //         // //get total
-        //         // $params = array($value['urusan_id'], $tahun, $instansi_cd, "yes");
-        //         // $vals = $this->M_indicator_privileges->get_usaha_by_params($params);
-        //         // $tot = 0;
-        //         // foreach ($vals as $keyy => $val) {
-        //         //     $tot = $tot + $this->M_indicator_privileges->get_total_indicator(array($val['data_id']));
-        //         //     // echo $tot;
-        //         //     // echo "<br />";
-        //         // }
-
-        //         // $params = array($value['urusan_id']."%",  $tahun);
-        //         // $data = $this->M_indicator_data->get_total_urusan_by_params( $params);
-
-        //         // //inject
-        //         // $rs_id[$key]['tot'] = $tot;
-        //         // $rs_id[$key]['tot_min'] = $tot - ($data['tot_pending'] + $data['tot_reject'] + $data['tot_approve']);
-        //         // $rs_id[$key]['tot_pending'] = $data['tot_pending'];
-        //         // $rs_id[$key]['tot_reject']  = $data['tot_reject'];
-        //         // $rs_id[$key]['tot_approve'] = $data['tot_approve'];
-        //     } 
-        // }
-
         // ASSIGN DATA
         $this->tsmarty->assign("rs_id", $rs_id);
         $this->tsmarty->assign("instansi_cd", $instansi_cd);
@@ -736,21 +788,6 @@ class Statistik extends OperatorBase
         $urusan_parent = $this->M_urusan_pg->get_detail_urusan(array($urusan['parent_id']));
         $indicators = $this->M_indicator_pg->get_indicator_by_instansi(array($data_id, $instansi_cd));
 
-        // DATA WITH PRIVILEGES
-        // GET DATA LIST INDICATOR & VARIABLE WITH urusan_id
-        // $indicators = $this->M_indicator_privileges->get_indicator_by_instansi(array($data_id, $instansi_cd, $tahun));
-        // GET LIST INDICATOR & VARIBLE WITH PRIVILEGES
-        // $params = array($data_id, $indicator_id, $instansi_cd, $tahun);
-        // $rs_id = $this->M_indicator_privileges->get_indicator_export_by_params($params);
-        // $result = array();
-        // foreach ($rs_id as $key => $value) {
-        //     // GET LIST DATA
-        //     $datas = $this->M_indicator_privileges->get_indicator_export_detail_by_params(array($value['data_id'] ));
-        //     foreach ($datas as $keys => $data) {
-        //         array_push($result, $data);
-        //     }
-        // }
-        // $rs_id = $result;
 
         // GET LIST INDICATOR & VARIBLE WITHOUT PRIVILEGES
         $params = array($data_id, $indicator_id, $instansi_cd);
@@ -767,7 +804,6 @@ class Statistik extends OperatorBase
         } else {
             $rs_id = $this->M_indicator_pg->get_indicator_export_by_params($params);
         }
-        //$rs_id = $this->M_indicator->get_indicator_export_by_params(array($data_id, $indicator_id, $instansi_cd));
 
         // CREATE LIST OPTION FOR YEAR
         $option_year = date("Y");
@@ -785,19 +821,6 @@ class Statistik extends OperatorBase
             array_push($table_years, $i);
         }
 
-        // //get data
-        // $rs_id = $this->M_urusan->get_all_by_instansi(array($instansi_cd, $instansi_cd));
-
-        // foreach ($rs_id as $key => $value) {
-        //     if(!empty($value['parent_id'])){
-        //         $data = $this->M_indicator_data->get_total_by_urusan(array($value['urusan_id']."%"));
-        //         $rs_id[$key]['tot_pending'] = $data['tot_pending'];
-        //         $rs_id[$key]['tot_reject']  = $data['tot_reject'];
-        //         $rs_id[$key]['tot_approve'] = $data['tot_approve'];
-        //     }
-
-        // }
-
         // LOOP LIST AND PUSH DATA value PER YEAR
         foreach ($rs_id as $key => $value) {
             // LOOP YEAR
@@ -809,6 +832,11 @@ class Statistik extends OperatorBase
                 $data_st = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
                 $submission_st = (!isset($data['submission_st']) || empty($data['submission_st'])) ? '' : $data['submission_st'];
                 $verify_comment = (!isset($data['verify_comment']) || empty($data['verify_comment'])) ? '' : $data['verify_comment'];
+                $mdd = (!isset($data['mdd']) || empty($data['mdd'])) ? '' : $this->tdtm->get_full_date($data['mdd']);
+                $mdb_name = (!isset($data['mdb_name']) || empty($data['mdb_name'])) ? '' : $data['mdb_name'];
+                $verify_mdd = (!isset($data['verify_mdd']) || empty($data['verify_mdd'])) ? '' : $this->tdtm->get_full_date($data['verify_mdd']);
+                $verify_mdb_name = (!isset($data['verify_mdb_name']) || empty($data['verify_mdb_name'])) ? '' : $data['verify_mdb_name'];
+
                 // PUSH TO MAIN ARRAY
                 if ($table_year == $i) {
                     // ADD HISTORY INDICATOR & VARIABLE DATA, IF YEAR = YEAR SELECTED
@@ -819,7 +847,11 @@ class Statistik extends OperatorBase
                         'data_st' => $data_st,
                         'submission_st' => $submission_st,
                         'verify_comment' => $verify_comment,
-                        'history' =>  $history
+                        'history' =>  $history,
+                        'verify_mdd' => $verify_mdd,
+                        'verify_mdb_name' => $verify_mdb_name,
+                        'mdd' => $mdd,
+                        'mdb_name' =>  $mdb_name,
                     );
                 } else {
                     $rs_id[$key][$i] =  array(
@@ -828,6 +860,10 @@ class Statistik extends OperatorBase
                         'data_st' => $data_st,
                         'submission_st' => $submission_st,
                         'verify_comment' => $verify_comment,
+                        'verify_mdd' => $verify_mdd,
+                        'verify_mdb_name' => $verify_mdb_name,
+                        'mdd' => $mdd,
+                        'mdb_name' =>  $mdb_name,
                     );
                 }
             }
@@ -879,112 +915,9 @@ class Statistik extends OperatorBase
         redirect($url);
     }
 
-    // public function ajukan_process()
-    // {
-    //     // SET PAGE RULES
-    //     $this->_set_page_rule("C");
-
-    //     // GET DATA POST & PARSING
-    //     $year = trim(strip_tags($this->input->post('year', TRUE)));
-    //     $urusan_id = trim(strip_tags($this->input->post('urusan_id', TRUE)));
-    //     $instansi_cd = trim(strip_tags($this->input->post('instansi_cd', TRUE)));
-    //     $datas =  $this->input->post('datas', TRUE);
-    //     $submission_sts =  $this->input->post('submission_st', TRUE);
-    //     $verify_comments =  $this->input->post('verify_comment', TRUE);
-    //     $detail_ids =  $this->input->post('detail_ids', TRUE);
-    //     $values =  $this->input->post('values', TRUE); 
-    //     $old_values =  $this->input->post('old_values', TRUE); 
-    //     $old_statuses =  $this->input->post('old_statuses', TRUE); 
-    //     $statuses =  $this->input->post('statuses', TRUE); 
-
-
-    //     // LOOP DATA FOR UPDATE pengajuan
-    //     foreach ($datas as $key => $data) {
-
-    //         // PARSING DATA
-    //         $detail_id = '';
-    //         if ($detail_ids != ''){
-    //             $detail_id = trim(strip_tags($detail_ids[$key]));
-    //         }
-    //         // $detail_id = trim(strip_tags($detail_ids[$key]));
-    //         $submission_st =  $this->input->post('submission_st_' . $key, TRUE);
-    //         if ($submission_st != 'approved') $submission_st = 'rejected';
-    //         $verify_comment = trim(strip_tags($verify_comments[$key]));
-    //         $verify_comment = (!isset($verify_comment) || empty($verify_comment)) ? NULL : $verify_comment;
-    //         if ( ($submission_st != 'approved') && isset($verify_comment) ) {
-    //             $submission_st = 'rejected';
-    //         }
-    //         $value = trim(strip_tags($values[$key])); 
-    //         $old_value = trim(strip_tags($old_values[$key])); 
-    //         $value = str_replace(",", ".", $value); 
-    //         $old_value = str_replace(",", ".", $old_value); 
-    //         $old_status = trim(strip_tags($old_statuses[$key])); 
-    //         $status = trim(strip_tags($statuses[$key])); 
-
-    //         if ($value == '') {
-    //             $value = NULL;
-    //         }
-
-    //         $detail_id = $this->_get_id();
-            
-    //         $params = array(
-    //             "data_id" => $data,
-    //             "year" => $year
-    //         );
-
-    //         // $this->M_indicator_data_pg->delete($params);
-
-    //         // UPDATE INDICATOR DATA
-    //         if ($value == '') { 
-    //             $params = array(
-    //                 "data_id" => $data,
-    //                 "year" => $year,
-    //                 "value" => $value, 
-    //                 "data_st" => $status, 
-    //                 "submission_st" => '-',
-    //                 "detail_id" => $detail_id,
-    //                 "verify_comment" => $verify_comment,
-    //                 "verify_mdb_name" => $this->com_user['user_alias'],
-    //                 "verify_mdb" => $this->com_user['user_id'],
-    //                 "verify_mdd" => date("Y-m-d H:i:s")
-    //             );
-    //         } else {
-    //             $params = array(
-    //                 "data_id" => $data,
-    //                 "year" => $year,
-    //                 "value" => $value, 
-    //                 "data_st" => $status, 
-    //                 "submission_st" => $submission_st,
-    //                 "detail_id" => $detail_id,
-    //                 "verify_comment" => $verify_comment,
-    //                 "verify_mdb_name" => $this->com_user['user_alias'],
-    //                 "verify_mdb" => $this->com_user['user_id'],
-    //                 "verify_mdd" => date("Y-m-d H:i:s")
-    //             );
-    //         }
-            
-    //         $where = array(
-    //             "data_id" => $data,
-    //             "year" => $year
-    //         );
-
-    //             if($value != '')
-    //             {
-    //                 $this->M_indicator_data_pg->update($params, $where);
-
-    //             }else 
-    //             if($submission_st == 'rejected' && $verify_comment == NULL)
-    //             {
-                    
-    //         }
-    //     }
-
-    //     // REDIRECT
-    //     redirect("admin/verifikasi/statistik/indicator/" . $instansi_cd . "/" . $urusan_id);
-    // }
-
     public function ajukan_process()
     {
+    
         // SET PAGE RULES
         $this->_set_page_rule("C");
 
@@ -993,31 +926,28 @@ class Statistik extends OperatorBase
         $urusan_id = trim(strip_tags($this->input->post('urusan_id', TRUE)));
         $instansi_cd = trim(strip_tags($this->input->post('instansi_cd', TRUE)));
         $datas =  $this->input->post('datas', TRUE);
-        $submission_sts =  $this->input->post('submission_st', TRUE);
         $verify_comments =  $this->input->post('verify_comment', TRUE);
         $detail_ids =  $this->input->post('detail_ids', TRUE);
         $values =  $this->input->post('values', TRUE); 
         $old_values =  $this->input->post('old_values', TRUE); 
         $old_statuses =  $this->input->post('old_statuses', TRUE); 
         $statuses =  $this->input->post('statuses', TRUE); 
+        $old_submission_sts =  $this->input->post('old_submission_st', TRUE); 
+        $submission_sts =  $this->input->post('submission_st', TRUE); 
 
-        // LOOP DATA FOR UPDATE pengajuan
+        $tot_insert = 0;
+        $tot_insert_error = 0;
+
+         // LOOP DATA FOR UPDATE pengajuan
         foreach ($datas as $key => $data) {
-
-            $submission_st =  $this->input->post('submission_st_' . $key, TRUE);
-            
-            if ( $submission_st != 'approved' && isset($verify_comment) ) {
-                $submission_st = 'rejected';
-            }
-            
-            if ($submission_st == 'approved') {
-
+            $submission_st = trim(strip_tags($submission_sts[$key]));
+            if($submission_st != '') {
                 // PARSING DATA
                 $detail_id = '';
                 if ($detail_ids != ''){
                     $detail_id = trim(strip_tags($detail_ids[$key]));
                 }
-                // $submission_st =  $this->input->post('submission_st_' . $key, TRUE);
+                $submission_st = trim(strip_tags($submission_sts[$key]));
                 $verify_comment = trim(strip_tags($verify_comments[$key]));
                 $verify_comment = (!isset($verify_comment) || empty($verify_comment)) ? NULL : $verify_comment;
                 $value = trim(strip_tags($values[$key])); 
@@ -1027,31 +957,25 @@ class Statistik extends OperatorBase
                 $old_status = trim(strip_tags($old_statuses[$key])); 
                 $status = trim(strip_tags($statuses[$key]));
 
-                if ( isset($verify_comment) ) {
-                    $submission_st = 'rejected';
-                }
-
                 if ($value == '') {
                     $value = NULL;
                 }
 
-                $detail_id = $this->_get_id();
+                // $detail_id = $this->_get_id();
                 
                 $params = array(
                     "data_id" => $data,
                     "year" => $year
                 );
 
-                // $this->M_indicator_data_pg->delete($params);
-
                 // UPDATE INDICATOR DATA
-                if ($value == '') { 
+                if ($value == '' ) { 
                     $params = array(
                         "data_id" => $data,
                         "year" => $year,
                         "value" => $value, 
                         "data_st" => $status, 
-                        "submission_st" => '',
+                        "submission_st" => '-',
                         "detail_id" => $detail_id,
                         "verify_comment" => $verify_comment,
                         "verify_mdb_name" => $this->com_user['user_alias'],
@@ -1078,36 +1002,40 @@ class Statistik extends OperatorBase
                     "year" => $year
                 );
 
-                // if($value != '')
-                // {
+                if ($submission_st == 'rejected' && $verify_comment == '') {
+                    
+                    // UPDATE DETAIL HISTORY DATA
                     $this->M_indicator_data_pg->update($params, $where);
-
-                    // // UPDATE DETAIL HISTORY DATA, IF detail_id IS NOT EMPTY
-                    // if ($detail_id != '') {
-                    //     $where = array("detail_id" => $detail_id);
-                    //     //INSERT DATA
-                    //     $this->M_indicator_data_pg->insert($params);
-                    //     // INSERT DETAIL DATA
-                    //     $this->M_indicator_data_detail_pg->insert($params);
-                        
-                // }
-                // else 
-                // if($submission_st == 'rejected' && $verify_comment == NULL)
-                // {
-
-            } 
+                    
+                    // INSERT DETAIL DATA
+                    $this->M_indicator_data_detail_pg->update($params, $where); 
+                    $tot_insert_error++;
+                } 
+                    
+                // UPDATE DETAIL HISTORY DATA
+                $this->M_indicator_data_pg->update($params, $where);
+                
+                // INSERT DETAIL DATA
+                $this->M_indicator_data_detail_pg->update($params, $where);
+                $tot_insert++;
+                
+            }
         }
-
-        // REDIRECT
+        
+        $this->tnotification->sent_notification("success", $tot_insert. " Data berhasil diverifikasi, " . $tot_insert_error. " Data ditolak tanpa catatan");
         redirect("admin/verifikasi/statistik/indicator/" . $instansi_cd . "/" . $urusan_id);
+        // REDIRECT
+        
     }
 
     public function search_urusan_process()
     {
         // SET PAGE RULES
         $this->_set_page_rule("R");
+
         // CEK INPUT PROCESS EMPTY OR NOT
         if ($this->input->post('process') == "process") {
+
             // SET PARAMS
             $params = array(
                 "tahun" => trim(strip_tags($this->input->post('tahun', TRUE))),
@@ -1147,19 +1075,20 @@ class Statistik extends OperatorBase
             // SKIP FIRST ROW
             if ($no > 0) {
                 // PARSING DATA
-                $data_id        = (!isset($data[0])) ? '' : trim(strip_tags($data[0]));
-                $data_name      = (!isset($data[1])) ? '' : trim(strip_tags($data[1]));
-                $data_unit      = (!isset($data[2])) ? '' : trim(strip_tags($data[2]));
-                $year           = (!isset($data[3])) ? '' : trim(strip_tags($data[3]));
-                $value          = (!isset($data[4])) ? '' : trim(strip_tags($data[4]));
-                $data_st        = (!isset($data[5])) ? '' : trim(strip_tags($data[5]));
-                $submission_st  = (!isset($data[6])) ? '' : trim(strip_tags($data[6]));
-                $verify_comment = (!isset($data[7])) ? '' : trim(strip_tags($data[7]));
-                $data_type      = (!isset($data[8])) ? '' : trim(strip_tags($data[8]));
-                $rumus_type     = (!isset($data[9])) ? '' : trim(strip_tags($data[9]));
-                $rumus_detail   = (!isset($data[10])) ? '' : trim(strip_tags($data[10]));
-                $instansi_name  = (!isset($data[11])) ? '' : trim(strip_tags($data[11]));
-                $urusan_id      = (!isset($data[12])) ? '' : trim(strip_tags($data[12]));
+                $data_id            = (!isset($data[0])) ? '' : trim(strip_tags($data[0]));
+                $data_name          = (!isset($data[1])) ? '' : trim(strip_tags($data[1]));
+                $data_unit          = (!isset($data[2])) ? '' : trim(strip_tags($data[2]));
+                $year               = (!isset($data[3])) ? '' : trim(strip_tags($data[3]));
+                $value              = (!isset($data[4])) ? '' : trim(strip_tags($data[4]));
+                $data_st            = (!isset($data[5])) ? '' : trim(strip_tags($data[5]));
+                $submission_st      = (!isset($data[6])) ? '' : trim(strip_tags($data[6]));
+                $verify_comment     = (!isset($data[7])) ? '' : trim(strip_tags($data[7]));
+                $verify_comment_opd = (!isset($data[8])) ? '' : trim(strip_tags($data[8]));
+                $data_type          = (!isset($data[9])) ? '' : trim(strip_tags($data[9]));
+                $rumus_type         = (!isset($data[10])) ? '' : trim(strip_tags($data[9]));
+                $rumus_detail       = (!isset($data[11])) ? '' : trim(strip_tags($data[11]));
+                $instansi_name      = (!isset($data[12])) ? '' : trim(strip_tags($data[12]));
+                $urusan_id          = (!isset($data[13])) ? '' : trim(strip_tags($data[13]));
 
                 // SET ARRAY STATUS
                 $list_data = array("", "0", "1", "2", "3", "4", "5");
@@ -1408,9 +1337,9 @@ class Statistik extends OperatorBase
                     "submission_st" => $submission_st,
                     "verify_comment" => $verify_comment,
                     "detail_id" => $detail_id,
-                    "mdb_name" => $this->com_user['user_alias'],
-                    'mdb' => $this->com_user['user_id'],
-                    'mdd' => date('Y-m-d H:i:s')
+                    "verify_mdb_name" => $this->com_user['user_alias'],
+                    "verify_mdb" => $this->com_user['user_id'],
+                    "verify_mdd" => date("Y-m-d H:i:s")
                 );
 
                 $where = array(
