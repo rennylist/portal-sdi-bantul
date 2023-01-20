@@ -402,6 +402,8 @@
                                     {elseif $result.$year_selected.submission_st|default:'' eq 'approved'}
                                     <span class="badge bg-success rounded-pill"><i class="mdi mdi-check"></i></span>
                                     {elseif $result.$year_selected.submission_st|default:'' eq 'rejected'}
+                                    <span class="badge bg-danger rounded-pill"><i class="mdi mdi-window-close"></i></span>
+                                    {elseif $result.$year_selected.submission_st|default:'' eq 'rejected'}
                                     <span class="badge bg-danger rounded-pill"><i
                                             class="mdi mdi-window-close"></i></span>
                                     {else}
@@ -440,12 +442,16 @@
                                         </select>
                                 </td>
 
-                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if}>
+                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if} >
                                     {$dataID = str_replace(".", "", $result.data_id)}
                                     <span data-bs-toggle="tooltip" data-bs-placement="top" title="{$result.$year_selected.verify_comment|default:'-'}">
                                         <a class="btn btn-circle" data-bs-toggle="modal" data-bs-target="#modal{$dataID}">
                                             <i class="mdi mdi-file-document-edit mdi-18px"></i>
                                         </a>
+                                        {if $result.$year_selected.submission_st|default:'' eq 'rejected' && $result.$year_selected.verify_comment|default:'' eq ''}
+                                            <p class="text-danger">*Require</p>
+                                        {else}
+                                        {/if}
                                     </span>
 
                                     <input type="text"  id="value{$dataID}" value="{$result.$year_selected.verify_comment|default:''}"

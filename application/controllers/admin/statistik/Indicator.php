@@ -268,110 +268,6 @@ class Indicator extends OperatorBase
         $xlsx->downloadAs($filename);
     }
 
-    // public function download_template_data_opd($data_id)
-    // {
-    //     //GET INSTANSI DARI SESSION
-    //     $instansi_cd = $this->com_user['instansi_cd'];
-
-    //     // CEK URUSAN, JIKA TIDAK ADA DIREDIRECT
-    //     $urusan = $this->M_urusan_pg->get_detail_urusan(array($data_id));
-    //     if (empty($urusan)) redirect("admin/statistik/indicator");
-
-    //     // GET SESSION SEARCH & ASSIGN
-    //     $search = $this->session->userdata('search_indicator');
-    //     $tahun = empty($search['tahun']) ? date("Y") : $search['tahun'];
-    //     $indicator_id  = empty($search['indicator_id']) ? "%" : $search['indicator_id'] . "%";
-    //     if ($instansi_cd == "10900") $indicator_id = "%";
-    //     $indicator_id  = "%";
-    //     if (empty($search)) {
-    //         $search['tahun'] =  date("Y");
-    //     }
-    //     $this->tsmarty->assign("search", $search);
-
-    //     // GET DATA INDICATOR TANPA PRIV
-    //     $rs_id = $this->M_indicator_pg->get_indicator_by_params(array($data_id, $indicator_id, $instansi_cd));
-
-    //     // LOOP DATA RESULT
-    //     foreach ($rs_id as $key => $value) {
-    //         // PARSING DATA
-    //         $data = $this->M_indicator_data_pg->get_data_by_params(array($value['data_id'], $tahun));
-    //         $nilai = (!isset($data['value'])) ? '' : trim($data['value']);
-    //         $data_st = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
-
-    //         if ( $data_st == "tidakada" || $nilai == "n/a") {
-    //             $data_st = "0";
-    //         } else if ($data_st == "TW-1") {
-    //              $data_st = "1";
-    //         } else if ($data_st == "TW-2"){
-    //             $data_st = "2";
-    //         } else if ($data_st == "TW-3"){
-    //             $data_st = "3";
-    //         } else if ($data_st == "TW-4"){
-    //             $data_st = "4";
-    //         } else if ($data_st == "tetap"){
-    //             $data_st = "5";
-    //         } else {
-    //             $data_st = "";
-    //         }
-
-    //         $verify_comment = (!isset($data['verify_comment']) || empty($data['verify_comment'])) ? '' : $data['verify_comment'];
-    //         $submission_st = (!isset($data['submission_st']) || empty($data['submission_st'])) ? '' : $data['submission_st'];
-    //         if ($submission_st == 'approved')
-    //             $submission_st = 'diterima';
-    //         elseif ($submission_st == 'empty')
-    //             $submission_st = 'kosong';
-    //         elseif ($submission_st == 'pending')
-    //             $submission_st = 'menunggu';
-    //         elseif ($submission_st == 'rejected')
-    //             $submission_st = '<s>ditolak</s>';
-    //         else
-    //             $submission_st = '';
-
-    //         // INSERT DATA TO ARRAY
-    //         $rs_id[$key]['data_id'] =  "<left>" . $rs_id[$key]['data_id'] . "</left>";
-    //         $rs_id[$key]['year'] =   $search['tahun'];
-    //         $rs_id[$key]['value'] =  $nilai;
-    //         $rs_id[$key]['data_st'] =  $data_st;
-    //         $rs_id[$key]['submission_st'] =  $submission_st;
-    //         $rs_id[$key]['verify_comment_new'] =  NULL;
-    //         $rs_id[$key]['verify_comment'] =  $verify_comment;
-
-    //         // UNSET DATA ARRAY
-    //         unset($rs_id[$key]['parent_id']);
-    //         unset($rs_id[$key]['urusan_id']);
-    //         unset($rs_id[$key]['active_st']);
-    //         unset($rs_id[$key]['data_type']);
-    //         unset($rs_id[$key]['instansi_cd']);
-    //         unset($rs_id[$key]['mdd']);
-    //         unset($rs_id[$key]['mdb']);
-    //     }
-
-    //     // INSERT TITLE IN EXCEL TEMPLATE
-    //     $title = array(
-    //         "data_id" => "<b>Kode ID</b>",
-    //         "data_name" => "<b>Nama</b>",
-    //         "data_unit" => "<b>Satuan</b>",
-    //         "year" => "<b>Tahun</b>",
-    //         "value" => "<b>Nilai Baru</b>",
-    //         "data_st" => "<b>Sifat Data Baru (Diisi angka saja: 0=tidak ada data; 1=TW-1; 2=TW-2; 3=TW-3; 4=TW-4; 5=Tetap)</b>",
-    //         "submission_st" => "<b>Status Pengajuan (tidak boleh diubah)</b>",
-    //         "verify_comment_new" => "<b>Catatan Baru</b>",
-    //         "verify_comment" => "<b>Catatan Terakhir (tidak boleh diubah)</b>",
-    //     );
-    //     array_unshift($rs_id, $title);
-
-    //     // print_r($rs_id);
-    //     // die();
-
-    //     // DONWLOAD EXCEL WITH PARAMS
-    //     $xlsx = new SimpleXLSXGen();
-    //     $xlsx->addSheet($rs_id);
-    //     $filename =  "Template Bidang " . $urusan['urusan_name'] . ".xlsx";
-    //     $filename = str_replace(" ", "_", strtolower($filename));
-    //     $filename =  "template_upload_data_bidang_urusan_" . $urusan['urusan_id'] . ".xlsx";
-    //     $xlsx->downloadAs($filename);
-    // }
-
     public function download_template_data_opd($data_id)
     {
         //GET INSTANSI DARI SESSION
@@ -823,11 +719,13 @@ class Indicator extends OperatorBase
         $old_statuses =  $this->input->post('old_statuses', TRUE);
         $statuses =  $this->input->post('statuses', TRUE);
         $verify_comments =  $this->input->post('verify_comment', TRUE);
+
+        $tot_insert = 0;
         // LOOP ARRAY POST DATA
         foreach ($datas as $key => $data) {
 
             $check_sts =  $this->input->post('check_st_' . $key, TRUE);
-
+            
             // PARSING DATA POST
             if ($check_sts == '1') {
                 $verify_comment = trim(strip_tags($verify_comments[$key]));
@@ -888,6 +786,8 @@ class Indicator extends OperatorBase
                     $this->M_indicator_data_pg->insert($params);
                     // INSERT DETAIL DATA
                     $this->M_indicator_data_detail_pg->insert($params);
+
+                    $tot_insert++;
                 }
                 
             }
@@ -896,7 +796,7 @@ class Indicator extends OperatorBase
         //}
 
         // REDIRECT
-        $this->tnotification->sent_notification("success",  "Data berhasil diajukan");
+        $this->tnotification->sent_notification("success",  $tot_insert ." Data berhasil diajukan");
         redirect("admin/statistik/indicator/index/" . $urusan_id);
     }
 

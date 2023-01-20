@@ -68,7 +68,7 @@ class Statistik extends OperatorBase
             $rs_id[$key]['tot_approve'] = $data['tot_approve']; // + 
             $rs_id[$key]['tot_min']     = $data['total'] - ($data['tot_pending'] + $data['tot_reject'] + $data['tot_approve']);
         }
-
+        
         // ASSIGN DATA
         $this->tsmarty->assign("rs_id", $rs_id);
         $this->tsmarty->assign("option_years", array_reverse($option_years));
@@ -917,8 +917,7 @@ class Statistik extends OperatorBase
 
     public function ajukan_process()
     {
-        print_r('bb');
-        die();
+    
         // SET PAGE RULES
         $this->_set_page_rule("C");
 
@@ -935,6 +934,9 @@ class Statistik extends OperatorBase
         $statuses =  $this->input->post('statuses', TRUE); 
         $old_submission_sts =  $this->input->post('old_submission_st', TRUE); 
         $submission_sts =  $this->input->post('submission_st', TRUE); 
+
+        $tot_insert = 0;
+        $tot_insert_error = 0;
 
          // LOOP DATA FOR UPDATE pengajuan
         foreach ($datas as $key => $data) {
@@ -1000,28 +1002,40 @@ class Statistik extends OperatorBase
                     "year" => $year
                 );
 
-
+                if ($submission_st == 'rejected' && $verify_comment == '') {
+                    
+                    // UPDATE DETAIL HISTORY DATA
+                    $this->M_indicator_data_pg->update($params, $where);
+                    
+                    // INSERT DETAIL DATA
+                    $this->M_indicator_data_detail_pg->update($params, $where); 
+                    $tot_insert_error++;
+                } 
+                    
                 // UPDATE DETAIL HISTORY DATA
-                // INSERT DATA
                 $this->M_indicator_data_pg->update($params, $where);
-
+                
                 // INSERT DETAIL DATA
-                $this->M_indicator_data_detail_pg->update($params, $where); 
+                $this->M_indicator_data_detail_pg->update($params, $where);
+                $tot_insert++;
+                
             }
-            
-            
         }
-
-        // REDIRECT
+        
+        $this->tnotification->sent_notification("success", $tot_insert. " Data berhasil diverifikasi, " . $tot_insert_error. " Data ditolak tanpa catatan");
         redirect("admin/verifikasi/statistik/indicator/" . $instansi_cd . "/" . $urusan_id);
+        // REDIRECT
+        
     }
 
     public function search_urusan_process()
     {
         // SET PAGE RULES
         $this->_set_page_rule("R");
+
         // CEK INPUT PROCESS EMPTY OR NOT
         if ($this->input->post('process') == "process") {
+
             // SET PARAMS
             $params = array(
                 "tahun" => trim(strip_tags($this->input->post('tahun', TRUE))),
