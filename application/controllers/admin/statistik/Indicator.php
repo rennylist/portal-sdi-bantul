@@ -309,6 +309,7 @@ class Indicator extends OperatorBase
         // GET DATA INDICATOR TANPA PRIV
         $rs_id = $this->M_indicator_pg->get_indicator_by_params(array($data_id, $indicator_id, $instansi_cd));
 
+        
         // LOOP DATA RESULT
         $number = 1;
         foreach ($rs_id as $key => $value) {
@@ -383,7 +384,12 @@ class Indicator extends OperatorBase
 
             // ADD 
             $number++;
+
+            print_r($result);
+        
         }
+        die();
+ 
 
         // DONWLOAD EXCEL WITH PARAMS
         $xlsx = new SimpleXLSXGen();

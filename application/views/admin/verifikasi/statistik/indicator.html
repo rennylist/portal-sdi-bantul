@@ -401,6 +401,13 @@
                                     <span class="badge bg-warning rounded-pill"><i class="mdi mdi-rotate-3d"></i></span>
                                     {elseif $result.$year_selected.submission_st|default:'' eq 'approved'}
                                     <span class="badge bg-success rounded-pill"><i class="mdi mdi-check"></i></span>
+                                        {if $result.$year_selected.verify_comment|default:'' eq 'system'}
+                                        {else}
+                                            {if $result.$year_selected.verify_comment|default:'' eq '' }
+                                            {else}
+                                                <p class="text-warning">*catatan</p>
+                                            {/if}
+                                        {/if}
                                     {elseif $result.$year_selected.submission_st|default:'' eq 'rejected'}
                                     <span class="badge bg-danger rounded-pill"><i class="mdi mdi-window-close"></i></span>
                                     {elseif $result.$year_selected.submission_st|default:'' eq 'rejected'}
