@@ -353,6 +353,19 @@ class Indicator extends OperatorBase
             $verify_comment = (!isset($data['verify_comment']) || empty($data['verify_comment'])) ? '' : $data['verify_comment'];
             $verify_comment_opd = null;
             $submission_st = (!isset($data['submission_st']) || empty($data['submission_st'])) ? '' : $data['submission_st'];
+            if($value['rumus_type'] == "sum") {
+                $rumus_type = "system";
+            } else if ($value['rumus_type'] == "copy") {
+                $rumus_type = "system";
+            } else if ($value['rumus_type'] == "average") {
+                $rumus_type = "system";
+            } else if ($value['rumus_type'] == "formula") {
+                $rumus_type = "system";
+            } else if ($value['rumus_type'] == "ratio") {
+                $rumus_type = "system";
+            } else {
+                $rumus_type = "";
+            }
 
             // INSERT TO ARRAY
             $result[$number]['year']   = $bold_start . $search['tahun'] . $bold_end;
@@ -363,7 +376,7 @@ class Indicator extends OperatorBase
             $result[$number]['submission_st'] =  $bold_start . $submission_st . $bold_end;
             $result[$number]['verify_comment'] =  $bold_start . $verify_comment . $bold_end;
             $result[$number]['verify_comment_opd'] =  $bold_start . $verify_comment_opd . $bold_end;
-            $result[$number]['rumus_type'] =  $bold_start . $value['rumus_type'] . $bold_end;
+            $result[$number]['rumus_type'] =  $bold_start . $rumus_type . $bold_end;
             $result[$number]['rumus_detail'] =  $bold_start . $value['rumus_detail'] . $bold_end;
             $result[$number]['value'] =  $bold_start . $nilai . $bold_end;
             $result[$number]['data_st'] = $bold_start . $data_st . $bold_end;
