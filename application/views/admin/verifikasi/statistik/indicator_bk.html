@@ -177,26 +177,36 @@
 
                 </p>
 
-                <form action="{$config->site_url('admin/verifikasi/statistik/ajukan_process')}" method="post">
+                <!-- <form action="{$config->site_url('admin/verifikasi/statistik/ajukan_process')}" method="post"> -->
+                <form action="" method="post">
                     <input type="hidden" name="year" value="{$year_selected|default:''}" />
                     <input type="hidden" name="urusan_id" value="{$urusan_id|default:''}" />
                     <input type="hidden" name="instansi_cd" value="{$instansi_cd|default:''}" />
                     <input type="hidden" name="process" value="process" />
 
                     <div class="row">
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-6 mb-3">
                             <h4 class="header-title">{$instansi.instansi_name|default:'-'}</h4>
                             <strong>{$urusan.urusan_id|default:''} Bidang {$urusan.urusan_name|default:''}</strong>
                             ({$urusan_parent.urusan_id|default:''} {$urusan_parent.urusan_name|default:''})
+                        </div>
+                        <div class="col-md-6 mb-3" align="right">
+                            <!-- <a target="_blank"
+                                href="{$config->site_url('admin/verifikasi/statistik/download_template_verifikasi')}"
+                                class="btn btn-info btn-xs">
+                                Template Verifikasi<span class="btn-label-right btn-xs"><i class="mdi mdi-download"></i></span>
+                            </a> -->
+                           
+                            
                         </div>
                     </div>
                    
                     <div class="row">
                         <div class="col-md-3 mb-2">
                             <div class="input-group">
-                                <input type="text" id="mySearchText" class="form-control border border-primary" placeholder="Cari...." >
-                                <a id="mySearchButton" name="mySearchButton" type="button" class="btn btn-outline-primary"><i class="mdi mdi-magnify"></i></a>
-                                <a type="button" onClick="window.location.reload();" class="btn btn-outline-primary"><i class="mdi mdi-sync"></i></a>
+                                <input type="text" id="mySearchText" class="form-control border border-secondary" placeholder="Cari...." >
+                                <a id="mySearchButton" name="mySearchButton" type="button" class="btn btn-outline-secondary"><i class="mdi mdi-magnify"></i></a>
+                                <a type="button" onClick="window.location.reload();" class="btn btn-outline-secondary"><i class="mdi mdi-sync"></i></a>
                         </div>
                         </div>
 
@@ -224,6 +234,7 @@
                                 <th>Satuan</th>
                                 {foreach $table_years as $year}
                                 {if $year_selected|default:'' eq $year|default:''}
+                                <!-- <th>Pra-{$year|default:''}</th> -->
                                 <th>{$year|default:''}</th>
                                 {else}
                                 <th>{$year|default:''}</th>
@@ -243,6 +254,7 @@
                         <tbody>
                             {assign var="no" value =0}
                             {foreach $rs_id as $result}
+                            <!-- #cd485c; -->
                             <tr {if $result.data_type|default:'' eq 'indicator' } class="table-active" {/if}>
                                 <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if}>
                                     <input type="hidden" name="datas[]" value="{$result.data_id|default:''}">
@@ -263,97 +275,64 @@
                                 <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if}>
                                     {$result.data_unit|default:''}
                                 </td>
+                                <td align="right">
+                                    {if $result.satu_value|default:'' eq ''}
+                                    <span class="badge badge-soft-secondary">null</span>
+                                    {elseif $result.satu_value|default:'' eq 'n/a'}
+                                    <span class="badge bg-secondary"> n/a </span>
+                                    {else}
+                                    {$result.satu_value|default:''}
+                                    {/if}
+                                </td>
                                 
-                                
-                                        <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
-                                        {/if} 
-                                        align="right" title="gunakan titik(.) untuk pemisah bilangan desimal">
-                                            {if $result.dua_value|default:'' eq ''}
-                                                <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge badge-soft-secondary">null</span>
-                                            {elseif $result.dua_value|default:'' eq 'n/a'}
-                                                <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge bg-secondary"> n/a </span>
-                                            {else}
-                                                {if $datetimemanipulation->is_decimal($result.dua_value|default:'')}
-                                                    {$result.dua_value|replace:".":","}
-                                                {elseif (int) $result.dua_value|default:''}
-                                                    {$result.dua_value|default:''|string_format:"%02d"|number_format:0:".":","}
-                                                {else}
-                                                    {$result.dua_value|default:''}
-                                                {/if}
-                                            {/if}
-                                        </td>
+                                <td align="right">
+                                    {if $result.dua_value|default:'' eq ''}
+                                    <span class="badge badge-soft-secondary">null</span>
+                                    {elseif $result.dua_value|default:'' eq 'n/a'}
+                                    <span class="badge bg-secondary"> n/a </span>
+                                    {else}
+                                    {$result.dua_value|default:''}
+                                    {/if}
+                                </td>
 
-                                        <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
-                                        {/if} 
-                                        align="right" title="gunakan titik(.) untuk pemisah bilangan desimal">
-                                            {if $result.satu_value|default:'' eq ''}
-                                                <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge badge-soft-secondary">null</span>
-                                            {elseif $result.satu_value|default:'' eq 'n/a'}
-                                                <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge bg-secondary"> n/a </span>
-                                            {else}
-                                                {if $datetimemanipulation->is_decimal($result.satu_value|default:'')}
-                                                    {$result.satu_value|replace:".":","}
-                                                {elseif (int) $result.satu_value|default:''}
-                                                    {$result.satu_value|default:''|string_format:"%02d"|number_format:0:".":","}
-                                                {else}
-                                                    {$result.satu_value|default:''}
-                                                {/if}
-                                            {/if}
-                                        </td>
-                                        {foreach $table_years as $year}
-                                            {if $year_selected|default:'' eq $year|default:''}
-                                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
-                                                {/if}
-                                                {if $result.rumus_type|default:'' eq '' }
-                                                style="background-color:#c8f9d0;color:white;"
-                                                {else}
-                                                {/if}>
-
-                                                    <input type="hidden" name="old_values[]"
-                                                    value="{$result.tiga_value|default:''|default:''}">
-                                                    {if $result.rumus_type|default:'' eq '' }
-                                                    <input class="form-control" type="text" name="values[]"
-                                                        value="{$result.tiga_value|default:''|default:''}">
-                                                    {else}
-                                                    <input class="form-control" type="text" name="values[]"
-                                                        value="{$result.tiga_value|default:''|default:''}" readonly>
-                                                    {/if}
-                                                </td>
-                                            {/if}
-                                        {/foreach}
-                                    
-                                
-                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if} align="center"
-                                {if $result.rumus_type|default:'' eq '' }
-                                style="background-color:#c8f9d0;color:white;"
-                                {else}
-                                {/if}>
                                 {foreach $table_years as $year}
                                     {if $year_selected|default:'' eq $year|default:''}
-                                    <input type="hidden" name="old_statuses[]"
-                                        value="{$result.data_st|default:''}">
-                                    <select class="form-select" data-toggle="select2" data-width="100%"
-                                        name="statuses[]">
-                                        <option value="" {if $result.data_st|default:'' eq ''
-                                            }selected="selected" {/if}>Pilih &nbsp;</option>
-                                        <option value="tidakada" {if $result.data_st|default:''
-                                            eq 'tidakada' }selected="selected" {/if}>Tidak ada &nbsp;&nbsp;</option>
-                                        <option value="tetap" {if $result.data_st|default:'' eq 'tetap'
-                                            }selected="selected" {/if}>Tetap</option>
-                                        <option value="TW-1" {if $result.data_st|default:'' eq 'TW-1'
-                                            }selected="selected" {/if}>TW-1</option>
-                                        <option value="TW-2" {if $result.data_st|default:'' eq 'TW-2'
-                                            }selected="selected" {/if}>TW-2</option>
-                                        <option value="TW-3" {if $result.data_st|default:'' eq 'TW-3'
-                                            }selected="selected" {/if}>TW-3</option>
-                                        <option value="TW-4" {if $result.data_st|default:'' eq 'TW-4'
-                                            }selected="selected" {/if}>TW-4</option>
-                                    </select>
+                                        <input type="hidden" name="detail_ids[]" value="{$result.$year.detail_id|default:''}">
+                                        <td align="right">
+                                            {if $result.tiga_value|default:'' eq ''}
+                                            <span class="badge badge-soft-secondary">null</span>
+                                            {elseif $result.tiga_value|default:'' eq 'n/a'}
+                                            <span class="badge bg-secondary"> n/a </span>
+                                            {else}
+                                            {$result.tiga_value|default:''}
+                                            {/if}
+                                        </td>
                                     {/if}
                                 {/foreach}
-
+                                
+                                <td>
+                                    <input type="hidden" name="old_statuses[]"
+                                        value="{$result.$year_selected.data_st|default:''}">
+                                    <select class="form-select" data-toggle="select2" data-width="100%"
+                                        name="statuses[]">
+                                        <option value="" {if $result.$year_selected.data_st|default:'' eq ''
+                                            }selected="selected" {/if}>Pilih &nbsp;</option>
+                                        <option value="tidakada" {if $result.$year_selected.data_st|default:''
+                                            eq 'tidakada' }selected="selected" {/if}>Tidak ada &nbsp;&nbsp;</option>
+                                        <option value="tetap" {if $result.$year_selected.data_st|default:'' eq 'tetap'
+                                            }selected="selected" {/if}>Tetap</option>
+                                        <option value="TW-1" {if $result.$year_selected.data_st|default:'' eq 'TW-1'
+                                            }selected="selected" {/if}>TW-1</option>
+                                        <option value="TW-2" {if $result.$year_selected.data_st|default:'' eq 'TW-2'
+                                            }selected="selected" {/if}>TW-2</option>
+                                        <option value="TW-3" {if $result.$year_selected.data_st|default:'' eq 'TW-3'
+                                            }selected="selected" {/if}>TW-3</option>
+                                        <option value="TW-4" {if $result.$year_selected.data_st|default:'' eq 'TW-4'
+                                            }selected="selected" {/if}>TW-4</option>
+                                        <!-- <option value="sementara" {if $result.$year_selected.data_st|default:'' eq 'sementara'}selected="selected"{/if}>Smtr &nbsp;</option> -->
+                                    </select>
                                 </td>
-                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if} align="center">
+                                <td >
                                     {if $result.$year_selected.submission_st|default:'' eq 'pending'}
                                     <span class="badge bg-warning rounded-pill"><i class="mdi mdi-rotate-3d"></i></span>
                                     {elseif $result.$year_selected.submission_st|default:'' eq 'approved'}
@@ -392,25 +371,21 @@
                                             $result.$year_selected.submission_st|default:'' eq 'approved' }
                                             checked='checked' {/if}>
                                             <label class="form-check-label"> Diterima </label>
-                                        </div> -->
-
-                                    <input type="hidden" name="old_submission_st[]"
-                                        value="{$result.$year_selected.submission_st|default:''}">
-                                    <select class="form-select" data-toggle="select2" data-width="100%"
-                                        name="submission_st[]">
-                                        <option value="" {if $result.$year_selected.submission_st|default:'' eq ''
-                                            }selected="selected" {/if}>Pilih &nbsp;</option>
-                                        <option value="approved" {if $result.$year_selected.submission_st|default:'' eq 'approved'
-                                            }selected="selected" {/if}>Diterima</option>
-                                        <option value="rejected" {if $result.$year_selected.submission_st|default:'' eq 'rejected'
-                                            }selected="selected" {/if}>Ditolak</option>
-                                    </select>
-                                    
+                                    </div> -->
+                                        <input type="hidden" name="old_submission_st[]"
+                                            value="{$result.$year_selected.submission_st|default:''}">
+                                        <select class="form-select" data-toggle="select2" data-width="100%"
+                                            name="submission_st[]">
+                                            <option value="" {if $result.$year_selected.submission_st|default:'' eq ''
+                                                }selected="selected" {/if}>Pilih &nbsp;</option>
+                                            <option value="approved" {if $result.$year_selected.submission_st|default:'' eq 'approved'
+                                                }selected="selected" {/if}>Diterima</option>
+                                            <option value="rejected" {if $result.$year_selected.submission_st|default:'' eq 'rejected'
+                                                }selected="selected" {/if}>Ditolak</option>
+                                        </select>
                                 </td>
 
-                                <!-- style="visibility: hidden;" -->
-                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if}>
-
+                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if} >
                                     {$dataID = str_replace(".", "", $result.data_id)}
                                     <span data-bs-toggle="tooltip" data-bs-placement="top" title="{$result.$year_selected.verify_comment|default:'-'}">
                                         <a class="btn btn-circle" data-bs-toggle="modal" data-bs-target="#modal{$dataID}">
@@ -435,7 +410,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                    <label for="simpleinput" class="form-label">Riwayat Catatan Terakhir :</label>
+                                                    <label for="simpleinput" class="form-label">Catatan Terakhir Oleh : {$result.$year_selected.mdb_name|default:'-'} <br> Pada : {$result.$year_selected.mdd|default:'-'}</label>
                                                     <textarea class="form-control" value="{$result.$year_selected.verify_comment|default:''}"
                                                     id="" disabled>{$result.$year_selected.verify_comment|default:''}</textarea>
                                                     <hr>
@@ -457,6 +432,7 @@
                                         $('#value{$dataID}').val( $('#new{$dataID}').val() );
                                         });
                                     </script>
+                                    
                                 </td>
                             </tr>
                             {/foreach}

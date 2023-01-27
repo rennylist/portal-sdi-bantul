@@ -792,18 +792,18 @@ class Statistik extends OperatorBase
         // GET LIST INDICATOR & VARIBLE WITHOUT PRIVILEGES
         $params = array($data_id, $indicator_id, $instansi_cd);
         //print_r($indicator_class);
-        if (
-            $indicator_class == "class_sdgs" or $indicator_class == "class_rpjmd"
-            or $indicator_class == "class_ikklppd" or $indicator_class == "class_spm"
-            or $indicator_class == "class_dda" or $indicator_class == "class_datakudiy"
-            or $indicator_class == "class_pilahgender"
-        ) {
+        // if (
+        //     $indicator_class == "class_sdgs" or $indicator_class == "class_rpjmd"
+        //     or $indicator_class == "class_ikklppd" or $indicator_class == "class_spm"
+        //     or $indicator_class == "class_dda" or $indicator_class == "class_datakudiy"
+        //     or $indicator_class == "class_pilahgender"
+        // ) {
 
 
-            $rs_id = $this->M_indicator_pg->get_indicator_export_by_params_indicator_class($params, $indicator_class);
-        } else {
-            $rs_id = $this->M_indicator_pg->get_indicator_export_by_params($params);
-        }
+        //     $rs_id = $this->M_indicator_pg->get_indicator_export_by_params_indicator_class($params, $indicator_class);
+        // } else {
+        //     $rs_id = $this->M_indicator_pg->get_indicator_export_by_params($params);
+        // }
 
         // CREATE LIST OPTION FOR YEAR
         $option_year = date("Y");
@@ -821,53 +821,63 @@ class Statistik extends OperatorBase
             array_push($table_years, $i);
         }
 
-        // LOOP LIST AND PUSH DATA value PER YEAR
-        foreach ($rs_id as $key => $value) {
-            // LOOP YEAR
-            for ($i = ($table_year - $table_year_min); $i <= $table_year; $i++) {
-                // GET DETAIL DATA & PARSING
-                $data = $this->M_indicator_data_pg->get_data_by_params(array($value['data_id'], $i));
-                $detail_id = (!isset($data['detail_id'])) ? '' : trim($data['detail_id']);
-                $nilai = (!isset($data['value'])) ? '' : trim($data['value']);
-                $data_st = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
-                $submission_st = (!isset($data['submission_st']) || empty($data['submission_st'])) ? '' : $data['submission_st'];
-                $verify_comment = (!isset($data['verify_comment']) || empty($data['verify_comment'])) ? '' : $data['verify_comment'];
-                $mdd = (!isset($data['mdd']) || empty($data['mdd'])) ? '' : $this->tdtm->get_full_date($data['mdd']);
-                $mdb_name = (!isset($data['mdb_name']) || empty($data['mdb_name'])) ? '' : $data['mdb_name'];
-                $verify_mdd = (!isset($data['verify_mdd']) || empty($data['verify_mdd'])) ? '' : $this->tdtm->get_full_date($data['verify_mdd']);
-                $verify_mdb_name = (!isset($data['verify_mdb_name']) || empty($data['verify_mdb_name'])) ? '' : $data['verify_mdb_name'];
+        $params = array($table_years[0], $table_years[1], $table_years[2], $data_id."%", $indicator_id."%", $instansi_cd);
+        $rs_id = $this->M_indicator_data_pg->get_data_xxx($params);
+        
+        // print_r($params);
+        // echo "<pre>";
+        // print_r($rs_id);
+        // echo "<pre />";
+        // exit();
 
-                // PUSH TO MAIN ARRAY
-                if ($table_year == $i) {
-                    // ADD HISTORY INDICATOR & VARIABLE DATA, IF YEAR = YEAR SELECTED
-                    $history = $this->M_indicator_data_detail_pg->get_history_by_params_limit(array($value['data_id'], $i));
-                    $rs_id[$key][$i] =  array(
-                        'detail_id' => $detail_id,
-                        'value' => $nilai,
-                        'data_st' => $data_st,
-                        'submission_st' => $submission_st,
-                        'verify_comment' => $verify_comment,
-                        'history' =>  $history,
-                        'verify_mdd' => $verify_mdd,
-                        'verify_mdb_name' => $verify_mdb_name,
-                        'mdd' => $mdd,
-                        'mdb_name' =>  $mdb_name,
-                    );
-                } else {
-                    $rs_id[$key][$i] =  array(
-                        'detail_id' => $detail_id,
-                        'value' => $nilai,
-                        'data_st' => $data_st,
-                        'submission_st' => $submission_st,
-                        'verify_comment' => $verify_comment,
-                        'verify_mdd' => $verify_mdd,
-                        'verify_mdb_name' => $verify_mdb_name,
-                        'mdd' => $mdd,
-                        'mdb_name' =>  $mdb_name,
-                    );
-                }
-            }
-        }
+
+        // // LOOP LIST AND PUSH DATA value PER YEAR
+        // foreach ($rs_id as $key => $value) {
+        //     // LOOP YEAR
+        //     for ($i = ($table_year - $table_year_min); $i <= $table_year; $i++) {
+        //         // GET DETAIL DATA & PARSING
+        //         $data = $this->M_indicator_data_pg->get_data_by_params(array($value['data_id'], $i));
+        //         $detail_id = (!isset($data['detail_id'])) ? '' : trim($data['detail_id']);
+        //         $nilai = (!isset($data['value'])) ? '' : trim($data['value']);
+        //         $data_st = (!isset($data['data_st']) || empty($data['data_st'])) ? '' : $data['data_st'];
+        //         $submission_st = (!isset($data['submission_st']) || empty($data['submission_st'])) ? '' : $data['submission_st'];
+        //         $verify_comment = (!isset($data['verify_comment']) || empty($data['verify_comment'])) ? '' : $data['verify_comment'];
+        //         $mdd = (!isset($data['mdd']) || empty($data['mdd'])) ? '' : $this->tdtm->get_full_date($data['mdd']);
+        //         $mdb_name = (!isset($data['mdb_name']) || empty($data['mdb_name'])) ? '' : $data['mdb_name'];
+        //         $verify_mdd = (!isset($data['verify_mdd']) || empty($data['verify_mdd'])) ? '' : $this->tdtm->get_full_date($data['verify_mdd']);
+        //         $verify_mdb_name = (!isset($data['verify_mdb_name']) || empty($data['verify_mdb_name'])) ? '' : $data['verify_mdb_name'];
+
+        //         // PUSH TO MAIN ARRAY
+        //         if ($table_year == $i) {
+        //             // ADD HISTORY INDICATOR & VARIABLE DATA, IF YEAR = YEAR SELECTED
+        //             $history = $this->M_indicator_data_detail_pg->get_history_by_params_limit(array($value['data_id'], $i));
+        //             $rs_id[$key][$i] =  array(
+        //                 'detail_id' => $detail_id,
+        //                 'value' => $nilai,
+        //                 'data_st' => $data_st,
+        //                 'submission_st' => $submission_st,
+        //                 'verify_comment' => $verify_comment,
+        //                 'history' =>  $history,
+        //                 'verify_mdd' => $verify_mdd,
+        //                 'verify_mdb_name' => $verify_mdb_name,
+        //                 'mdd' => $mdd,
+        //                 'mdb_name' =>  $mdb_name,
+        //             );
+        //         } else {
+        //             $rs_id[$key][$i] =  array(
+        //                 'detail_id' => $detail_id,
+        //                 'value' => $nilai,
+        //                 'data_st' => $data_st,
+        //                 'submission_st' => $submission_st,
+        //                 'verify_comment' => $verify_comment,
+        //                 'verify_mdd' => $verify_mdd,
+        //                 'verify_mdb_name' => $verify_mdb_name,
+        //                 'mdd' => $mdd,
+        //                 'mdb_name' =>  $mdb_name,
+        //             );
+        //         }
+        //     }
+        // }
 
         // ASSIGN DATA
         $this->tsmarty->assign("data_id", $data_id);

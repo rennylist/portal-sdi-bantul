@@ -224,6 +224,7 @@
                                 <th>Satuan</th>
                                 {foreach $table_years as $year}
                                 {if $year_selected|default:'' eq $year|default:''}
+                                <!-- <th>Pra-{$year|default:''}</th> -->
                                 <th>{$year|default:''}</th>
                                 {else}
                                 <th>{$year|default:''}</th>
@@ -264,93 +265,71 @@
                                     {$result.data_unit|default:''}
                                 </td>
                                 
-                                
-                                        <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
-                                        {/if} 
-                                        align="right" title="gunakan titik(.) untuk pemisah bilangan desimal">
-                                            {if $result.dua_value|default:'' eq ''}
-                                                <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge badge-soft-secondary">null</span>
-                                            {elseif $result.dua_value|default:'' eq 'n/a'}
-                                                <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge bg-secondary"> n/a </span>
-                                            {else}
-                                                {if $datetimemanipulation->is_decimal($result.dua_value|default:'')}
-                                                    {$result.dua_value|replace:".":","}
-                                                {elseif (int) $result.dua_value|default:''}
-                                                    {$result.dua_value|default:''|string_format:"%02d"|number_format:0:".":","}
-                                                {else}
-                                                    {$result.dua_value|default:''}
-                                                {/if}
-                                            {/if}
-                                        </td>
+                                {foreach $table_years as $year}
+                                {if $year_selected|default:'' eq $year|default:''}
+                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
+                                {/if} width="200px"
+                                {if $result.rumus_type|default:'' eq '' }
+                                style="background-color:#c8f9d0;color:white;"
+                                {else}
+                                {/if}>
 
-                                        <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
-                                        {/if} 
-                                        align="right" title="gunakan titik(.) untuk pemisah bilangan desimal">
-                                            {if $result.satu_value|default:'' eq ''}
-                                                <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge badge-soft-secondary">null</span>
-                                            {elseif $result.satu_value|default:'' eq 'n/a'}
-                                                <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge bg-secondary"> n/a </span>
-                                            {else}
-                                                {if $datetimemanipulation->is_decimal($result.satu_value|default:'')}
-                                                    {$result.satu_value|replace:".":","}
-                                                {elseif (int) $result.satu_value|default:''}
-                                                    {$result.satu_value|default:''|string_format:"%02d"|number_format:0:".":","}
-                                                {else}
-                                                    {$result.satu_value|default:''}
-                                                {/if}
-                                            {/if}
-                                        </td>
-                                        {foreach $table_years as $year}
-                                            {if $year_selected|default:'' eq $year|default:''}
-                                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
-                                                {/if}
-                                                {if $result.rumus_type|default:'' eq '' }
-                                                style="background-color:#c8f9d0;color:white;"
-                                                {else}
-                                                {/if}>
-
-                                                    <input type="hidden" name="old_values[]"
-                                                    value="{$result.tiga_value|default:''|default:''}">
-                                                    {if $result.rumus_type|default:'' eq '' }
-                                                    <input class="form-control" type="text" name="values[]"
-                                                        value="{$result.tiga_value|default:''|default:''}">
-                                                    {else}
-                                                    <input class="form-control" type="text" name="values[]"
-                                                        value="{$result.tiga_value|default:''|default:''}" readonly>
-                                                    {/if}
-                                                </td>
-                                            {/if}
-                                        {/foreach}
-                                    
+                                    <input type="hidden" name="old_values[]"
+                                    value="{$result.$year.value|default:''|default:''}">
+                                    {if $result.rumus_type|default:'' eq '' }
+                                    <input class="form-control" type="text" name="values[]"
+                                        value="{$result.$year.value|default:''|default:''}">
+                                    {else}
+                                    <input class="form-control" type="text" name="values[]"
+                                        value="{$result.$year.value|default:''|default:''}" readonly>
+                                    {/if}
+                                </td>
+                                {else}
+                                <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" 
+                                {/if} 
+                                align="right" title="gunakan titik(.) untuk pemisah bilangan desimal">
+                                    {if $result.$year.value|default:'' eq ''}
+                                    <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge badge-soft-secondary">null</span>
+                                    {elseif $result.$year.value|default:'' eq 'n/a'}
+                                    <span {if $result.data_comment|default:'' eq 'Baru' } style="color:white;" {/if} class="badge bg-secondary"> n/a </span>
+                                    {else}
+                                    {if $datetimemanipulation->is_decimal($result.$year.value|default:'')}
+                                    {$result.$year.value|replace:".":","}
+                                    {elseif (int) $result.$year.value|default:''}
+                                    {$result.$year.value|default:''|string_format:"%02d"|number_format:0:".":","}
+                                    {else}
+                                    {$result.$year.value|default:''}
+                                    {/if}
+                                    {/if}
+                                </td>
+                                {/if}
+                                {/foreach}
                                 
                                 <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if} align="center"
                                 {if $result.rumus_type|default:'' eq '' }
                                 style="background-color:#c8f9d0;color:white;"
                                 {else}
                                 {/if}>
-                                {foreach $table_years as $year}
-                                    {if $year_selected|default:'' eq $year|default:''}
+                                    
                                     <input type="hidden" name="old_statuses[]"
-                                        value="{$result.data_st|default:''}">
+                                        value="{$result.$year_selected.data_st|default:''}">
                                     <select class="form-select" data-toggle="select2" data-width="100%"
                                         name="statuses[]">
-                                        <option value="" {if $result.data_st|default:'' eq ''
+                                        <option value="" {if $result.$year_selected.data_st|default:'' eq ''
                                             }selected="selected" {/if}>Pilih &nbsp;</option>
-                                        <option value="tidakada" {if $result.data_st|default:''
+                                        <option value="tidakada" {if $result.$year_selected.data_st|default:''
                                             eq 'tidakada' }selected="selected" {/if}>Tidak ada &nbsp;&nbsp;</option>
-                                        <option value="tetap" {if $result.data_st|default:'' eq 'tetap'
+                                        <option value="tetap" {if $result.$year_selected.data_st|default:'' eq 'tetap'
                                             }selected="selected" {/if}>Tetap</option>
-                                        <option value="TW-1" {if $result.data_st|default:'' eq 'TW-1'
+                                        <option value="TW-1" {if $result.$year_selected.data_st|default:'' eq 'TW-1'
                                             }selected="selected" {/if}>TW-1</option>
-                                        <option value="TW-2" {if $result.data_st|default:'' eq 'TW-2'
+                                        <option value="TW-2" {if $result.$year_selected.data_st|default:'' eq 'TW-2'
                                             }selected="selected" {/if}>TW-2</option>
-                                        <option value="TW-3" {if $result.data_st|default:'' eq 'TW-3'
+                                        <option value="TW-3" {if $result.$year_selected.data_st|default:'' eq 'TW-3'
                                             }selected="selected" {/if}>TW-3</option>
-                                        <option value="TW-4" {if $result.data_st|default:'' eq 'TW-4'
+                                        <option value="TW-4" {if $result.$year_selected.data_st|default:'' eq 'TW-4'
                                             }selected="selected" {/if}>TW-4</option>
                                     </select>
-                                    {/if}
-                                {/foreach}
 
                                 </td>
                                 <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if} align="center">

@@ -266,4 +266,43 @@ class M_indicator_data_pg extends CI_Model
     {
         return $this->db2->delete('trx_indicator_data', $params);
     }
+
+    public function get_data_xxx($params)
+    {
+        $sql = "SELECT
+                trx_indicator.data_id,
+                mst_instansi.instansi_name,
+                trx_indicator.data_name,
+                trx_indicator.data_unit,
+                satu.value as satu_value,
+                satu.data_st as satu_st,
+                dua.value as dua_value,
+                dua.data_st as dua_st,
+                value.value as value,
+                value.data_st as tiga_st,
+                string_agg(trx_indicator_data_detail.verify_comment, '||') AS komentar
+                FROM trx_indicator
+                INNER JOIN mst_instansi ON mst_instansi.instansi_cd = trx_indicator.instansi_cd
+                LEFT JOIN trx_indicator_data satu   ON trx_indicator.data_id = satu.data_id     AND satu.year = ?
+                LEFT JOIN trx_indicator_data dua    ON trx_indicator.data_id = dua.data_id      AND dua.year = ?
+                LEFT JOIN trx_indicator_data value   ON trx_indicator.data_id = value.data_id   AND value.year = ? 
+                left join trx_indicator_data_detail on trx_indicator.data_id = trx_indicator_data_detail.data_id
+                WHERE
+                trx_indicator.urusan_id LIKE ?
+                AND trx_indicator.data_id LIKE ?
+                AND mst_instansi.instansi_cd LIKE ?
+                GROUP BY 
+                trx_indicator.data_id, trx_indicator.data_name, trx_indicator.data_unit, satu.value, dua.value,
+                value.value, satu.data_st, dua.data_st, data_st.data_st, mst_instansi.instansi_name
+                ORDER BY data_id ASC;
+        ";
+        $query = $this->db2->query($sql, $params);
+        if ($query->num_rows() > 0) {
+            $result = $query->result_array();
+            $query->free_result();
+            return $result;
+        } else {
+            return array();
+        }
+    }
 }
