@@ -813,6 +813,8 @@ class Indicator extends OperatorBase
                 }
 
                 if ($value == "" | $status == "") {
+                    $this->tnotification->sent_notification("error",  "Nilai dan status data harus di isi");
+                    redirect("admin/statistik/indicator/index/" . $urusan_id);
                 } else if ($value != $old_value || $status != $old_status) {
                     // SET DETAIL DATA
                     $detail_id = $this->_get_id();
