@@ -310,13 +310,13 @@
                                                 {/if}>
 
                                                     <input type="hidden" name="old_values[]"
-                                                    value="{$result.tiga_value|default:''|default:''}">
+                                                    value="{$result.value|default:''|default:''}">
                                                     {if $result.rumus_type|default:'' eq '' }
                                                     <input class="form-control" type="text" name="values[]"
-                                                        value="{$result.tiga_value|default:''|default:''}">
+                                                        value="{$result.value|default:''|default:''}">
                                                     {else}
                                                     <input class="form-control" type="text" name="values[]"
-                                                        value="{$result.tiga_value|default:''|default:''}" readonly>
+                                                        value="{$result.value|default:''|default:''}" readonly>
                                                     {/if}
                                                 </td>
                                             {/if}
@@ -354,20 +354,23 @@
 
                                 </td>
                                 <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if} align="center">
-                                    {if $result.$year_selected.submission_st|default:'' eq 'pending'}
+                                    {if $result.submission_st|default:'' eq 'pending'}
                                     <span class="badge bg-warning rounded-pill"><i class="mdi mdi-rotate-3d"></i></span>
-                                    {elseif $result.$year_selected.submission_st|default:'' eq 'approved'}
+                                    {elseif $result.submission_st|default:'' eq 'approved'}
                                     <span class="badge bg-success rounded-pill"><i class="mdi mdi-check"></i></span>
-                                        {if $result.$year_selected.verify_comment|default:'' eq 'system'}
+                                        {if $result.verify_comment|default:'' eq 'system'}
                                         {else}
-                                            {if $result.$year_selected.verify_comment|default:'' eq '' }
+                                            {if $result.verify_comment|default:'' eq '' }
                                             {else}
-                                                <p class="text-warning">*catatan</p>
+                                            <!-- <div class="badge bg-primary text-wrap" style="width: 6rem;">
+                                                This
+                                              </div> -->
+                                                <!-- <p class="text-warning">*catatan</p> -->
                                             {/if}
                                         {/if}
-                                    {elseif $result.$year_selected.submission_st|default:'' eq 'rejected'}
+                                    {elseif $result.submission_st|default:'' eq 'rejected'}
                                     <span class="badge bg-danger rounded-pill"><i class="mdi mdi-window-close"></i></span>
-                                    {elseif $result.$year_selected.submission_st|default:'' eq 'rejected'}
+                                    {elseif $result.submission_st|default:'' eq 'rejected'}
                                     <span class="badge bg-danger rounded-pill"><i
                                             class="mdi mdi-window-close"></i></span>
                                     {else}
@@ -395,34 +398,35 @@
                                         </div> -->
 
                                     <input type="hidden" name="old_submission_st[]"
-                                        value="{$result.$year_selected.submission_st|default:''}">
+                                        value="{$result.submission_st|default:''}">
                                     <select class="form-select" data-toggle="select2" data-width="100%"
                                         name="submission_st[]">
-                                        <option value="" {if $result.$year_selected.submission_st|default:'' eq ''
+                                        <option value="" {if $result.submission_st|default:'' eq ''
                                             }selected="selected" {/if}>Pilih &nbsp;</option>
-                                        <option value="approved" {if $result.$year_selected.submission_st|default:'' eq 'approved'
+                                        <option     value="approved" {if $result.submission_st|default:'' eq 'approved'
                                             }selected="selected" {/if}>Diterima</option>
-                                        <option value="rejected" {if $result.$year_selected.submission_st|default:'' eq 'rejected'
+                                        <option value="rejected" {if $result.submission_st|default:'' eq 'rejected'
                                             }selected="selected" {/if}>Ditolak</option>
                                     </select>
                                     
                                 </td>
 
                                 <!-- style="visibility: hidden;" -->
+                                
                                 <td {if $result.data_comment|default:'' eq 'Baru' } style="background-color:#cd485c;color:white;" {/if}>
 
                                     {$dataID = str_replace(".", "", $result.data_id)}
-                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="{$result.$year_selected.verify_comment|default:'-'}">
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="{$result.verify_comment|default:'-'}">
                                         <a class="btn btn-circle" data-bs-toggle="modal" data-bs-target="#modal{$dataID}">
                                             <i class="mdi mdi-file-document-edit mdi-18px"></i>
                                         </a>
-                                        {if $result.$year_selected.submission_st|default:'' eq 'rejected' && $result.$year_selected.verify_comment|default:'' eq ''}
+                                        {if $result.submission_st|default:'' eq 'rejected' && $result.verify_comment|default:'' eq ''}
                                             <p class="text-danger">*Require</p>
                                         {else}
                                         {/if}
                                     </span>
 
-                                    <input type="text"  id="value{$dataID}" value="{$result.$year_selected.verify_comment|default:''}"
+                                    <input type="text"  id="value{$dataID}" value="{$result.verify_comment|default:''}"
                                     name="verify_comment[]" hidden>                             
 
                                     <div class="modal fade" id="modal{$dataID}" role="dialog">
@@ -436,8 +440,8 @@
                                                     </div>
                                                     <div class="modal-body">
                                                     <label for="simpleinput" class="form-label">Riwayat Catatan Terakhir :</label>
-                                                    <textarea class="form-control" value="{$result.$year_selected.verify_comment|default:''}"
-                                                    id="" disabled>{$result.$year_selected.verify_comment|default:''}</textarea>
+                                                    <textarea class="form-control" value="{$result.verify_comment|default:''}"
+                                                    id="" disabled>{$result.verify_comment|default:''}</textarea>
                                                     <hr>
                                                     <label for="simpleinput" class="form-label">Catatan Baru :</label>
                                                     <textarea class="form-control" value=""

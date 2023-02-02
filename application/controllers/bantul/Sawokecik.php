@@ -84,6 +84,8 @@ class Sawokecik extends ApplicationBase
     public function index($status = "")
     {
         // set template content
+        // $this->tsmarty->assign("template_content", "bantul/sawokecik/maintenance.html");
+
         $this->tsmarty->assign("template_content", "bantul/sawokecik/form.html");
         // session
         $session = $this->session->userdata('session_operator');

@@ -685,7 +685,7 @@ class Statistik extends OperatorBase
        $xlsx->addSheet($result);
        $filename =  "Template_Data_" . $tahun. ".xlsx";
        $xlsx->downloadAs($filename);
-   }
+    }
 
     public function urusan($instansi_cd)
     {
@@ -827,6 +827,7 @@ class Statistik extends OperatorBase
         // print_r($params);
         // echo "<pre>";
         // print_r($rs_id);
+        // die();
         // echo "<pre />";
         // exit();
 
@@ -1288,6 +1289,7 @@ class Statistik extends OperatorBase
         $path_file = $path . $file_name;
         $xlsx = new SimpleXLSX($path_file);
         
+
         // PARSING
         $no = 0;
         $tot_insert = 0;
@@ -1295,6 +1297,8 @@ class Statistik extends OperatorBase
 
         // LOOP DATA EXCEL
         foreach ($xlsx->rows() as $key => $data) {
+            print_r($xlsx->rows());
+            die();
             
             // SKIP FIRST ROW
             if ($no > 0) {
